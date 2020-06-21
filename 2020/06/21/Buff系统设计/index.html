@@ -5,13 +5,17 @@
   
 
   
-  <title>Coder</title>
+  <title>Buff系统设计 | Coder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Coder">
-<meta property="og:url" content="http://bugyyc.com/posts/coder/index.html">
+  <meta name="description" content="buff的本质基本上，可以概括为对属性数据的修改，例如：移动速度、血量等修改，增益或者损耗。 设计的思路不太可取的思路将buff设计为一个阶段性的效果。如：开始生效：增加移动速度5。结束BUFF：减少移动速度。这样设计意味着需要在结束BUFF时进行一次逆运算，就是将属性数据修改为未生效之前，这里很容易出现错误。例如精度的问题。某个BUFF生效，使得移动速度变为原来的1&#x2F;3.基础移动速度 &#x3D; 10开">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Buff系统设计">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/2020/06/21/Buff%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/index.html">
 <meta property="og:site_name" content="Coder">
+<meta property="og:description" content="buff的本质基本上，可以概括为对属性数据的修改，例如：移动速度、血量等修改，增益或者损耗。 设计的思路不太可取的思路将buff设计为一个阶段性的效果。如：开始生效：增加移动速度5。结束BUFF：减少移动速度。这样设计意味着需要在结束BUFF时进行一次逆运算，就是将属性数据修改为未生效之前，这里很容易出现错误。例如精度的问题。某个BUFF生效，使得移动速度变为原来的1&#x2F;3.基础移动速度 &#x3D; 10开">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-21T08:32:13.456Z">
+<meta property="article:modified_time" content="2020-06-21T08:31:44.854Z">
 <meta property="article:author" content="Delevin">
 <meta name="twitter:card" content="summary">
   
@@ -62,9 +66,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-Buff系统设计" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Buff系统设计" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/21/Buff%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
   <time datetime="2020-06-21T08:32:13.456Z" itemprop="datePublished">2020-06-21</time>
@@ -77,8 +79,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/Buff%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">Buff系统设计</a>
+    <h1 class="article-title" itemprop="name">
+      Buff系统设计
     </h1>
   
 
@@ -119,60 +121,19 @@ Zz = Zz1+Zz2+...+Zzn;//增值累积</code></pre><p>当然上面提及的公式�
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/hello-world/" class="article-date">
-  <time datetime="2020-06-21T07:59:38.689Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/hello-world/">Hello World</a>
-    </h1>
+    <a href="/2020/06/21/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/hello-world/" data-id="ckbossoqj0000u0twfz3u7xo8" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
-
 
 </section>
         
