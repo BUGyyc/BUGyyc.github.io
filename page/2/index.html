@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Coder">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/page/2/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Delevin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-11.网络/KCP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/KCP/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.602Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/KCP/">11.网络/KCP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>KCP是一个快速可靠协议，能以比 TCP浪费10%-20%的带宽的代价，换取平均延迟降低 30%-40%，且最大延迟降低三倍的传输效果。</p>
+<p>TCP是为流量设计的（每秒内可以传输多少KB的数据），讲究的是充分利用带宽。而 KCP是为流速设计的（单个数据包从一端发送到一端需要多少时间），以10%-20%带宽浪费的代价换取了比 TCP快30%-40%的传输速度。TCP信道是一条流速很慢，但每秒流量很大的大运河，而KCP是水流湍急的小激流。KCP有正常模式和快速模式两种，通过以下策略达到提高流速的结果：</p>
+<ul>
+<li>选择性重传 vs 全部重传: TCP丢包时会全部重传从丢的那个包开始以后的数据，KCP是选择性重传，只重传真正丢失的数据包。</li>
+<li>快速重传：发送端发送了1,2,3,4,5几个包，然后收到远端的ACK: 1, 3, 4, 5，当收到ACK3时，KCP知道2被跳过1次，收到ACK4时，知道2被跳过了2次，此时可以认为2号丢失，不用等超时，直接重传2号包，大大改善了丢包时的传输速度。</li>
+<li>延迟ACK vs 非延迟ACK：TCP为了充分利用带宽，延迟发送ACK（NODELAY都没用），这样超时计算会算出较大 RTT时间，延长了丢包时的判断过程。KCP的ACK是否延迟发送可以调节。</li>
+<li>非退让流控：</li>
+</ul>
+<p><a href="https://github.com/skywind3000/kcp" target="_blank" rel="noopener">https://github.com/skywind3000/kcp</a></p>
+<p>KCP<br><a href="https://github.com/skywind3000/kcp" target="_blank" rel="noopener">https://github.com/skywind3000/kcp</a></p>
+<p>kcp协议是传输层的一个具有可靠性的传输层ARQ协议。它的设计是为了解决在网络拥堵情况下tcp协议的网络速度慢的问题。kcp力求在保证可靠性的情况下提高传输速度。kcp协议的关注点主要在控制数据的可靠性和提高传输速度上面，因此kcp没有规定下层传输协议，一般用udp作为下层传输协议，kcp层协议的数据包在udp数据报文的基础上增加控制头。当用户数据很大，大于一个udp包能承担的范围时（大于mss），kcp会将用户数据分片存储在多个kcp包中。因此每个kcp包称为一个分片。<br>为了提供可靠性，kcp采用了重传机制。为实现重传机制，kcp为每个分片分配一个唯一标识，接收方收到一个包后告知发送方接到的包的序号，发送方接到确认后再继续发送。而如果发送方在一定时间内（超时重传时间）没有接到确认，就说明数据包丢失了，发送方需要重传丢失的数据包，所以发送方会把待确认的数据缓存起来，方便重传。<br><a href="https://www.cnblogs.com/yuanyifei1/p/6846310.html" target="_blank" rel="noopener">https://www.cnblogs.com/yuanyifei1/p/6846310.html</a></p>
+<h1 id="KCP的实现原理"><a href="#KCP的实现原理" class="headerlink" title="KCP的实现原理"></a>KCP的实现原理</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/11.%E7%BD%91%E7%BB%9C/KCP/" data-id="ckbovy33g000mmstw2qli9d3q" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-11.网络/HTTP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/HTTP/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.601Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/HTTP/">11.网络/HTTP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>HTTP<br>应用层协议<br>HTTP是一个简单的请求-响应协议，它通常运行在TCP之上。它指定了客户端可能发送给服务器什么样的消息以及得到什么样的响应。请求和响应消息的头以ASCII码形式给出；而消息内容则具有一个类似MIME的格式。这个简单模型是早期Web成功的有功之臣，因为它使得开发和部署是那么的直截了当。</p>
+<h1 id="TCP-IP-协议分层"><a href="#TCP-IP-协议分层" class="headerlink" title="TCP/IP 协议分层"></a>TCP/IP 协议分层</h1><p>应用层、传输层、网络层、数据链路层</p>
+<h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p>向用户提供应用服务时的通信活动。<br>如：FTP、HTTP、WebSocket、SMTP等</p>
+<h2 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h2><p>提供处于网络连接的两台计算机之间的数据传输<br>如：TCP、UDP</p>
+<h2 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h2><p>用来处理在网络上流动的数据包。数据包是网络传输的最小单位。<br>如：IP</p>
+<h2 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h2><p>用来处理连接网络的硬件部分。</p>
+<h1 id="网络通信流程"><a href="#网络通信流程" class="headerlink" title="网络通信流程"></a>网络通信流程</h1><p>以简单的浏览网页的情景为例，点击网页上的按钮。</p>
+<ul>
+<li>首页作为发送端的客户端在应用层（HTTP协议）发送一个点击按钮的HTTP请求</li>
+<li>在传输层（TCP）把从应用层收到的HTTP请求报文进行分割，并且在各个分割的报文上按顺序标记序号，然后发送给网络端</li>
+<li>在网络层（IP协议），增加作为通信目的地的MAC地址后转发给数据链路层。</li>
+</ul>
+<p>接收端的服务器在数据链路层接受到数据，按序号 往上层发送，一直到应用层。当传输到应用层，才能算是真正接受到客户端发送过来的HTTP请求。</p>
+<h1 id="HTTP的特点"><a href="#HTTP的特点" class="headerlink" title="HTTP的特点"></a>HTTP的特点</h1><ul>
+<li><p>客户端与服务器的通信总是先从客户端开始建立，服务端在没有收到请求之前不会发送相应</p>
+</li>
+<li><p>HTTP是无状态协议，这是为了减小服务器压力，让服务器更快处理大量事务。后来为了更方便通信，引入了Cookie</p>
+</li>
+<li><p>客户端对服务器可使用的方法：</p>
+<ul>
+<li>Get ：用来请求访问已被URI识别的资源。</li>
+<li>Post : 用来传输实体的主体。</li>
+<li>Put : 用来传输文件</li>
+<li>Head : 用来获取报文首部</li>
+<li>Delete : 用来删除文件</li>
+<li>Options : 用来查询支持的方法</li>
+<li>Trace : </li>
+</ul>
+</li>
+<li><p>持久连接： 早期的HTTP1.0版本中每次通信都需要建立连接，再通信，通信完成后再断开。这造成了过多的资源消耗。后来HTTP1.1引入了持久连接，建立TCP连接后，可以进行多次HTTP通信，最后再去发起TCP断开。</p>
+</li>
+<li><p>管线化： 管线化出现后，不用等待响应亦可发送下一个请求，这样可以并行发送多个请求，而不是等待再发送。</p>
+</li>
+</ul>
+<p><a href="https://zhuanlan.zhihu.com/p/60450391" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/60450391</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/11.%E7%BD%91%E7%BB%9C/HTTP/" data-id="ckbovy33f000lmstwc4ikcdyz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-07.计算机图形学/图形渲染相关/图形学/ReadMe" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/%E5%9B%BE%E5%BD%A2%E5%AD%A6/ReadMe/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.596Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/%E5%9B%BE%E5%BD%A2%E5%AD%A6/ReadMe/">07.计算机图形学/图形渲染相关/图形学/ReadMe</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/%E5%9B%BE%E5%BD%A2%E5%AD%A6/ReadMe/" data-id="ckbovy34p0029mstwc61d5p3o" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-07.计算机图形学/图形渲染相关/深度测试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/%E6%B7%B1%E5%BA%A6%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.589Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/%E6%B7%B1%E5%BA%A6%E6%B5%8B%E8%AF%95/">07.计算机图形学/图形渲染相关/深度测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前言</p>
+<pre><code>OpenGL存储它的所有深度信息于一个Z缓冲(Z-buffer)中，也被称为深度缓冲(Depth Buffer)。GLFW会自动为你生成这样一个缓冲（就像它也有一个颜色缓冲来存储输出图像的颜色）。深度值存储在每个片段里面（作为片段的z值），当片段想要输出它的颜色时，OpenGL会将它的深度值和z缓冲进行比较，如果当前的片段在其它片段之后，它将会被丢弃，否则将会覆盖。这个过程称为深度测试(Depth Testing)，它是由OpenGL自动完成的。</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/%E6%B7%B1%E5%BA%A6%E6%B5%8B%E8%AF%95/" data-id="ckbovy34i0022mstwabil6czz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-07.计算机图形学/图形渲染相关/关于图形渲染" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/%E5%85%B3%E4%BA%8E%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.588Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/%E5%85%B3%E4%BA%8E%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/">07.计算机图形学/图形渲染相关/关于图形渲染</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://blog.csdn.net/u012999985/article/details/79090657" target="_blank" rel="noopener">https://blog.csdn.net/u012999985/article/details/79090657</a></p>
+<p><a href="https://blog.csdn.net/admintan/article/details/53913624" target="_blank" rel="noopener">https://blog.csdn.net/admintan/article/details/53913624</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/%E5%85%B3%E4%BA%8E%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" data-id="ckbovy34h0020mstw2xnqc07c" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-07.计算机图形学/图形渲染相关/WebGL" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/WebGL/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.587Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/WebGL/">07.计算机图形学/图形渲染相关/WebGL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/WebGL/" data-id="ckbovy33x001amstw2shybi29" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-07.计算机图形学/图形渲染相关/Shader" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/Shader/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.586Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/Shader/">07.计算机图形学/图形渲染相关/Shader</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/Shader/" data-id="ckbovy33w0019mstw2p3i9kx4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-07.计算机图形学/图形渲染相关/OpenGL" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/OpenGL/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.585Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/OpenGL/">07.计算机图形学/图形渲染相关/OpenGL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>渲染管线<br>DrawCall<br>Z轴缓存</p>
+<p>OpenGL简单流程</p>
+<ul>
+<li>顶点着色器：将输入的坐标转化为相应的3D坐标</li>
+<li>形状装配：将坐标组合为一个形状</li>
+<li>几何着色器：将形状细分成一些三角形</li>
+<li>光栅化：把三角形生成出多个像素点</li>
+<li>片段着色器：给像素点上色</li>
+<li>混合测试：因为图形有遮盖等层次关系，以及一些透明度遮挡，最后处理输出能展示的图形</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%85%B3/OpenGL/" data-id="ckbovy34h001zmstw3w6n0gvb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-06.游戏引擎/物理引擎/2D碰撞/2D碰撞（二）四叉树" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.580Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/">06.游戏引擎/物理引擎/2D碰撞/2D碰撞（二）四叉树</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一篇博客讲解了一下简单2D游戏的开发流程</p>
+<p><a href="https://zhuanlan.zhihu.com/p/82301894" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82301894</a></p>
+<p>上一篇提到的检测碰撞是遍历所有的方块，进行检测，每一帧都进行检测碰撞，效率极其低下，一旦游戏对象过多，意味着每帧需要遍历检测的对象太多，为此，我们需要将碰撞检测的游戏对象数量降低，减少不必要的计算检测。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行碰撞</span><br><span class="line">void Game::DoCollisions()</span><br><span class="line">&#123;	</span><br><span class="line">	&#x2F;&#x2F;遍历所有的方块与球的碰撞情况</span><br><span class="line">	for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks)</span><br><span class="line">	&#123;</span><br><span class="line">         &#x2F;&#x2F;......</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F;......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事实上，真正需要进行检测的方块只有其中一部分，因为大多数方块在距离上是完全不需要进行检测的，基于这一点，我们需要通过某种手段将处在2D世界中的游戏对象进行划分。</p>
+<p>这里用到的手段就是四叉树。</p>
+<h1 id="四叉树的结构"><a href="#四叉树的结构" class="headerlink" title="四叉树的结构"></a>四叉树的结构</h1><p>如下图所示：<br><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/14e27b989d0f9d1ff8f0800cb9c8a38e_hd.jpg" alt="(path/to/image.png)"></p>
+<p>代码：</p>
+<p><a href="https://github.com/BUGyyc/SimpleCraft/blob/master/quad_tree.h" target="_blank" rel="noopener">https://github.com/BUGyyc/SimpleCraft/blob/master/quad_tree.h</a></p>
+<h1 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h1><h1 id="运用四叉树减少比较次数"><a href="#运用四叉树减少比较次数" class="headerlink" title="运用四叉树减少比较次数"></a>运用四叉树减少比较次数</h1><p>牺牲空间换时间，每一帧都通过最新的四叉树取节点下来进行检测判断，在减少数量上减少了大半。因为提升了很大的效率，不过，不可避免的是每帧都需要维护这个四叉树，这是空间上必须要有所让步的，不过好在所占空间并不大。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;每一帧都需要更新四叉树，并且要在检测之前</span><br><span class="line">void Game::QuadTreeExcute() </span><br><span class="line">&#123;</span><br><span class="line">	quadTree &#x3D; new QuadTree&lt;GameObject*&gt;();</span><br><span class="line">	for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks) &#123;</span><br><span class="line">		quadTree-&gt;add(&amp;box,QuadAABB(box.Position.x,box.Position.y,80,80));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Game::DoCollisions()</span><br><span class="line">&#123;	</span><br><span class="line">	vector&lt;GameObject*&gt; list;</span><br><span class="line">	quadTree-&gt;find(QuadAABB(Ball-&gt;Position.x,Ball-&gt;Position.y,80,80), list, true); </span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;在窗口输出，观察每帧进行多少方块的比较</span><br><span class="line">        if (list.size() &gt; 0) &#123;</span><br><span class="line">		cout &lt;&lt; list.size() &lt;&lt; &quot; size   &quot; &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;只进行了部分比较</span><br><span class="line">	&#x2F;&#x2F;遍历区域内的方块与球的碰撞情况</span><br><span class="line">	for (auto &amp;box : list)</span><br><span class="line">	&#123;</span><br><span class="line">                ...</span><br><span class="line">        &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/" data-id="ckbovy34x002omstw7n2ecsbp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-06.游戏引擎/物理引擎/Box2D" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/Box2D/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.577Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/Box2D/">06.游戏引擎/物理引擎/Box2D</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/Box2D/" data-id="ckbovy33w0018mstwbj3z8kof" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

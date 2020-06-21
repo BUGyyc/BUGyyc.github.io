@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Temporary/序列化与反序列化 | Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="序列化与反序列化的概念序列化是指将对象转化为字节序列的过程 反序列化是指将字节序列转化为对象的过程 对象的序列化有两种用途： 将对象的字节序列永久的存储在硬盘。 在网络传输中，使用字节序列。  Java 中的序列化与反序列化在许多情况下，我们希望将数据脱离内存，永久的存储在硬盘中，这时候可以使用序列化将对象转化为字节序列，最后作为一个或多个文件保存在硬盘中。 如下代码，将对象Person保存至本地">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Temporary&#x2F;序列化与反序列化">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/2020/06/21/Temporary/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="序列化与反序列化的概念序列化是指将对象转化为字节序列的过程 反序列化是指将字节序列转化为对象的过程 对象的序列化有两种用途： 将对象的字节序列永久的存储在硬盘。 在网络传输中，使用字节序列。  Java 中的序列化与反序列化在许多情况下，我们希望将数据脱离内存，永久的存储在硬盘中，这时候可以使用序列化将对象转化为字节序列，最后作为一个或多个文件保存在硬盘中。 如下代码，将对象Person保存至本地">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-21T09:45:05.435Z">
+<meta property="article:modified_time" content="2020-06-20T09:55:32.000Z">
+<meta property="article:author" content="Delevin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Temporary/序列化与反序列化" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/Temporary/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.435Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Temporary/序列化与反序列化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="序列化与反序列化的概念"><a href="#序列化与反序列化的概念" class="headerlink" title="序列化与反序列化的概念"></a>序列化与反序列化的概念</h1><p>序列化是指将对象转化为字节序列的过程</p>
+<p>反序列化是指将字节序列转化为对象的过程</p>
+<h1 id="对象的序列化有两种用途："><a href="#对象的序列化有两种用途：" class="headerlink" title="对象的序列化有两种用途："></a>对象的序列化有两种用途：</h1><ul>
+<li>将对象的字节序列永久的存储在硬盘。</li>
+<li>在网络传输中，使用字节序列。</li>
+</ul>
+<h1 id="Java-中的序列化与反序列化"><a href="#Java-中的序列化与反序列化" class="headerlink" title="Java 中的序列化与反序列化"></a>Java 中的序列化与反序列化</h1><p>在许多情况下，我们希望将数据脱离内存，永久的存储在硬盘中，这时候可以使用序列化将对象转化为字节序列，最后作为一个或多个文件保存在硬盘中。</p>
+<p>如下代码，将对象Person保存至本地文件中，然后再讲本地文件中的数据反序列化为对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line"> * @Author: delevin.ying </span><br><span class="line"> * @Date: 2019-09-09 15:02:33 </span><br><span class="line"> * @Last Modified by: delevin.ying</span><br><span class="line"> * @Last Modified time: 2019-09-09 16:27:42</span><br><span class="line"> *&#x2F;</span><br><span class="line">import java.io.FileNotFoundException;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.ObjectInputStream;</span><br><span class="line">import java.io.ObjectOutputStream;</span><br><span class="line">import java.io.Serializable;</span><br><span class="line">import java.io.FileOutputStream;</span><br><span class="line">import java.io.FileInputStream;</span><br><span class="line">import java.io.File;</span><br><span class="line"></span><br><span class="line">public class TestSerializeAndDeserialize &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        &#x2F;&#x2F;将对象序列化，保存到本地文件</span><br><span class="line">        SerializePerson();</span><br><span class="line">        &#x2F;&#x2F;将文件中的数据反序列化为对象</span><br><span class="line">        Person p &#x3D; DeserializePerson();</span><br><span class="line">        System.out.println(&quot;name&#x3D;&#123;&quot; + p.getName() + &quot;&#125;,age&#x3D;&#123;&quot; + p.getAge() + &quot;&#125;,sex&#x3D;&#123;&quot; + p.getSex() + &quot;&#125;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void SerializePerson() throws FileNotFoundException, IOException &#123;</span><br><span class="line">        Person p &#x3D; new Person();</span><br><span class="line">        p.setAge(26);</span><br><span class="line">        p.setName(&quot;delevin&quot;);</span><br><span class="line">        p.setSex(&quot;man&quot;);</span><br><span class="line">        ObjectOutputStream outPutS &#x3D; new ObjectOutputStream(new FileOutputStream(new File(&quot;D:&#x2F;Person.txt&quot;)));</span><br><span class="line">        outPutS.writeObject(p);</span><br><span class="line">        outPutS.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Person DeserializePerson() throws Exception, IOException &#123;</span><br><span class="line">        ObjectInputStream inPutS &#x3D; new ObjectInputStream(new FileInputStream(new File(&quot;D:&#x2F;Person.txt&quot;)));</span><br><span class="line">        Person p &#x3D; (Person) inPutS.readObject();</span><br><span class="line">        return p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;实现Serializable接口</span><br><span class="line">class Person implements Serializable &#123;</span><br><span class="line">    &#x2F;&#x2F;这是一个序列化ID</span><br><span class="line">    private static final long serialVersionUID &#x3D; -5809782578272943999L;</span><br><span class="line">    private int age;</span><br><span class="line">    private String name;</span><br><span class="line">    private String sex;</span><br><span class="line"></span><br><span class="line">    public int getAge() &#123;</span><br><span class="line">        return age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getSex() &#123;</span><br><span class="line">        return sex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setAge(int age) &#123;</span><br><span class="line">        this.age &#x3D; age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setName(String name) &#123;</span><br><span class="line">        this.name &#x3D; name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setSex(String sex) &#123;</span><br><span class="line">        this.sex &#x3D; sex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>serialVersionUID用途和意义</li>
+</ul>
+<p>serialVersionUID是作为一个版本号，控制版本。<br>如果Person中没有定义好serialVersionUID，那么Person结构修改，会导致不兼容，程序会抛出异常，在没有定义serialVersionUID的情况下，Java编译器会自动为Person进行摘要算法，生成一个隐式的serialVersionUID，而修改Person结构时，会生成新的serialVersionUID，导致前后两次的serialVersionUID不一致，所以抛出异常。</p>
+<ul>
+<li>静态变量的序列化</li>
+</ul>
+<p>我们在Person中加入一个静态变量 weight。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Person implements Serializable &#123;</span><br><span class="line">    private static final long serialVersionUID &#x3D; -5809782578272943999L;</span><br><span class="line">    private int age;</span><br><span class="line">    private String name;</span><br><span class="line">    private String sex;</span><br><span class="line"></span><br><span class="line">    public static int weight &#x3D; 140;</span><br><span class="line">&#x2F;*</span><br><span class="line">*省略</span><br><span class="line">*&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>保存指定Person</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Person p &#x3D; new Person();</span><br><span class="line">p.setAge(26);</span><br><span class="line">p.setName(&quot;delevin&quot;);</span><br><span class="line">p.setSex(&quot;man&quot;);</span><br><span class="line">p.weight &#x3D; 120;</span><br></pre></td></tr></table></figure>
+<p>最后从文件中取出weight值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;name&#x3D;&#123;&quot; + p.getName() + &quot;&#125;,age&#x3D;&#123;&quot; + p.getAge() + &quot;&#125;,sex&#x3D;&#123;&quot; + p.getSex() + &quot;&#125;,&#123;weight&#x3D;&quot;+p.weight+&quot;&#125;&quot;);</span><br></pre></td></tr></table></figure>
+<p>结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name&#x3D;&#123;delevin&#125;,age&#x3D;&#123;26&#125;,sex&#x3D;&#123;man&#125;,&#123;weight&#x3D;120&#125;</span><br></pre></td></tr></table></figure>
+<p>这说明序列化并不会保存静态变量。</p>
+<h1 id="Unity中的序列化"><a href="#Unity中的序列化" class="headerlink" title="Unity中的序列化"></a>Unity中的序列化</h1><p>在Unity中，在检视面板（Inspector）中可以看到的，就是被成功序列化了的参数。与序列化相关的常用的关键字有SerializeField，HideInInspector，NonSerialized，Serializable并可以组合使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class Test :Monobehavior</span><br><span class="line">&#123;   </span><br><span class="line">    &#x2F;&#x2F;public修饰，本身可以直接在Inspector中操作</span><br><span class="line">    public int  a;                               &#x2F;&#x2F;序列化，显示</span><br><span class="line">    &#x2F;&#x2F;private修饰，在Inspector中不可见</span><br><span class="line">    private int b;                               &#x2F;&#x2F;不序列化，不显示</span><br><span class="line">    &#x2F;&#x2F;默认为private 修饰，加SerializeField进行序列化，可在Inspector中看到</span><br><span class="line">    [SerializeField ] int c;                     &#x2F;&#x2F;序列化，显示</span><br><span class="line">    &#x2F;&#x2F;public修饰 已序列化，并且加HideInInspector，表示隐藏起来</span><br><span class="line">    [HideInInspector] public int d;              &#x2F;&#x2F;序列化，不显示</span><br><span class="line">    &#x2F;&#x2F;public修饰，NonSerialized不进行序列化，并且不在Inspector中显示</span><br><span class="line">    [NonSerialized ] public int e;               &#x2F;&#x2F;不序列化，不显示</span><br><span class="line">    public Test2 test2;                          &#x2F;&#x2F;序列化，显示（可序列化的部分）</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;将类序列化，使得在Test中的Inspector中可见</span><br><span class="line">[Serializable ]</span><br><span class="line">public class Test2</span><br><span class="line">&#123;</span><br><span class="line">     public int aa;</span><br><span class="line">     private int bb;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Unity中可序列化对象</p>
+<p>  公有的，或者有[SerializeField]属性，非静态，非常量，非只读<br>  自定义非抽象类，并且有Serializable属性<br>  继承自unity.object的类<br>  数组和List</p>
+<p>  字典不能通过添加Serializable属性进行序列化<br>  如果一个类基类不能被序列化，那它即便添加了序列化特性也无法被序列化<br>  序列化不能保存另一个要反序列化的对象指针，因为反序列化是new一个新的对象，指针指向的内存将不会是原对象</p>
+</li>
+</ul>
+<p><a href="https://www.ibm.com/developerworks/cn/java/j-5things1/" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/java/j-5things1/</a></p>
+<p><a href="https://www.ibm.com/developerworks/cn/java/j-lo-serial/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/java/j-lo-serial/index.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/Temporary/%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" data-id="ckbovy33q0012mstw4dm1987b" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/21/Temporary/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Temporary/面向对象
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/21/Temporary/Unity%20%E8%A1%8C%E4%B8%BA%E6%A0%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Temporary/Unity 行为树</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

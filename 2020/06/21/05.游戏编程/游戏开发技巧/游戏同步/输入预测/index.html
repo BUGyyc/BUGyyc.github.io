@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>05.游戏编程/游戏开发技巧/游戏同步/输入预测 | Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="http:&#x2F;&#x2F;gad.qq.com&#x2F;program&#x2F;translateview&#x2F;7168875 让我们假设一个玩家有150毫秒的网络延迟，并开始前进。前进键被按下的信息被存储在用户命令，并发送至服务器。用户命令是由移动代码逻辑处理，玩家的角色将在游戏世界中向前行走。这个世界状态的变化传送到所有客户端的下一个快照的更新。因此玩家看到自己开始行动的响应会有150毫秒延迟，这种延迟对于高频动作游戏(体育">
+<meta property="og:type" content="article">
+<meta property="og:title" content="05.游戏编程&#x2F;游戏开发技巧&#x2F;游戏同步&#x2F;输入预测">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E8%BE%93%E5%85%A5%E9%A2%84%E6%B5%8B/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="http:&#x2F;&#x2F;gad.qq.com&#x2F;program&#x2F;translateview&#x2F;7168875 让我们假设一个玩家有150毫秒的网络延迟，并开始前进。前进键被按下的信息被存储在用户命令，并发送至服务器。用户命令是由移动代码逻辑处理，玩家的角色将在游戏世界中向前行走。这个世界状态的变化传送到所有客户端的下一个快照的更新。因此玩家看到自己开始行动的响应会有150毫秒延迟，这种延迟对于高频动作游戏(体育">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-21T09:45:05.571Z">
+<meta property="article:modified_time" content="2020-06-20T09:55:32.000Z">
+<meta property="article:author" content="Delevin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-05.游戏编程/游戏开发技巧/游戏同步/输入预测" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E8%BE%93%E5%85%A5%E9%A2%84%E6%B5%8B/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.571Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      05.游戏编程/游戏开发技巧/游戏同步/输入预测
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://gad.qq.com/program/translateview/7168875" target="_blank" rel="noopener">http://gad.qq.com/program/translateview/7168875</a></p>
+<p>让我们假设一个玩家有150毫秒的网络延迟，并开始前进。前进键被按下的信息被存储在用户命令，并发送至服务器。用户命令是由移动代码逻辑处理，玩家的角色将在游戏世界中向前行走。这个世界状态的变化传送到所有客户端的下一个快照的更新。因此玩家看到自己开始行动的响应会有150毫秒延迟，这种延迟对于高频动作游戏(体育，设计类游戏)会有明显的延迟感。玩家输入和相应的视觉反馈之间的延迟会产生一种奇怪的，不自然的感觉，使得玩家很难移动或精确瞄准。客户端的输入预测（cl_predict 1）执行是一种消除这种延迟的方法，让玩家的行动感到更即时。与其等待服务器来更新自己的位置，在本地客户端只是预测自己的用户命令的结果。因此，客户端准确运行相同的代码和规则服务器将使用来处理用户命令。预测完成后，当地的玩家会移动到新位置，而服务器仍然可以看到他在老地方。150毫秒后，客户会收到包含基于他早期预测用户命令更改服务器的快照。客户端会将预测位置同服务器的位置对比。如果它们是不同的，则发生了预测误差。这表明，在客户端没有关于其他实体的正确信息和环境时，它处理用户命令。然后，客户端必须纠正自己的位置，因为服务器拥有客户端预测最终决定权。如果cl_showerror 1开启，客户端可以看到，当预测误差发生。预测误差校正可以是相当明显的，并且可能导致客户端的视图不规则跳动。通过在一定时间（cl_smoothtime）逐渐纠正这个错误，错误可以顺利解决。预测误差平滑处理可以通过设置cl_smooth 0来关闭。预测只对本地玩家以及那些只收它影响的实体有效，因为预测的工作原理是使用客户端的操作来预测的。对于其他玩家没法做有效预测, 因为没有办法立即从他们身上得到操作信息。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E8%BE%93%E5%85%A5%E9%A2%84%E6%B5%8B/" data-id="ckbovy34v002kmstwe5vzc0ye" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84/Box2D/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          06.游戏引擎/游戏引擎架构/Box2D
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">05.游戏编程/游戏开发技巧/游戏同步/游戏同步问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

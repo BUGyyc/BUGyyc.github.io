@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>01.计算机科学/算法/alpha-beta（Java）/AlphaBeta算法 | Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="九宫格游戏相对简单，因为步数有限，玩家和AI两者的总步数是9而象棋的模式不一样，象棋的走法多样，步数在设定上是无穷对于AI上的设定来说，AI未必当前步数需要选择最大收益步数，因为当前最大收益不一定绝对下一步是否最大收益，所以这意味着，向下搜索深度越大，意味着收益的计算才是最准确的  AI的行为是在列举有限种情况，在有限种情况中选择当前有利或者是符合长远利益（为什么这么说？长远利益这种情况是存在的，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="01.计算机科学&#x2F;算法&#x2F;alpha-beta（Java）&#x2F;AlphaBeta算法">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/alpha-beta%EF%BC%88Java%EF%BC%89/AlphaBeta%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="九宫格游戏相对简单，因为步数有限，玩家和AI两者的总步数是9而象棋的模式不一样，象棋的走法多样，步数在设定上是无穷对于AI上的设定来说，AI未必当前步数需要选择最大收益步数，因为当前最大收益不一定绝对下一步是否最大收益，所以这意味着，向下搜索深度越大，意味着收益的计算才是最准确的  AI的行为是在列举有限种情况，在有限种情况中选择当前有利或者是符合长远利益（为什么这么说？长远利益这种情况是存在的，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-21T09:43:44.366Z">
+<meta property="article:modified_time" content="2020-06-20T09:55:32.000Z">
+<meta property="article:author" content="Delevin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-01.计算机科学/算法/alpha-beta（Java）/AlphaBeta算法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/alpha-beta%EF%BC%88Java%EF%BC%89/AlphaBeta%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2020-06-21T09:43:44.366Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      01.计算机科学/算法/alpha-beta（Java）/AlphaBeta算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>九宫格游戏相对简单，因为步数有限，玩家和AI两者的总步数是9<br>而象棋的模式不一样，象棋的走法多样，步数在设定上是无穷<br>对于AI上的设定来说，AI未必当前步数需要选择最大收益步数，因为当前最大收益不一定绝对下一步是否最大收益，所以这意味着，向下搜索深度越大，意味着收益的计算才是最准确的</p>
+<hr>
+<p>AI的行为是在列举有限种情况，在有限种情况中选择当前有利或者是符合长远利益（为什么这么说？长远利益这种情况是存在的，因为只选择当前利益最大化也无法保证长期利益最大化，而当前非最优解，也可能是最符合长远利益的解，这种情况在象棋中就经常会发生）</p>
+<p>搜索深度越深，考虑的步子就越远，判断收益的精度将更准确</p>
+<p>井字棋是一个很简单的游戏，我们可以直接搜索到最终结果，再从下往上筛选，选择执行步子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * deep search</span><br><span class="line"> *&#x2F;</span><br><span class="line">private static int findAIStep(int value, int alpha, int beta) &#123;</span><br><span class="line">    if (isFull())</span><br><span class="line">        value &#x3D; Draw;</span><br><span class="line">    else if (checkAINearWin())</span><br><span class="line">        value &#x3D; CompWin;</span><br><span class="line">    else &#123;</span><br><span class="line">        value &#x3D; alpha;</span><br><span class="line">        for (int i &#x3D; 1; i &lt;&#x3D; 9 &amp;&amp; value &lt; beta; i++) &#123;</span><br><span class="line">            if (arr[i] &#x3D;&#x3D; 0) &#123;</span><br><span class="line">                arr[i] &#x3D; 2;</span><br><span class="line">                int response &#x3D; -1;</span><br><span class="line">                response &#x3D; findManStep(response, alpha, beta);</span><br><span class="line">                arr[i] &#x3D; 0;</span><br><span class="line">                if (response &gt; value) &#123;&#x2F;&#x2F;比较值，进行剪枝</span><br><span class="line">                    value &#x3D; response;</span><br><span class="line">                    bestMove &#x3D; i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static int findManStep(int value, int alpha, int beta) &#123;</span><br><span class="line">    if (isFull())</span><br><span class="line">        value &#x3D; Draw;</span><br><span class="line">    else if (checkManNearWin())</span><br><span class="line">        value &#x3D; HumanWin;</span><br><span class="line">    else &#123;</span><br><span class="line">        value &#x3D; beta;</span><br><span class="line">        for (int i &#x3D; 1; i &lt;&#x3D; 9 &amp;&amp; value &gt; alpha; i++) &#123;</span><br><span class="line">            if (arr[i] &#x3D;&#x3D; 0) &#123;</span><br><span class="line">                arr[i] &#x3D; 1;</span><br><span class="line">                int response &#x3D; -1;</span><br><span class="line">                response &#x3D; findAIStep(response, alpha, beta);</span><br><span class="line">                arr[i] &#x3D; 0;</span><br><span class="line">                if (response &lt; value) &#123;&#x2F;&#x2F;比较值，进行剪枝</span><br><span class="line">                    value &#x3D; response;</span><br><span class="line">                    bestMove &#x3D; i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/alpha-beta%EF%BC%88Java%EF%BC%89/AlphaBeta%E7%AE%97%E6%B3%95/" data-id="ckbovw38n00054stw7m280cvm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          01.计算机科学/算法/分治算法/分治
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">01.计算机科学/算法/排序</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>13.日常开发问题/浮点数问题 | Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="浮点数的计算在不同机器上的结果，未必一致，这可能道具游戏结果不一致。例如弓箭在一个点发射，在弓箭飞行过程中，我们希望它进行旋转，产生弧度效果，如果在此过程中，进行了大量的浮点计算，那么很有可能造成弓箭偏移的幅度有细微的不一致，不要忽略了这细微的不一致，在物理引擎的一些碰撞判断，细微的偏移也可能造成碰撞结果的不一样 http:&#x2F;&#x2F;gad.qq.com&#x2F;college&#x2F;articledetail&#x2F;71">
+<meta property="og:type" content="article">
+<meta property="og:title" content="13.日常开发问题&#x2F;浮点数问题">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="浮点数的计算在不同机器上的结果，未必一致，这可能道具游戏结果不一致。例如弓箭在一个点发射，在弓箭飞行过程中，我们希望它进行旋转，产生弧度效果，如果在此过程中，进行了大量的浮点计算，那么很有可能造成弓箭偏移的幅度有细微的不一致，不要忽略了这细微的不一致，在物理引擎的一些碰撞判断，细微的偏移也可能造成碰撞结果的不一样 http:&#x2F;&#x2F;gad.qq.com&#x2F;college&#x2F;articledetail&#x2F;71">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-21T09:45:05.614Z">
+<meta property="article:modified_time" content="2020-06-20T09:55:32.000Z">
+<meta property="article:author" content="Delevin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-13.日常开发问题/浮点数问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.614Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      13.日常开发问题/浮点数问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>浮点数的计算在不同机器上的结果，未必一致，这可能道具游戏结果不一致。<br>例如弓箭在一个点发射，在弓箭飞行过程中，我们希望它进行旋转，产生弧度效果，如果在此过程中，进行了大量的浮点计算，那么很有可能造成弓箭偏移的幅度有细微的不一致，不要忽略了这细微的不一致，在物理引擎的一些碰撞判断，细微的偏移也可能造成碰撞结果的不一样</p>
+<p><a href="http://gad.qq.com/college/articledetail/7165586" target="_blank" rel="noopener">http://gad.qq.com/college/articledetail/7165586</a></p>
+<p><a href="https://www.cnblogs.com/murongxiaopifu/p/4869193.html" target="_blank" rel="noopener">https://www.cnblogs.com/murongxiaopifu/p/4869193.html</a></p>
+<p>从.0000~.1111这个范围内连续的二进制数值事实上对应的十进制数是不连续的，所有可能的结果也不过是各个位权（0.5、0.25、0.125以及0.0625）相加的组合而已</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/" data-id="ckbovy33l000vmstw1etn5etb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          13.日常开发问题/大数计算/test
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">13.日常开发问题/帧同步</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

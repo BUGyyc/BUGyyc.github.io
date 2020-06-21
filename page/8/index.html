@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Coder">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/page/8/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Delevin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-03.软件开发/ECS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/ECS/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.494Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/ECS/">03.软件开发/ECS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ECS<br>componement只包含数据<br>compenmentSysttem包含行为</p>
+<p><a href="https://zhuanlan.zhihu.com/p/54164000" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/54164000</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/ECS/" data-id="ckbovy33e000jmstw9k6x11vo" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-02.编程语言/JavaScript/EventDispatcher" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/EventDispatcher/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.490Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/EventDispatcher/">02.编程语言/JavaScript/EventDispatcher</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        class EventDispatcher {
+    constructor() {
+        this.events = {};
+    }
+
+    addEventListener(name, callBack) {
+        let callBacks = this.events[name] || [];
+        callBacks.push(callBack);
+        this.events[name] = callBacks;
+    }
+
+    removeEventListener(name, callBack) {
+        let callBacks = this.events[name];
+        callBacks = callBacks.filter(fn => fn != callBack);
+        this.events[name] = callBacks;
+    }
+
+    once(name, callBack) {
+        let func = (...args) => {
+            callBack.apply(args);
+            this.removeEventListener(name, func);
+        }
+        this.addEventListener(name, func);
+    }
+
+    dispatcher(...args) {
+        let name = args[0];
+        let params = [].splice.call(args, 1);
+        let callBacks = this.events[name];
+        callBacks.forEach(fn => fn.apply(params));
+    }
+}
+
+let callBack1 = function () {
+    console.log("11111111111111111111")
+}
+
+let callBack2 = function () {
+    console.log("2222222")
+}
+
+let callBack3 = function () {
+    console.log("3333")
+}
+
+let eventSystem = new EventDispatcher();
+eventSystem.addEventListener("event1", callBack1);
+eventSystem.addEventListener("event2", callBack2);
+eventSystem.once("event3", callBack3);
+
+eventSystem.dispatcher("event1")
+eventSystem.dispatcher("event2")
+eventSystem.dispatcher("event3")
+
+eventSystem.removeEventListener("event1", callBack1)
+
+eventSystem.dispatcher("event1")
+eventSystem.dispatcher("event2")
+eventSystem.dispatcher("event3")
+
+
+
+
+
+
+
+
+
+
+var name = "The Window";
+var object = {
+    name: "My Object",
+    getNameFunc: function () {
+        return function () {
+            return this.name;
+        };
+    }
+};
+alert(object.getNameFunc()());
+
+
+var name = "The Window";
+var object = {
+    name: "My Object",
+    prf: function () {
+        return this.name;
+    },
+    getNameFunc: function () {
+        return prf;
+    }
+};
+alert(object.getNameFunc()());
+
+
+var name = "The Window";
+var object = {
+    name: "My Object",
+    getNameFunc: function () {
+        return retFn;
+    }
+};
+var retFn = function () {
+    return this.name;
+}
+alert(object.getNameFunc()());
+
+
+var name = "The Window";
+var object = {
+    name: "My Object",
+    prf = function () {
+        return this.name;
+    },
+    getNameFunc: function () {
+        return prf;
+    }
+};
+alert(object.getNameFunc()());
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/EventDispatcher/" data-id="ckbovy344001cmstw8hi9cq7w" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-02.编程语言/C#/堆栈和托管堆/堆栈和托管堆" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.477Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/">02.编程语言/C#/堆栈和托管堆/堆栈和托管堆</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>堆栈是存储值类型，什么是值类型？<br>值类型可以理解为变量类型，例如 int float long 等</p>
+<p>托管堆是存储引用类型，什么是引用类型？<br>引用类型是对象的引用，例如 Object obj = new Object();<br>obj就是Object对象的引用</p>
+<p>.Net中，托管堆是由垃圾收集器自动管理，类似于Java中，GC自动管理，对引用进行检索，检索到没被引用的，则会被GC清除<br>注意，托管堆存储的是引用类型，不是对象，只是对象的引用地址。<br>Object obj = new Object();<br>如上，存储的是Object对象的引用地址</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/" data-id="ckbovy34t002dmstw50ykgrr1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-02.编程语言/C#/其他/this扩展" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%85%B6%E4%BB%96/this%E6%89%A9%E5%B1%95/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.475Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%85%B6%E4%BB%96/this%E6%89%A9%E5%B1%95/">02.编程语言/C#/其他/this扩展</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%85%B6%E4%BB%96/this%E6%89%A9%E5%B1%95/" data-id="ckbovy34o0026mstw32rw0aej" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-02.编程语言/C#/装箱与拆箱" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E8%A3%85%E7%AE%B1%E4%B8%8E%E6%8B%86%E7%AE%B1/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.473Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E8%A3%85%E7%AE%B1%E4%B8%8E%E6%8B%86%E7%AE%B1/">02.编程语言/C#/装箱与拆箱</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>装箱与拆箱<br>装箱是将值类型转换为引用类型 ；拆箱是将引用类型转换为值类型<br>被装过箱的对象才能被拆箱</p>
+<p>.NET中，数据类型划分为值类型和引用(不等同于C++的指针)类型，与此对应，内存分配被分成了两种方式，一为栈，二为堆，注意：是托管堆。<br>值类型只会在栈中分配。<br>引用类型分配内存与托管堆。<br>托管堆对应于垃圾回收。<br><a href="https://www.cnblogs.com/huashanlin/archive/2007/05/16/749359.html" target="_blank" rel="noopener">https://www.cnblogs.com/huashanlin/archive/2007/05/16/749359.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E8%A3%85%E7%AE%B1%E4%B8%8E%E6%8B%86%E7%AE%B1/" data-id="ckbovy344001bmstw638h5t03" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-02.编程语言/C#/事件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E4%BA%8B%E4%BB%B6/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.472Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E4%BA%8B%E4%BB%B6/">02.编程语言/C#/事件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E4%BA%8B%E4%BB%B6/" data-id="ckbovy33u0014mstw1zl33jxc" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-02.编程语言/TypeScript" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/TypeScript/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.471Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/TypeScript/">02.编程语言/TypeScript</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TypeScript是JavaScript类型的超类，它可以编译成纯JavaScript。TypeScript可以在任何浏览器、任何计算机和任何操作系统上运行，并且是开源的。</p>
+<p>TypeScript是Microsoft推出的开源语言，使用Apache授权协议<br>TypeScript增加了静态类型、类、模块、接口和类型注解<br>TypeScript可用于开发大型的应用<br>TypeScript易学易于理解</p>
+<p><a href="https://www.cnblogs.com/tumo/p/10677982.html" target="_blank" rel="noopener">https://www.cnblogs.com/tumo/p/10677982.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/TypeScript/" data-id="ckbovy33c000gmstwcg4h543b" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-02.编程语言/Python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.470Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">02.编程语言/Python</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/" data-id="ckbovy32v0002mstw8mj754qe" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-02.编程语言/Lua" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Lua/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.469Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Lua/">02.编程语言/Lua</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Lua/" data-id="ckbovy32u0001mstw5nz5fnsi" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-02.编程语言/C++" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.467Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/">02.编程语言/C++</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/" data-id="ckbovy32r0000mstw89xca12z" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/7/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/9/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

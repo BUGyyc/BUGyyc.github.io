@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Coder">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/page/5/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Delevin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-05.游戏编程/Unity3D/通用/游戏中的AI/关于游戏AI" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E6%B8%B8%E6%88%8F%E4%B8%AD%E7%9A%84AI/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8FAI/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.543Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E6%B8%B8%E6%88%8F%E4%B8%AD%E7%9A%84AI/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8FAI/">05.游戏编程/Unity3D/通用/游戏中的AI/关于游戏AI</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://zhuanlan.zhihu.com/p/83007037" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/83007037</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E6%B8%B8%E6%88%8F%E4%B8%AD%E7%9A%84AI/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8FAI/" data-id="ckbovy350002tmstw7p2z2yed" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/通用/寻路相关/AStar" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E5%AF%BB%E8%B7%AF%E7%9B%B8%E5%85%B3/AStar/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.541Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E5%AF%BB%E8%B7%AF%E7%9B%B8%E5%85%B3/AStar/">05.游戏编程/Unity3D/通用/寻路相关/AStar</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://blog.csdn.net/denghecsdn/article/details/78778769" target="_blank" rel="noopener">https://blog.csdn.net/denghecsdn/article/details/78778769</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E5%AF%BB%E8%B7%AF%E7%9B%B8%E5%85%B3/AStar/" data-id="ckbovy34z002rmstw17e6ahaa" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/通用/关于优化/优化总览" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E5%85%B3%E4%BA%8E%E4%BC%98%E5%8C%96/%E4%BC%98%E5%8C%96%E6%80%BB%E8%A7%88/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.539Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E5%85%B3%E4%BA%8E%E4%BC%98%E5%8C%96/%E4%BC%98%E5%8C%96%E6%80%BB%E8%A7%88/">05.游戏编程/Unity3D/通用/关于优化/优化总览</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/pic1.png" alt="(path/to/image.png)"></p>
+<h1 id="运行效率优化"><a href="#运行效率优化" class="headerlink" title="运行效率优化"></a>运行效率优化</h1><p>运行效率主要影响的是CPU的运行效率，而引起效率下降的主要原因包括但不限于：</p>
+<ul>
+<li>代码质量</li>
+<li>频繁创建与销毁对象</li>
+<li>一帧处理过多计算</li>
+</ul>
+<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><p>C#语言特性、以及一些托管堆垃圾回收的影响。<br>装箱与拆箱，使用泛型防止过多的装箱与拆箱操作。</p>
+<h2 id="缓存池和预处理"><a href="#缓存池和预处理" class="headerlink" title="缓存池和预处理"></a>缓存池和预处理</h2><p>缓存池通过提前创建好一些对象，留着备用，用完立即回收到池中，防止频繁创建与销毁。</p>
+<h2 id="分帧运行"><a href="#分帧运行" class="headerlink" title="分帧运行"></a>分帧运行</h2><p>一帧过多的渲染绘制、计算都会导致降帧或者掉帧，<br>把这一帧内的操作，分到几帧内执行，减少这一帧的执行压力，防止下一帧等待过久。</p>
+<h1 id="渲染优化"><a href="#渲染优化" class="headerlink" title="渲染优化"></a>渲染优化</h1><p>Verts与DrawCall过多都是渲染压力，主要优化也是这两点</p>
+<h2 id="贴图优化"><a href="#贴图优化" class="headerlink" title="贴图优化"></a>贴图优化</h2><p><a href="https://www.cnblogs.com/joeshifu/p/5489906.html" target="_blank" rel="noopener">https://www.cnblogs.com/joeshifu/p/5489906.html</a></p>
+<h3 id="自定义图片格式"><a href="#自定义图片格式" class="headerlink" title="自定义图片格式"></a>自定义图片格式</h3><h3 id="调色板算法"><a href="#调色板算法" class="headerlink" title="调色板算法"></a>调色板算法</h3><h2 id="定点优化"><a href="#定点优化" class="headerlink" title="定点优化"></a>定点优化</h2><h3 id="优化模型面数"><a href="#优化模型面数" class="headerlink" title="优化模型面数"></a>优化模型面数</h3><h2 id="Batch"><a href="#Batch" class="headerlink" title="Batch"></a>Batch</h2><h2 id="Shader优化"><a href="#Shader优化" class="headerlink" title="Shader优化"></a>Shader优化</h2><h3 id="避免复杂运算"><a href="#避免复杂运算" class="headerlink" title="避免复杂运算"></a>避免复杂运算</h3><h3 id="空间换时间"><a href="#空间换时间" class="headerlink" title="空间换时间"></a>空间换时间</h3><h3 id="采用效果类似的近似值算法"><a href="#采用效果类似的近似值算法" class="headerlink" title="采用效果类似的近似值算法"></a>采用效果类似的近似值算法</h3><h1 id="安装包大小优化"><a href="#安装包大小优化" class="headerlink" title="安装包大小优化"></a>安装包大小优化</h1><h2 id="适当降低资源质量与精度"><a href="#适当降低资源质量与精度" class="headerlink" title="适当降低资源质量与精度"></a>适当降低资源质量与精度</h2><h2 id="按需加载"><a href="#按需加载" class="headerlink" title="按需加载"></a>按需加载</h2><h1 id="加载速度优化"><a href="#加载速度优化" class="headerlink" title="加载速度优化"></a>加载速度优化</h1><h2 id="网络下载优化"><a href="#网络下载优化" class="headerlink" title="网络下载优化"></a>网络下载优化</h2><h3 id="如何突破下载器限制"><a href="#如何突破下载器限制" class="headerlink" title="如何突破下载器限制"></a>如何突破下载器限制</h3><h2 id="本地IO优化"><a href="#本地IO优化" class="headerlink" title="本地IO优化"></a>本地IO优化</h2><h3 id="小文件合并为一个大文件，减少IO"><a href="#小文件合并为一个大文件，减少IO" class="headerlink" title="小文件合并为一个大文件，减少IO"></a>小文件合并为一个大文件，减少IO</h3><h1 id="网络优化"><a href="#网络优化" class="headerlink" title="网络优化"></a>网络优化</h1><h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>适合网络通信频率较低的场景</p>
+<h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><p>对延迟不敏感的场景，要求不丢包</p>
+<h2 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h2><p>网络通信频繁，且对延迟敏感的场景</p>
+<p><a href="https://zhuanlan.zhihu.com/p/29087888" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29087888</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/29377705" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29377705</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/29849244" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29849244</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E5%85%B3%E4%BA%8E%E4%BC%98%E5%8C%96/%E4%BC%98%E5%8C%96%E6%80%BB%E8%A7%88/" data-id="ckbovy350002umstwchnk0c5a" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/通用/DrawCall/DrawCall相关" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/DrawCall/DrawCall%E7%9B%B8%E5%85%B3/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.536Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/DrawCall/DrawCall%E7%9B%B8%E5%85%B3/">05.游戏编程/Unity3D/通用/DrawCall/DrawCall相关</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Unity DrawCall 相关</p>
+<p> 首先我来简单讲讲什么是DC吧，这是我在一篇写的很好的博客上看到的，他是这样讲的，DC就是在每次绘图前，我们都需要先准备好顶点数据（位置、法线、颜色、纹理坐标，切线等），然后调用一系列API把它们放到GPU可以访问到的指定位置，最后，我们需要调用_glDraw<em>命令，来告诉GPU，“嘿嘿，我把东西都准备好了，你个懒家伙赶紧出来干活（渲染）吧！”。而调用_glDraw</em>命令的时候，就是一次DC。那么为什么DC会成为性能瓶颈呢（而且是CPU的瓶颈）？上面说到过，我们想要绘制图像时，就一定需要调用DC，而这DC就是在CPU下执行的。</p>
+<p> 前面说过了，DC是CPU调用底层图形接口。比如有上千个物体，每一个的渲染都需要去调用一次底层接口，而每一次的调用CPU都需要做很多工作，那么CPU必然不堪重负。但是对于GPU来说，图形处理的工作量是一样的。所以对DC的优化，主要就是为了尽量解放CPU在调用图形接口上的开销。所以针对DC我们主要的思路就是每个物体尽量减少渲染次数，多个物体最好一起渲染。所以，按照这个思路就有了以下几个方案：</p>
+<p>使用DC Batching，也就是描绘调用批处理。Unity在运行时可以将一些物体进行合并，从而用一个描绘调用来渲染他们。具体下面会介绍。<br>通过把纹理打包成图集来尽量减少材质的使用。<br>尽量少的使用反光，阴影啦之类的，因为那会使物体多次渲染。<br>使用Occlusion Culling算法，减少可见的物体数量同时也可以减少Draw Call。<br>删除不必要的Shader中的Pass通道，因为一个Pass对应一个DC。</p>
+<hr>
+<p><a href="https://blog.csdn.net/u3d_ysj/article/details/47906035" target="_blank" rel="noopener">https://blog.csdn.net/u3d_ysj/article/details/47906035</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/DrawCall/DrawCall%E7%9B%B8%E5%85%B3/" data-id="ckbovy34y002qmstw49j15av0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/通用/CIL/CIL" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/CIL/CIL/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.534Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/CIL/CIL/">05.游戏编程/Unity3D/通用/CIL/CIL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Common Intermediate Language通用中间语言</p>
+<p><a href="https://www.cnblogs.com/murongxiaopifu/p/4211964.html" target="_blank" rel="noopener">https://www.cnblogs.com/murongxiaopifu/p/4211964.html</a></p>
+<p>CIL是指令集</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/CIL/CIL/" data-id="ckbovy34y002pmstw6pwld8c8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/通用/Unity手册" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/Unity%E6%89%8B%E5%86%8C/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.532Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/Unity%E6%89%8B%E5%86%8C/">05.游戏编程/Unity3D/通用/Unity手册</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://docs.manew.com/" target="_blank" rel="noopener">http://docs.manew.com/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/Unity%E6%89%8B%E5%86%8C/" data-id="ckbovy34u002fmstw4mntbyc9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/生命周期" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.530Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">05.游戏编程/Unity3D/生命周期</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://github.com/BUGyyc/myMd/blob/master/res/pic/monobehaviour_flowchart.svg" alt=""></p>
+<p>周期总览</p>
+<p>编辑器 - 初始化 - 物理系统 - 输入事件 - 游戏逻辑 - 场景渲染 - GUI渲染 - 物体激活或禁用 - 摧毁物体 - 结束应用</p>
+<ul>
+<li>fixedUpdate 基于可靠定时器实现，主要用于更新物理</li>
+</ul>
+<p>编辑器阶段<br>Reset: 脚本首次绑定或Reset命令触发<br>初始化阶段<br>Awake:脚本被唤起<br>OnEnable:GameObject可见<br>Start:第一帧更新之前<br>物理阶段<br>FixedUpdate:物理逻辑更新<br>OnTriggerXXX:传感器<br>OnCollisionXXX:物理碰撞<br>游戏阶段<br>OnMouseXXX,OnInputEvent,<br>Update:游戏逻辑之类的更新<br>LateUpdate:在Update之后，通常相机跟随逻辑一般写在这里<br>其他<br>OnApplicationPause:暂停<br>OnDisable:GameObject不可见<br>OnDestroy:GameObject销毁<br>OnApplicationExit:游戏退出</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" data-id="ckbovy34d001qmstweq0fhs08" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/热更新" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E7%83%AD%E6%9B%B4%E6%96%B0/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.529Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E7%83%AD%E6%9B%B4%E6%96%B0/">05.游戏编程/Unity3D/热更新</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.cnblogs.com/crazylights/p/3897742.html" target="_blank" rel="noopener">https://www.cnblogs.com/crazylights/p/3897742.html</a></p>
+<p><a href="https://blog.csdn.net/u010019717/article/details/40209917" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/40209917</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E7%83%AD%E6%9B%B4%E6%96%B0/" data-id="ckbovy34d001pmstwbn83fhzr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/垃圾回收" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.528Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">05.游戏编程/Unity3D/垃圾回收</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://zhuanlan.zhihu.com/p/51587240" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/51587240</a></p>
+<p><a href="https://blog.csdn.net/zjz520yy/article/details/77103118" target="_blank" rel="noopener">https://blog.csdn.net/zjz520yy/article/details/77103118</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" data-id="ckbovy34b001mmstw674t4i2o" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/底层渲染原理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%BA%95%E5%B1%82%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.528Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%BA%95%E5%B1%82%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/">05.游戏编程/Unity3D/底层渲染原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://blog.csdn.net/admintan/article/details/53861781" target="_blank" rel="noopener">https://blog.csdn.net/admintan/article/details/53861781</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%BA%95%E5%B1%82%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/" data-id="ckbovy34c001omstwhi8h898u" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Coder">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/page/3/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Delevin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-06.游戏引擎/游戏引擎架构/Box2D" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84/Box2D/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.575Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84/Box2D/">06.游戏引擎/游戏引擎架构/Box2D</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="多边形碰撞检测"><a href="#多边形碰撞检测" class="headerlink" title="多边形碰撞检测"></a>多边形碰撞检测</h1><h1 id="分离轴定理"><a href="#分离轴定理" class="headerlink" title="分离轴定理"></a>分离轴定理</h1><p>分离轴定理适用于凸多边形</p>
+<p>从多边形的法线方向投影，可以得到两个投影出来的向量，如果两个多边形得到的投影向量任何一对都是有重叠的，那么肯定有碰撞。如果存在一对投影有不重叠情况，那么两个多边形肯定不碰撞。</p>
+<p>凹多边形需要分解为凸多边形才能进行检测。</p>
+<h1 id="分离轴定理的优点"><a href="#分离轴定理的优点" class="headerlink" title="分离轴定理的优点"></a>分离轴定理的优点</h1><ul>
+<li>计算特别快</li>
+</ul>
+<p><a href="http://acuilab.com/articles/2019/08/07/1565161401832.html" target="_blank" rel="noopener">http://acuilab.com/articles/2019/08/07/1565161401832.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84/Box2D/" data-id="ckbovy34g001xmstw1pfrg8l4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/游戏同步/输入预测" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E8%BE%93%E5%85%A5%E9%A2%84%E6%B5%8B/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.571Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E8%BE%93%E5%85%A5%E9%A2%84%E6%B5%8B/">05.游戏编程/游戏开发技巧/游戏同步/输入预测</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://gad.qq.com/program/translateview/7168875" target="_blank" rel="noopener">http://gad.qq.com/program/translateview/7168875</a></p>
+<p>让我们假设一个玩家有150毫秒的网络延迟，并开始前进。前进键被按下的信息被存储在用户命令，并发送至服务器。用户命令是由移动代码逻辑处理，玩家的角色将在游戏世界中向前行走。这个世界状态的变化传送到所有客户端的下一个快照的更新。因此玩家看到自己开始行动的响应会有150毫秒延迟，这种延迟对于高频动作游戏(体育，设计类游戏)会有明显的延迟感。玩家输入和相应的视觉反馈之间的延迟会产生一种奇怪的，不自然的感觉，使得玩家很难移动或精确瞄准。客户端的输入预测（cl_predict 1）执行是一种消除这种延迟的方法，让玩家的行动感到更即时。与其等待服务器来更新自己的位置，在本地客户端只是预测自己的用户命令的结果。因此，客户端准确运行相同的代码和规则服务器将使用来处理用户命令。预测完成后，当地的玩家会移动到新位置，而服务器仍然可以看到他在老地方。150毫秒后，客户会收到包含基于他早期预测用户命令更改服务器的快照。客户端会将预测位置同服务器的位置对比。如果它们是不同的，则发生了预测误差。这表明，在客户端没有关于其他实体的正确信息和环境时，它处理用户命令。然后，客户端必须纠正自己的位置，因为服务器拥有客户端预测最终决定权。如果cl_showerror 1开启，客户端可以看到，当预测误差发生。预测误差校正可以是相当明显的，并且可能导致客户端的视图不规则跳动。通过在一定时间（cl_smoothtime）逐渐纠正这个错误，错误可以顺利解决。预测误差平滑处理可以通过设置cl_smooth 0来关闭。预测只对本地玩家以及那些只收它影响的实体有效，因为预测的工作原理是使用客户端的操作来预测的。对于其他玩家没法做有效预测, 因为没有办法立即从他们身上得到操作信息。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E8%BE%93%E5%85%A5%E9%A2%84%E6%B5%8B/" data-id="ckbovy34v002kmstwe5vzc0ye" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/游戏同步/游戏同步问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.570Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/">05.游戏编程/游戏开发技巧/游戏同步/游戏同步问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://gameinstitute.qq.com/community/detail/114516" target="_blank" rel="noopener">https://gameinstitute.qq.com/community/detail/114516</a></p>
+<p><a href="http://www.zhust.com/index.php/2015/08/doom3%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E4%BD%93%E7%B3%BB/" target="_blank" rel="noopener">http://www.zhust.com/index.php/2015/08/doom3%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E4%BD%93%E7%B3%BB/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/" data-id="ckbovy34w002mmstw6cnn0ow1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/游戏同步/延迟补偿" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E5%BB%B6%E8%BF%9F%E8%A1%A5%E5%81%BF/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.569Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E5%BB%B6%E8%BF%9F%E8%A1%A5%E5%81%BF/">05.游戏编程/游戏开发技巧/游戏同步/延迟补偿</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> 比方说，一个玩家在10.5s的时刻射击了一个目标。射击信息被打包到用户命令，该命令通过网络的方式发送至服务器。服务器持续模拟游戏世界，目标可能已经移动到一个不同的位置。用户命令到达服务器时间10.6时服务器就无法检测到射击命中，即使玩家已经在目标准确瞄准。这个错误需要由服务器侧进行延迟补偿校正。延迟补偿系统使所有玩家最近位置的历史一秒。如果在执行用户的命令，服务器预计在命令创建什么时间如下：</p>
+<p>命令执行时间=当前服务器时间 - 数据包延迟 - 客户端查看插值</p>
+<p>然后服务器会将所有其他玩家回溯到命令执行时的位置，他们在命令执行时间。用户指令被执行，并正确地检测命中。用户命令处理完成后，玩家将会恢复到原来的位置。由于实体插值包含在公式中，可能会导致意外的结果。服务器端可以启用sv_showimpacts 1，显示服务器和客户端射击包围盒位置差异：</p>
+<p><a href="http://gad.qq.com/program/translateview/7168875" target="_blank" rel="noopener">http://gad.qq.com/program/translateview/7168875</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E5%BB%B6%E8%BF%9F%E8%A1%A5%E5%81%BF/" data-id="ckbovy34v002jmstw1tcg00yt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/游戏同步/帧同步与状态同步" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E5%B8%A7%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.568Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E5%B8%A7%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5/">05.游戏编程/游戏开发技巧/游戏同步/帧同步与状态同步</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>掉帧与补帧<br>帧同步</p>
+<p>浮点计算</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E5%B8%A7%E5%90%8C%E6%AD%A5%E4%B8%8E%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5/" data-id="ckbovy34w002lmstw343q8evr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/游戏同步/帧同步" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E5%B8%A7%E5%90%8C%E6%AD%A5/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.567Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E5%B8%A7%E5%90%8C%E6%AD%A5/">05.游戏编程/游戏开发技巧/游戏同步/帧同步</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://zhuanlan.zhihu.com/p/38468615" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/38468615</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/%E5%B8%A7%E5%90%8C%E6%AD%A5/" data-id="ckbovy34v002imstwd4xj343m" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/游戏优化/内存优化" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.565Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/">05.游戏编程/游戏开发技巧/游戏优化/内存优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h1><h2 id="资源内存占用"><a href="#资源内存占用" class="headerlink" title="资源内存占用"></a>资源内存占用</h2><h2 id="引擎模块自身内存占用"><a href="#引擎模块自身内存占用" class="headerlink" title="引擎模块自身内存占用"></a>引擎模块自身内存占用</h2><h2 id="托管堆内存占用"><a href="#托管堆内存占用" class="headerlink" title="托管堆内存占用"></a>托管堆内存占用</h2><p><a href="https://zhuanlan.zhihu.com/p/21913770" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/21913770</a></p>
+<p><a href="https://cloud.tencent.com/developer/article/1336507" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1336507</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/" data-id="ckbovy34w002nmstwa9f95ekk" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/游戏优化/优化总览" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/%E4%BC%98%E5%8C%96%E6%80%BB%E8%A7%88/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.564Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/%E4%BC%98%E5%8C%96%E6%80%BB%E8%A7%88/">05.游戏编程/游戏开发技巧/游戏优化/优化总览</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://zhuanlan.zhihu.com/p/29270688" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29270688</a></p>
+<p><a href="https://blog.csdn.net/candycat1992/article/details/42127811" target="_blank" rel="noopener">https://blog.csdn.net/candycat1992/article/details/42127811</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/%E4%BC%98%E5%8C%96%E6%80%BB%E8%A7%88/" data-id="ckbovy34u002hmstw77d469qg" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/游戏优化/GPU方面优化" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/GPU%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.563Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/GPU%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96/">05.游戏编程/游戏开发技巧/游戏优化/GPU方面优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/GPU%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96/" data-id="ckbovy34p002amstwfiug8o1h" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/游戏优化/CPU方面优化" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/CPU%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.563Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/CPU%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96/">05.游戏编程/游戏开发技巧/游戏优化/CPU方面优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>DrawCall<br>DrawCall是CPU对底层图形接口的调用，目的是在设备上绘制出对象。DrawCall的消耗就在于每次只提交少量数据，这样会导致GPU会在等待CPU提交数据，耗费时间。<br>优化的方向就是合并数据为一次</p>
+</li>
+<li><ul>
+<li>DrawCall的优化方案<br>打包图集，尽可能减少光照阴影等消耗<br>静态批处理：部分游戏对象可以选择static<br>动态批处理：是Unity自动进行的，按照一定规则即可，mesh顶点数不能超过900，非统一缩放轴可以合并批次<br>对渲染顺序要注意，渲染是可能被打断的，所以同材质的对象，尽可能放一起</li>
+</ul>
+</li>
+<li><p>GC<br>在托管堆上，一些不合理或者不正确的代码风格也是会导致托管堆内存碎片化</p>
+</li>
+<li><ul>
+<li>字符拼接，采取stringBuild</li>
+</ul>
+</li>
+<li><ul>
+<li>用for循环代替foreach迭代。</li>
+</ul>
+</li>
+<li><ul>
+<li>能使用对象池就使用对象池</li>
+</ul>
+</li>
+<li><ul>
+<li>能用Struct就使用Struct，而不是Class</li>
+</ul>
+</li>
+</ul>
+<p>drawcall是啥？其实就是对底层图形程序（比如：OpenGL ES)接口的调用，以在屏幕上画出东西。所以，是谁去调用这些接口呢？CPU。</p>
+<p><a href="https://www.cnblogs.com/murongxiaopifu/p/4284988.html" target="_blank" rel="noopener">https://www.cnblogs.com/murongxiaopifu/p/4284988.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/CPU%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96/" data-id="ckbovy34u002gmstwdswt869n" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

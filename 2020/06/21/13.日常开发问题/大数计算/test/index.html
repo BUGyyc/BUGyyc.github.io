@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>13.日常开发问题/大数计算/test | Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&#x2F;&#x2F;正整数  let sumStrings &#x3D; function (a, b) {     a &#x3D; a.trim();     b &#x3D; b.trim();     if (a.length &#x3D;&#x3D; 0) return b;     if (b.length &#x3D;&#x3D; 0) return a;     let flagA &#x3D; (a[0] &#x3D;&#x3D; &quot;-&quot;) ? -1 : 1;     let flagB &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="13.日常开发问题&#x2F;大数计算&#x2F;test">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="&#x2F;&#x2F;正整数  let sumStrings &#x3D; function (a, b) {     a &#x3D; a.trim();     b &#x3D; b.trim();     if (a.length &#x3D;&#x3D; 0) return b;     if (b.length &#x3D;&#x3D; 0) return a;     let flagA &#x3D; (a[0] &#x3D;&#x3D; &quot;-&quot;) ? -1 : 1;     let flagB &#x3D;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-21T09:45:05.616Z">
+<meta property="article:modified_time" content="2020-06-20T09:55:32.000Z">
+<meta property="article:author" content="Delevin">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-13.日常开发问题/大数计算/test" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.616Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      13.日常开发问题/大数计算/test
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        //正整数
+
+let sumStrings = function (a, b) {
+    a = a.trim();
+    b = b.trim();
+    if (a.length == 0) return b;
+    if (b.length == 0) return a;
+    let flagA = (a[0] == "-") ? -1 : 1;
+    let flagB = (b[0] == "-") ? -1 : 1;
+    if (flagA == flagB) {
+        //同负同正
+        if (flagA == -1) {//把负号截断
+            a = a.substring(1);
+            b = b.substring(1);
+        }
+    } else {
+        //一负一正
+        //转减法
+        if (flagA == 1) {
+            b = b.substring(1);//去除负号
+            return subStrings(a, b);
+        } else {
+            a = a.substring(1);//去除负号
+            return subStrings(b, a);
+        }
+    }
+    var result = [], count = 0;
+    if (a.length < b.length) b = [a, a = b][0];
+    b = Array(a.length - b.length + 1).join('0') + b;
+    var arrA = a.split('');
+    var arrB = b.split('');
+    for (var j = 0; j < a.length; j++) {
+        var temp = (Number(arrA.pop()) + Number(arrB.pop())) + count;
+        temp >= 10 ? [temp, count] = [temp - 10, 1] : count = 0;
+        result.push(temp);
+    }
+    result.push(count);
+    return result.reverse().join('').replace(/^0+/, '');
+}
+
+let subStrings = function (num1, num2) {
+    if (num1 === num2) return '0'
+    let isMinus = false
+    if (lt(num1, num2)) {
+        [num1, num2] = [num2, num1]
+        isMinus = true
+    }
+    let len = Math.max(num1.length, num2.length)
+    num1 = num1.padStart(len, 0)
+    num2 = num2.padStart(len, 0)
+    let flag = 0,
+        result = '',
+        temp
+    for (let i = len - 1; i >= 0; i--) {
+        temp = parseInt(num1[i]) - flag - parseInt(num2[i])
+        if (temp < 0) {
+            result = (10 + temp) + result
+            flag = 1
+        } else {
+            result = temp + result
+            flag = 0
+        }
+    }
+    result = (isMinus ? '-' : '') + result.replace(/^0+/, '') //去掉前面多余的0，如"1324"-"1315"
+    return result
+}
+
+let lt = function (num1, num2) {
+    if (num1.length < num2.length) {
+        return true
+    } else if (num1.length === num2.length) {
+        return num1 < num2
+    } else {
+        return false
+    }
+}
+
+console.log(sumStrings("111111111111111","1"))
+console.log(sumStrings("111111111111111","-1"))
+console.log(sumStrings("-10000000000","-3"))
+console.log(sumStrings("-999999999","9"))
+console.log(sumStrings("333333333333333","-289687245"))
+console.log(sumStrings("999999999999999999999999999999999999999999999999999991","1"))
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/" data-id="ckbovy34i0021mstwhovr8h6u" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">13.日常开发问题/浮点数问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

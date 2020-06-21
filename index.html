@@ -64,10 +64,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-动态规划" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-13.日常开发问题/大数计算/test" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="article-date">
-  <time datetime="2020-06-21T09:37:16.281Z" itemprop="datePublished">2020-06-21</time>
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.616Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+      <a class="article-title" href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
     </h1>
   
 
@@ -86,28 +86,93 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line"> * @lc app&#x3D;leetcode.cn id&#x3D;377 lang&#x3D;java</span><br><span class="line"> *</span><br><span class="line"> * [377] 组合总和 Ⅳ</span><br><span class="line"> *&#x2F;</span><br><span class="line">class Solution &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 状态转移方程</span><br><span class="line">    &#x2F;&#x2F; 例如 [1,2,3,4] target &#x3D; 10</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * dp[10] &#x3D; dp[10-1] + dp[10-2] + dp[10-3] + dp[10-4]</span><br><span class="line">     * dp[10-1]就是选了第一层选1</span><br><span class="line">     * dp[10-2]就是第一层选了2，依次类推</span><br><span class="line">     * </span><br><span class="line">     * 最后得到状态转移方程</span><br><span class="line">     * @param nums</span><br><span class="line">     * @param target</span><br><span class="line">     * @return</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public int combinationSum4(int[] nums, int target) &#123;</span><br><span class="line">        if (nums.length &#x3D;&#x3D; 0)</span><br><span class="line">            return 0;</span><br><span class="line"></span><br><span class="line">        int[] dp &#x3D; new int[target + 1];</span><br><span class="line">        dp[0] &#x3D; 1;</span><br><span class="line">        for (int i &#x3D; 1; i &lt;&#x3D; target; i++) &#123;</span><br><span class="line">            for (int j &#x3D; 0; j &lt; nums.length; j++) &#123;</span><br><span class="line">                if (i - nums[j] &gt;&#x3D; 0) &#123;</span><br><span class="line">                    dp[i] +&#x3D; dp[i - nums[j]];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return dp[target];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        //正整数
 
-<p>如上，动态规划是对子问题做决策，并且子问题的决策是受其他子问题决策影响的<br>上面要求的是一种组合，并且求的是组合个数，那么用动态规划比较合适，如果要求所有的组合结果，那么可以考虑用回溯</p>
-<p>这里选择的是动态规划的解法</p>
-<p>首先分析一下，找到规律，得到状态转移方程</p>
-<p>如： 【1,2,3,4】  target = 10;</p>
-<p>列举树状结构，我们可以知道，第一层有四种可能<br>分别是： 1，2，3，4</p>
-<p>当我们分别选择了1，2，3，4<br>意味着这四个节点需要求解的是： 10-1，10-2，10-3，10-4</p>
-<p>子问题和原问题是一样的思路</p>
-<p>那么意味着状态方程式这样的：</p>
-<p>all = Node1 + Node2+Node3+Node4;</p>
-<p>求dp状态转移方程</p>
-<p>dp[i] 表示 和为i时，有多少种组合</p>
-<p>dp[i] = dp[target - nums[0]] + dp[target - nums[1]] …. + dp[target-nums[nums.length-1]]</p>
-<p>注意：上面列的方程必须要保证  target-nums[i] &gt;= 0 ，因为索引，target - nums[i] 必须不能是负数</p>
-<p>当i=0时，直接是一个空数组<br>所以<br>dp[0] = 1;</p>
-<p>那么可以通过dp[0]递推到dp[target]的值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for (int i &#x3D; 1; i &lt;&#x3D; target; i++) &#123;</span><br><span class="line">    for (int j &#x3D; 0; j &lt; nums.length; j++) &#123;</span><br><span class="line">        if (i - nums[j] &gt;&#x3D; 0) &#123;</span><br><span class="line">            dp[i] +&#x3D; dp[i - nums[j]];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+let sumStrings = function (a, b) {
+    a = a.trim();
+    b = b.trim();
+    if (a.length == 0) return b;
+    if (b.length == 0) return a;
+    let flagA = (a[0] == "-") ? -1 : 1;
+    let flagB = (b[0] == "-") ? -1 : 1;
+    if (flagA == flagB) {
+        //同负同正
+        if (flagA == -1) {//把负号截断
+            a = a.substring(1);
+            b = b.substring(1);
+        }
+    } else {
+        //一负一正
+        //转减法
+        if (flagA == 1) {
+            b = b.substring(1);//去除负号
+            return subStrings(a, b);
+        } else {
+            a = a.substring(1);//去除负号
+            return subStrings(b, a);
+        }
+    }
+    var result = [], count = 0;
+    if (a.length < b.length) b = [a, a = b][0];
+    b = Array(a.length - b.length + 1).join('0') + b;
+    var arrA = a.split('');
+    var arrB = b.split('');
+    for (var j = 0; j < a.length; j++) {
+        var temp = (Number(arrA.pop()) + Number(arrB.pop())) + count;
+        temp >= 10 ? [temp, count] = [temp - 10, 1] : count = 0;
+        result.push(temp);
+    }
+    result.push(count);
+    return result.reverse().join('').replace(/^0+/, '');
+}
+
+let subStrings = function (num1, num2) {
+    if (num1 === num2) return '0'
+    let isMinus = false
+    if (lt(num1, num2)) {
+        [num1, num2] = [num2, num1]
+        isMinus = true
+    }
+    let len = Math.max(num1.length, num2.length)
+    num1 = num1.padStart(len, 0)
+    num2 = num2.padStart(len, 0)
+    let flag = 0,
+        result = '',
+        temp
+    for (let i = len - 1; i >= 0; i--) {
+        temp = parseInt(num1[i]) - flag - parseInt(num2[i])
+        if (temp < 0) {
+            result = (10 + temp) + result
+            flag = 1
+        } else {
+            result = temp + result
+            flag = 0
+        }
+    }
+    result = (isMinus ? '-' : '') + result.replace(/^0+/, '') //去掉前面多余的0，如"1324"-"1315"
+    return result
+}
+
+let lt = function (num1, num2) {
+    if (num1.length < num2.length) {
+        return true
+    } else if (num1.length === num2.length) {
+        return num1 < num2
+    } else {
+        return false
+    }
+}
+
+console.log(sumStrings("111111111111111","1"))
+console.log(sumStrings("111111111111111","-1"))
+console.log(sumStrings("-10000000000","-3"))
+console.log(sumStrings("-999999999","9"))
+console.log(sumStrings("333333333333333","-289687245"))
+console.log(sumStrings("999999999999999999999999999999999999999999999999999991","1"))
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" data-id="ckbovqlr10000ictw4bqz30fn" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/" data-id="ckbovy34i0021mstwhovr8h6u" class="article-share-link">Share</a>
       
       
     </footer>
@@ -117,10 +182,10 @@
 
 
   
-    <article id="post-BUff-系统设计" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-13.日常开发问题/浮点数问题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/BUff-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
-  <time datetime="2020-06-21T08:41:06.000Z" itemprop="datePublished">2020-06-21</time>
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.614Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
   </div>
@@ -131,7 +196,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/BUff-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">BUff 系统设计</a>
+      <a class="article-title" href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
     </h1>
   
 
@@ -139,11 +204,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>浮点数的计算在不同机器上的结果，未必一致，这可能道具游戏结果不一致。<br>例如弓箭在一个点发射，在弓箭飞行过程中，我们希望它进行旋转，产生弧度效果，如果在此过程中，进行了大量的浮点计算，那么很有可能造成弓箭偏移的幅度有细微的不一致，不要忽略了这细微的不一致，在物理引擎的一些碰撞判断，细微的偏移也可能造成碰撞结果的不一样</p>
+<p><a href="http://gad.qq.com/college/articledetail/7165586" target="_blank" rel="noopener">http://gad.qq.com/college/articledetail/7165586</a></p>
+<p><a href="https://www.cnblogs.com/murongxiaopifu/p/4869193.html" target="_blank" rel="noopener">https://www.cnblogs.com/murongxiaopifu/p/4869193.html</a></p>
+<p>从.0000~.1111这个范围内连续的二进制数值事实上对应的十进制数是不连续的，所有可能的结果也不过是各个位权（0.5、0.25、0.125以及0.0625）相加的组合而已</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/BUff-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" data-id="ckbotzl9q0000f0twcehh1pvc" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/" data-id="ckbovy33l000vmstw1etn5etb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -153,10 +222,10 @@
 
 
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-13.日常开发问题/帧同步" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/hello-world/" class="article-date">
-  <time datetime="2020-06-21T07:59:38.689Z" itemprop="datePublished">2020-06-21</time>
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.613Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
   </div>
@@ -167,7 +236,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/hello-world/">Hello World</a>
+      <a class="article-title" href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
     </h1>
   
 
@@ -175,24 +244,323 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <p><a href="https://www.cnblogs.com/murongxiaopifu/p/6376234.html" target="_blank" rel="noopener">https://www.cnblogs.com/murongxiaopifu/p/6376234.html</a></p>
+<ul>
+<li><p>游戏逻辑回滚</p>
+<p>  回滚逻辑，就是我们解决问题的方案。可以这样理解，客户端的时间，领先服务器，客户端不需要服务器确认帧返回才执行指令，而是玩家输入，立刻执行（其他玩家的输入，按照其最近一个输入做预测，或者其他更优化的预测方案），然后将指令发送给服务器，服务器收到后给客户端确认，客户端收到确认后，如果服务确认的操作，和之前执行的一样（自己和其他玩家预测的操作），将不做任何改变，如果不一样（预测错误），就会将游戏整体逻辑回滚到最后一次服务器确认的正确帧，然后再追上当前客户端的帧。</p>
+</li>
+</ul>
+<p><a href="http://www.10tiao.com/html/255/201609/2650586281/4.html" target="_blank" rel="noopener">http://www.10tiao.com/html/255/201609/2650586281/4.html</a></p>
+<p><a href="http://www.skywind.me/blog/archives/1343#more-1343" target="_blank" rel="noopener">http://www.skywind.me/blog/archives/1343#more-1343</a></p>
+<ul>
+<li>Time Warp</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/hello-world/" data-id="ckbossoqj0000u0twfz3u7xo8" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/" data-id="ckbovy33k000tmstwencwfmw9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-13.日常开发问题/大数计算" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.612Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>先判断正负，再按位取下来计算</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">    &#x2F;&#x2F;按位取值，然后进行计算，可进位</span><br><span class="line">    let sumStrings &#x3D; function (a, b) &#123;</span><br><span class="line">    a &#x3D; a.trim();</span><br><span class="line">    b &#x3D; b.trim();</span><br><span class="line">    if (a.length &#x3D;&#x3D; 0) return b;</span><br><span class="line">    if (b.length &#x3D;&#x3D; 0) return a;</span><br><span class="line">    let flagA &#x3D; (a[0] &#x3D;&#x3D; &quot;-&quot;) ? -1 : 1;</span><br><span class="line">    let flagB &#x3D; (b[0] &#x3D;&#x3D; &quot;-&quot;) ? -1 : 1;</span><br><span class="line">    if (flagA &#x3D;&#x3D; flagB) &#123;</span><br><span class="line">        &#x2F;&#x2F;同负同正</span><br><span class="line">        if (flagA &#x3D;&#x3D; -1) &#123;&#x2F;&#x2F;把负号截断</span><br><span class="line">            a &#x3D; a.substring(1);</span><br><span class="line">            b &#x3D; b.substring(1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        &#x2F;&#x2F;一负一正</span><br><span class="line">        &#x2F;&#x2F;转减法</span><br><span class="line">        if (flagA &#x3D;&#x3D; 1) &#123;</span><br><span class="line">            b &#x3D; b.substring(1);&#x2F;&#x2F;去除负号</span><br><span class="line">            return subStrings(a, b);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            a &#x3D; a.substring(1);&#x2F;&#x2F;去除负号</span><br><span class="line">            return subStrings(b, a);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var result &#x3D; [], count &#x3D; 0;</span><br><span class="line">    if (a.length &lt; b.length) b &#x3D; [a, a &#x3D; b][0];</span><br><span class="line">    b &#x3D; Array(a.length - b.length + 1).join(&#39;0&#39;) + b;</span><br><span class="line">    var arrA &#x3D; a.split(&#39;&#39;);</span><br><span class="line">    var arrB &#x3D; b.split(&#39;&#39;);</span><br><span class="line">    for (var j &#x3D; 0; j &lt; a.length; j++) &#123;</span><br><span class="line">        var temp &#x3D; (Number(arrA.pop()) + Number(arrB.pop())) + count;</span><br><span class="line">        temp &gt;&#x3D; 10 ? [temp, count] &#x3D; [temp - 10, 1] : count &#x3D; 0;</span><br><span class="line">        result.push(temp);</span><br><span class="line">    &#125;</span><br><span class="line">    result.push(count);</span><br><span class="line">    return result.reverse().join(&#39;&#39;).replace(&#x2F;^0+&#x2F;, &#39;&#39;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>减法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">let subStrings &#x3D; function (num1, num2) &#123;</span><br><span class="line">    if (num1 &#x3D;&#x3D;&#x3D; num2) return &#39;0&#39;</span><br><span class="line">    let isMinus &#x3D; false</span><br><span class="line">    if (lt(num1, num2)) &#123;</span><br><span class="line">        [num1, num2] &#x3D; [num2, num1]</span><br><span class="line">        isMinus &#x3D; true</span><br><span class="line">    &#125;</span><br><span class="line">    let len &#x3D; Math.max(num1.length, num2.length)</span><br><span class="line">    num1 &#x3D; num1.padStart(len, 0)</span><br><span class="line">    num2 &#x3D; num2.padStart(len, 0)</span><br><span class="line">    let flag &#x3D; 0,</span><br><span class="line">        result &#x3D; &#39;&#39;,</span><br><span class="line">        temp</span><br><span class="line">    for (let i &#x3D; len - 1; i &gt;&#x3D; 0; i--) &#123;</span><br><span class="line">        temp &#x3D; parseInt(num1[i]) - flag - parseInt(num2[i])</span><br><span class="line">        if (temp &lt; 0) &#123;</span><br><span class="line">            result &#x3D; (10 + temp) + result</span><br><span class="line">            flag &#x3D; 1</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            result &#x3D; temp + result</span><br><span class="line">            flag &#x3D; 0</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    result &#x3D; (isMinus ? &#39;-&#39; : &#39;&#39;) + result.replace(&#x2F;^0+&#x2F;, &#39;&#39;) &#x2F;&#x2F;去掉前面多余的0，如&quot;1324&quot;-&quot;1315&quot;</span><br><span class="line">    return result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">lt &#x3D; function (num1, num2) &#123;</span><br><span class="line">    if (num1.length &lt; num2.length) &#123;</span><br><span class="line">        return true</span><br><span class="line">    &#125; else if (num1.length &#x3D;&#x3D;&#x3D; num2.length) &#123;</span><br><span class="line">        return num1 &lt; num2</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>乘法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">let mulStrings &#x3D; function (a, b) &#123;</span><br><span class="line">    a &#x3D; a + &quot;&quot;;</span><br><span class="line">    b &#x3D; b + &quot;&quot;;</span><br><span class="line">    a &#x3D; a.trim();</span><br><span class="line">    b &#x3D; b.trim();</span><br><span class="line">    var str1, str2, len1, len2, maxlen, result &#x3D; [];</span><br><span class="line">    str1 &#x3D; a.split(&quot;&quot;).reverse();</span><br><span class="line">    str2 &#x3D; b.split(&quot;&quot;).reverse();</span><br><span class="line">    len1 &#x3D; str1.length;</span><br><span class="line">    len2 &#x3D; str2.length;</span><br><span class="line">    for (var i &#x3D; 0; i &lt; len1; i++) &#123;</span><br><span class="line">        for (var j &#x3D; 0; j &lt; len2; j++) &#123;</span><br><span class="line">            result[i + j] &#x3D; 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (var i &#x3D; 0; i &lt; len1; i++) &#123;</span><br><span class="line">        for (var j &#x3D; 0; j &lt; len2; j++) &#123;</span><br><span class="line">            result[i + j] +&#x3D; parseInt(str1[i]) * parseInt(str2[j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var n &#x3D; result.length;</span><br><span class="line">    for (var k &#x3D; 0; k &lt; n; k++) &#123;</span><br><span class="line">        var temp &#x3D; result[k];</span><br><span class="line">        if (temp &gt;&#x3D; 10) &#123;</span><br><span class="line">            result[k] &#x3D; temp % 10;</span><br><span class="line">            if (result[k + 1] &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">                result[k + 1] &#x3D; 0;</span><br><span class="line">            &#125;</span><br><span class="line">            result[k + 1] +&#x3D; Math.floor(temp &#x2F; 10);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return result.reverse().join(&quot;&quot;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>除法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let divStrings &#x3D; function (a, b) &#123;</span><br><span class="line">    var alen &#x3D; a.length, blen &#x3D; b.length;</span><br><span class="line">    var quotient &#x3D; 0, remainder &#x3D; 0;</span><br><span class="line">    var result &#x3D; [], temp &#x3D; 0;</span><br><span class="line">    for (var i &#x3D; 0; i &lt; alen; i++) &#123;</span><br><span class="line">        temp &#x3D; remainder * 10 + parseInt(a[i]);</span><br><span class="line">        if (temp &lt; b) &#123;</span><br><span class="line">            remainder &#x3D; temp;</span><br><span class="line">            result.push(0);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            quotient &#x3D; parseInt(temp &#x2F; b);</span><br><span class="line">            remainder &#x3D; temp % b;</span><br><span class="line">            result.push(quotient);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    return [result.join(&quot;&quot;).replace(&#x2F;\b(0+)&#x2F;gi, &quot;&quot;), remainder];&#x2F;&#x2F;结果返回[商，余数]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/" data-id="ckbovy33i000rmstwbwek7b8h" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-13.日常开发问题/丢包问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.611Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TCP 丢包<br>是可靠传输，通常来说是不会丢包的<br>它是维持了包的有序</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="ckbovy33j000smstw1egg2q01" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-12.硬件/Arduino" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/12.%E7%A1%AC%E4%BB%B6/Arduino/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.608Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/12.%E7%A1%AC%E4%BB%B6/Arduino/">12.硬件/Arduino</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/12.%E7%A1%AC%E4%BB%B6/Arduino/" data-id="ckbovy332000dmstw0kgi1ed6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-11.网络/WebScoket" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/WebScoket/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.606Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/WebScoket/">11.网络/WebScoket</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>WebSocket<br>WebSocket是一种在单个TCP连接上进行全双工通信的协议。WebSocket通信协议于2011年被IETF定为标准RFC 6455，并由RFC7936补充规范。WebSocket API也被W3C定为标准。</p>
+<h1 id="WebSocket-的意义"><a href="#WebSocket-的意义" class="headerlink" title="WebSocket 的意义"></a>WebSocket 的意义</h1><p>它是为了解决HTTP连接的频繁断开再重连的消耗问题<br>早期为了实现服务端推送技术，因为HTTP 协议有一个缺陷：通信只能由客户端发起，做不到服务器主动向客户端推送信息。所以需要客户端定时的去访问服务器，以获取服务器的最新状态，从而达到推送的目标。<br>而HTTP是建立在TCP传输协议上的，HTTP在通信之前，需要先进行三次握手，然后再是发送消息，最后进行四次挥手断开连接。<br>如果用HTTP去实现推送技术会造成过多带宽的消耗，</p>
+<p>在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。</p>
+<p><a href="https://www.cnblogs.com/fuqiang88/p/5956363.html" target="_blank" rel="noopener">https://www.cnblogs.com/fuqiang88/p/5956363.html</a></p>
+<p><a href="https://www.cnblogs.com/merray/p/7918977.html" target="_blank" rel="noopener">https://www.cnblogs.com/merray/p/7918977.html</a></p>
+<p><a href="https://blog.csdn.net/sinat_31057219/article/details/72872359" target="_blank" rel="noopener">https://blog.csdn.net/sinat_31057219/article/details/72872359</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/11.%E7%BD%91%E7%BB%9C/WebScoket/" data-id="ckbovy33i000qmstwaw8u9w6f" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-11.网络/UDP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/UDP/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.605Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/UDP/">11.网络/UDP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>UDP<br>UDP是面向报文的。发送方的UDP对应用程序交下来的报文，在添加首部后就向下交付给IP层。既不拆分，也不合并，而是保留这些报文的边界，因此，应用程序需要选择合适的报文大小。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/11.%E7%BD%91%E7%BB%9C/UDP/" data-id="ckbovy33h000pmstwc4mg2p6e" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-11.网络/TCP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/TCP/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.604Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/TCP/">11.网络/TCP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>尽管TCP和UDP都使用相同的网络层（IP），TCP却向应用层提供与UDP完全不同的服务。<br>TCP提供一种面向连接的、可靠的字节流服务。</p>
+<h1 id="TCP的特点与网络处理方式"><a href="#TCP的特点与网络处理方式" class="headerlink" title="TCP的特点与网络处理方式"></a>TCP的特点与网络处理方式</h1><ul>
+<li>面向连接的、可靠的、基于字节流的传输层通信协议。<br>流量控制采用滑动窗口协议</li>
+<li>拥塞控制的几种方式：<ul>
+<li>慢启动，拥塞避免，</li>
+<li>快速重传，快速恢复，</li>
+<li>网络拥塞</li>
+</ul>
+</li>
+<li>流量控制滑动窗口<ul>
+<li>滑动窗口算法<br>//TODO</li>
+</ul>
+</li>
+</ul>
+<h1 id="TCP为什么具备可靠性"><a href="#TCP为什么具备可靠性" class="headerlink" title="TCP为什么具备可靠性"></a>TCP为什么具备可靠性</h1><ul>
+<li>应用数据被分割成TCP认为最适合发送的数据块。由 TCP传递给I P的信息单位称为报文段或段。</li>
+<li>当TCP发出一个段后，它启动一个定时器，等待目的端确认收到这个报文段。</li>
+<li>当TCP收到发自TCP连接另一端的数据，它将发送一个确认。</li>
+<li>TCP将保持它首部和数据的检验和。这是一个端到端的检验和，目的是检测数据在传输<br>过程中的任何变化。如果收到段的检验和有差错， TCP将丢弃这个报文段和不确认收到<br>此报文段（希望发端超时并重发）。</li>
+<li>既然TCP报文段作为I P数据报来传输，而I P数据报的到达可能会失序，因此 TCP报文段<br>的到达也可能会失序。如果必要， TCP将对收到的数据进行重新排序，将收到的数据以<br>正确的顺序交给应用层。</li>
+<li>既然I P数据报会发生重复，TCP的接收端必须丢弃重复的数据。</li>
+<li>TCP还能提供流量控制。 TCP连接的每一方都有固定大小的缓冲空间。 TCP的接收端只</li>
+<li>允许另一端发送接收端缓冲区所能接纳的数据。这将防止较快主机致使较慢主机的缓冲<br>区溢出。</li>
+</ul>
+<h1 id="TCP首部组成"><a href="#TCP首部组成" class="headerlink" title="TCP首部组成"></a>TCP首部组成</h1><p>TCP通常是20个字节</p>
+<h1 id="TCP的连接"><a href="#TCP的连接" class="headerlink" title="TCP的连接"></a>TCP的连接</h1><p>需要三次握手</p>
+<p>1) 请求端（通常称为客户）发送一个 S Y N段指明客户打算连接的服务器的端口，以及初<br>始序号（I S N，在这个例子中为1 4 1 5 5 3 1 5 2 1）。这个S Y N段为报文段1。<br>2) 服务器发回包含服务器的初始序号的 S Y N报文段（报文段2）作为应答。同时，将确认<br>序号设置为客户的I S N加1以对客户的S Y N报文段进行确认。一个S Y N将占用一个序号。<br>3) 客户必须将确认序号设置为服务器的 I S N加1以对服务器的S Y N报文段进行确认（报文<br>段3）。</p>
+<h1 id="TCP的关闭"><a href="#TCP的关闭" class="headerlink" title="TCP的关闭"></a>TCP的关闭</h1><p>需要四次握手。<br>既然一个TCP连接是全双工（即数据在两个方向上能同时传递），因此每个方<br>向必须单独地进行关闭。</p>
+<h1 id="TCP的半关闭"><a href="#TCP的半关闭" class="headerlink" title="TCP的半关闭"></a>TCP的半关闭</h1><p>TCP提供了连接的一端在结束它的发送后还能接收来自另一端数据的能力。这就是所谓<br>的半关闭。正如我们早些时候提到的只有很少的应用程序使用它。</p>
+<h1 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h1><p>防止速度快的一方主机导致速度慢一方主机缓冲溢出问题</p>
+<h1 id="慢启动"><a href="#慢启动" class="headerlink" title="慢启动"></a>慢启动</h1><p>事先不以较大的量来设置窗口大小，先以较小的设置，防止窗口立即到达峰值。防止拥筛</p>
+<h1 id="TCP的超时与重传机制"><a href="#TCP的超时与重传机制" class="headerlink" title="TCP的超时与重传机制"></a>TCP的超时与重传机制</h1><p>TCP提供可靠的运输层。它使用的方法之一就是确认从另一端收到的数据。但数据和确<br>认都有可能会丢失。 TCP通过在发送时设置一个定时器来解决这种问题。如果当定时器溢出<br>时还没有收到确认，它就重传该数据。对任何实现而言，关键之处就在于超时和重传的策略，<br>即怎样决定超时间隔和如何确定重传的频率。</p>
+<h1 id="拥塞避免算法"><a href="#拥塞避免算法" class="headerlink" title="拥塞避免算法"></a>拥塞避免算法</h1><h1 id="快速重传与快速恢复算法"><a href="#快速重传与快速恢复算法" class="headerlink" title="快速重传与快速恢复算法"></a>快速重传与快速恢复算法</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/11.%E7%BD%91%E7%BB%9C/TCP/" data-id="ckbovy33h000omstw80ms57f7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-11.网络/Scoket" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/Scoket/" class="article-date">
+  <time datetime="2020-06-21T09:45:05.603Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/Scoket/">11.网络/Scoket</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Socket<br>不属于应用层也不属于传输层，它是一个网络编程接口，<br><a href="https://www.cnblogs.com/wangcq/p/3520400.html" target="_blank" rel="noopener">https://www.cnblogs.com/wangcq/p/3520400.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/11.%E7%BD%91%E7%BB%9C/Scoket/" data-id="ckbovy33g000nmstw6mic6gsg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -203,6 +571,11 @@
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
 
 </section>
         
@@ -233,15 +606,23 @@
       <ul>
         
           <li>
-            <a href="/2020/06/21/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/test/">13.日常开发问题/大数计算/test</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/BUff-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">BUff 系统设计</a>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E6%B5%AE%E7%82%B9%E6%95%B0%E9%97%AE%E9%A2%98/">13.日常开发问题/浮点数问题</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/hello-world/">Hello World</a>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%B8%A7%E5%90%8C%E6%AD%A5/">13.日常开发问题/帧同步</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%A4%A7%E6%95%B0%E8%AE%A1%E7%AE%97/">13.日常开发问题/大数计算</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/21/13.%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E4%B8%A2%E5%8C%85%E9%97%AE%E9%A2%98/">13.日常开发问题/丢包问题</a>
           </li>
         
       </ul>
