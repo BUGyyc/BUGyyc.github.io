@@ -64,10 +64,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Buff系统设计" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-BUff-系统设计" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/Buff%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
-  <time datetime="2020-06-21T08:32:13.456Z" itemprop="datePublished">2020-06-21</time>
+    <a href="/2020/06/21/BUff-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
+  <time datetime="2020-06-21T08:41:06.000Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/Buff%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">Buff系统设计</a>
+      <a class="article-title" href="/2020/06/21/BUff-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">BUff 系统设计</a>
     </h1>
   
 
@@ -86,34 +86,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="buff的本质"><a href="#buff的本质" class="headerlink" title="buff的本质"></a>buff的本质</h1><p>基本上，可以概括为对属性数据的修改，例如：移动速度、血量等修改，增益或者损耗。</p>
-<h1 id="设计的思路"><a href="#设计的思路" class="headerlink" title="设计的思路"></a>设计的思路</h1><h2 id="不太可取的思路"><a href="#不太可取的思路" class="headerlink" title="不太可取的思路"></a>不太可取的思路</h2><p>将buff设计为一个阶段性的效果。<br>如：<br>开始生效：增加移动速度5。<br>结束BUFF：减少移动速度。<br>这样设计意味着需要在结束BUFF时进行一次逆运算，就是将属性数据修改为未生效之前，这里很容易出现错误。<br>例如精度的问题。<br>某个BUFF生效，使得移动速度变为原来的1/3.<br>基础移动速度 = 10<br>开始生效后，移动速度 = 10/3<br>如精度控制后，保留4位小数，移动速度为 3.3333<br>当BUFF结束后，我们需要将移动速度还原，3.3333*3 != 10.<br>为了解决这类问题，可能会采取以下方案：</p>
-<ul>
-<li>以分数的形式，做运算，这样可以解决，但又将属性数据做了进一步扩展，变成了分数形式，不是一个好方案。</li>
-<li>可以将BUFF生效前的移动速度保存起来，但是这意味着需要在每个BUFF效果中存储一个BUFF生效前的属性数据。不推荐。</li>
-</ul>
-<h2 id="推荐的思路"><a href="#推荐的思路" class="headerlink" title="推荐的思路"></a>推荐的思路</h2><p>通常BUFF的设计，特别是比较复杂的BUFF系统设计，往往需要策划进行BUFF计算公式的确定。如上文提到的移动速度。<br>可以参考如下计算：<br>移动速度 = 基础移动速度 * 增幅 + 增值；<br>增幅、增值都是可取负数。<br>在多个BUFF生效时，也是如此进行计算，多个BUFF生效改变的是增幅和增值。</p>
-<pre><code>Zf = Zf1+Zf2+...+Zfn;//增幅累积
-Zz = Zz1+Zz2+...+Zzn;//增值累积</code></pre><p>当然上面提及的公式累积不是通用的方式，这个要看具体的需求来定。<br>比较可靠的方式都是采取两套数据，一个是基础数据，另一个就是运行的临时数据。这使得断线重连等复杂环境，依然有机会恢复到正确的状态。</p>
-<p>BUFF系统的执行频率并不一定需要每帧执行，所以往往是如下执行方式：</p>
-<pre><code>class BuffSystem{
-
-    //某个玩家身上的全部需要执行的BUFF列表
-    public List&lt;Buff&gt; list;
-
-    ...
-
-    public void Execute(){
-        foreach(var buff in list){
-            buff.DoExecute(Time.deltaTime);
-            remove buff;
-        }
-    }
-}</code></pre>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/Buff%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" data-id="ckbotfsp100003wtw2l29gava" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/BUff-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" data-id="ckbotzl9q0000f0twcehh1pvc" class="article-share-link">Share</a>
       
       
     </footer>
@@ -203,7 +180,7 @@ Zz = Zz1+Zz2+...+Zzn;//增值累积</code></pre><p>当然上面提及的公式�
       <ul>
         
           <li>
-            <a href="/2020/06/21/Buff%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">Buff系统设计</a>
+            <a href="/2020/06/21/BUff-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">BUff 系统设计</a>
           </li>
         
           <li>
