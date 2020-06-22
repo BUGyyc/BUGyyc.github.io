@@ -64,6 +64,115 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-01.计算机科学/数据结构/链表/链表" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/" class="article-date">
+  <time datetime="2020-06-22T09:48:41.000Z" itemprop="datePublished">2020-06-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/">链表</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="查找链表的中间节点"><a href="#查找链表的中间节点" class="headerlink" title="查找链表的中间节点"></a>查找链表的中间节点</h2><p>使用双指针，一快一慢。快的指针每次移动两步，慢的指针每次移动一步。这样当快指针达到尾部的时候，慢指针就到达了中间节点的位置</p>
+<pre><code>private ListNode findMidNode(ListNode head){
+    if(head == null || head.next == null)return head;
+    ListNode f = head;
+    ListNode l = head;
+    while(f!=null){
+        f = f.next;
+        if(f!=null)f = f.next;
+        l = l.next;
+    }
+    return l;
+}</code></pre><h2 id="查找链表的倒数第K个节点"><a href="#查找链表的倒数第K个节点" class="headerlink" title="查找链表的倒数第K个节点"></a>查找链表的倒数第K个节点</h2><p>也是双指针，第一个指针先移动K步，然后第二个指针再和第一个指针同时移动，当第一个指针达到尾部后，那么第二个指针就是倒数第K个节点</p>
+<pre><code>private ListNode findKNode(ListNode head,int k){
+    if(head == null)return head;
+    ListNode f = head;
+    ListNode l = head;
+    while(k&gt;0){
+        if(f!=null){
+            f = f.next;
+        }else{
+            break;
+        }
+    }
+    if(k &lt;= 0){
+        return null;
+    }else{
+        while(f!=null){
+            f = f.next;
+            l = l.next;
+        }
+        return l;
+    }
+}</code></pre><h2 id="判断两个链表是否相交"><a href="#判断两个链表是否相交" class="headerlink" title="判断两个链表是否相交"></a>判断两个链表是否相交</h2><p>若两个链表相交，那么链表相交的起点开始，所有的节点都会相等，因为是单链表，从相交节点开始往后，每个节点的地址都是一样的，所以往后的节点都会相等，所以如果两个链表有节点相等，那么两个链表就会相交。所以把一个链表的最后一个节点提取出来，与另一个链表进行比较，只要有相等，那么就有相交</p>
+<pre><code>private bool checkListNode(ListNode l1,ListNode l2){
+    if(l1 == null||l2 == null)return false;
+    ListNode f = l1;
+    while(f.next!=null){
+        f = f.next;
+    }
+
+    ListNode s = l2;
+    while(s.next!=null){
+        s = s.next;
+    }
+    return f == s;
+}</code></pre><h2 id="判断链表是否有环"><a href="#判断链表是否有环" class="headerlink" title="判断链表是否有环"></a>判断链表是否有环</h2><p>快慢指针法，快指针每次走两步，慢指针每次走一步，如果链表是有环的，那么快慢指针总会在某次移动时指向同一个节点。</p>
+<pre><code>private bool hasCircle(ListNode head){
+    ListNode f = head;
+    ListNode l = head;
+
+    while(f!=null &amp;&amp; f.next!=null){
+        f = f.next.next;
+        l = l.next;
+    }
+
+    return f == l;
+}</code></pre><h2 id="翻转链表"><a href="#翻转链表" class="headerlink" title="翻转链表"></a>翻转链表</h2><h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><h3 id="迭代写法"><a href="#迭代写法" class="headerlink" title="迭代写法"></a>迭代写法</h3><pre><code>private ListNode ReverseList(ListNode head){
+    if(head == null || head.next == null)return head;
+    ListNode newHead = null;
+    ListNode curr = head;
+    while(curr!=null){
+        ListNode temp = curr;
+        curr = curr.next;
+        temp.next = newHead;
+        newHead = temp;
+    }
+    return newHead;
+}</code></pre><h2 id="求相交链表的交点"><a href="#求相交链表的交点" class="headerlink" title="求相交链表的交点"></a>求相交链表的交点</h2><p>可以先判断长度，让长度较长的一个链表的指针先移动，移动的步数是长短链表的差值，然后两个链表上的指针再同时移动，找到两个指针相等的时候就是相交的交点。</p>
+<hr>
+<hr>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://mp.weixin.qq.com/s/rx4fD0fHtG8oIiZ-b05u9A" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/rx4fD0fHtG8oIiZ-b05u9A</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/" data-id="ckbovw38m00044stw880y9g42" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-01.计算机科学/计算机组成原理" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" class="article-date">
@@ -210,56 +319,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-01.计算机科学/数据结构/链表/链表" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/">链表</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="查找链表的中间节点"><a href="#查找链表的中间节点" class="headerlink" title="查找链表的中间节点"></a>查找链表的中间节点</h2><p>使用双指针，一快一慢。快的指针每次移动两步，慢的指针每次移动一步。这样当快指针达到尾部的时候，慢指针就到达了中间节点的位置</p>
-<h2 id="查找链表的倒数第K个节点"><a href="#查找链表的倒数第K个节点" class="headerlink" title="查找链表的倒数第K个节点"></a>查找链表的倒数第K个节点</h2><p>也是双指针，第一个指针先移动K步，然后第二个指针再和第一个指针同时移动，当第一个指针达到尾部后，那么第二个指针就是倒数第K个节点</p>
-<h2 id="判断两个链表是否相交"><a href="#判断两个链表是否相交" class="headerlink" title="判断两个链表是否相交"></a>判断两个链表是否相交</h2><p>若两个链表相交，那么链表相交的起点开始，所有的节点都会相等，因为是单链表，从相交节点开始往后，每个节点的地址都是一样的，所以往后的节点都会相等，所以如果两个链表有节点相等，那么两个链表就会相交</p>
-<h2 id="判断链表是否有环"><a href="#判断链表是否有环" class="headerlink" title="判断链表是否有环"></a>判断链表是否有环</h2><p>快慢指针法，快指针每次走两步，慢指针每次走一步，如果链表是有环的，那么快慢指针总会在某次移动时指向同一个节点。</p>
-<h2 id="翻转链表"><a href="#翻转链表" class="headerlink" title="翻转链表"></a>翻转链表</h2><ul>
-<li>递归</li>
-<li>迭代</li>
-</ul>
-<h2 id="求相交链表的交点"><a href="#求相交链表的交点" class="headerlink" title="求相交链表的交点"></a>求相交链表的交点</h2><p>可以先判断长度，让长度较长的一个链表的指针先移动，移动的步数是长短链表的差值，然后两个链表上的指针再同时移动，找到两个指针相等的时候就是相交的交点。</p>
-<h2 id="删除某个节点"><a href="#删除某个节点" class="headerlink" title="删除某个节点"></a>删除某个节点</h2><hr>
-<hr>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://mp.weixin.qq.com/s/rx4fD0fHtG8oIiZ-b05u9A" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/rx4fD0fHtG8oIiZ-b05u9A</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/" data-id="ckbovw38m00044stw880y9g42" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
 
     </footer>
   </div>
@@ -539,6 +598,10 @@
       <ul>
         
           <li>
+            <a href="/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/">链表</a>
+          </li>
+        
+          <li>
             <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a>
           </li>
         
@@ -552,10 +615,6 @@
         
           <li>
             <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/">链表</a>
           </li>
         
       </ul>
