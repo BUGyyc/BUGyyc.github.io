@@ -64,6 +64,236 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-03.软件开发/移动开发/Android开发/Android唤起的流程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/Android%E5%94%A4%E8%B5%B7%E7%9A%84%E6%B5%81%E7%A8%8B/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/Android%E5%94%A4%E8%B5%B7%E7%9A%84%E6%B5%81%E7%A8%8B/">Android唤起</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/Android%E5%94%A4%E8%B5%B7%E7%9A%84%E6%B5%81%E7%A8%8B/" data-id="ckbp3mqlm006648tw90oqezmz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-06.游戏引擎/物理引擎/2D碰撞/2D碰撞（二）四叉树" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/">2D多边形碰撞-四叉树</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一篇博客讲解了一下简单2D游戏的开发流程</p>
+<p><a href="https://zhuanlan.zhihu.com/p/82301894" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82301894</a></p>
+<p>上一篇提到的检测碰撞是遍历所有的方块，进行检测，每一帧都进行检测碰撞，效率极其低下，一旦游戏对象过多，意味着每帧需要遍历检测的对象太多，为此，我们需要将碰撞检测的游戏对象数量降低，减少不必要的计算检测。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行碰撞</span><br><span class="line">void Game::DoCollisions()</span><br><span class="line">&#123;	</span><br><span class="line">	&#x2F;&#x2F;遍历所有的方块与球的碰撞情况</span><br><span class="line">	for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks)</span><br><span class="line">	&#123;</span><br><span class="line">         &#x2F;&#x2F;......</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F;......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事实上，真正需要进行检测的方块只有其中一部分，因为大多数方块在距离上是完全不需要进行检测的，基于这一点，我们需要通过某种手段将处在2D世界中的游戏对象进行划分。</p>
+<p>这里用到的手段就是四叉树。</p>
+<h1 id="四叉树的结构"><a href="#四叉树的结构" class="headerlink" title="四叉树的结构"></a>四叉树的结构</h1><p>如下图所示：<br><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/14e27b989d0f9d1ff8f0800cb9c8a38e_hd.jpg" alt="(path/to/image.png)"></p>
+<p>代码：</p>
+<p><a href="https://github.com/BUGyyc/SimpleCraft/blob/master/quad_tree.h" target="_blank" rel="noopener">https://github.com/BUGyyc/SimpleCraft/blob/master/quad_tree.h</a></p>
+<h1 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h1><h1 id="运用四叉树减少比较次数"><a href="#运用四叉树减少比较次数" class="headerlink" title="运用四叉树减少比较次数"></a>运用四叉树减少比较次数</h1><p>牺牲空间换时间，每一帧都通过最新的四叉树取节点下来进行检测判断，在减少数量上减少了大半。因为提升了很大的效率，不过，不可避免的是每帧都需要维护这个四叉树，这是空间上必须要有所让步的，不过好在所占空间并不大。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;每一帧都需要更新四叉树，并且要在检测之前</span><br><span class="line">void Game::QuadTreeExcute() </span><br><span class="line">&#123;</span><br><span class="line">	quadTree &#x3D; new QuadTree&lt;GameObject*&gt;();</span><br><span class="line">	for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks) &#123;</span><br><span class="line">		quadTree-&gt;add(&amp;box,QuadAABB(box.Position.x,box.Position.y,80,80));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Game::DoCollisions()</span><br><span class="line">&#123;	</span><br><span class="line">	vector&lt;GameObject*&gt; list;</span><br><span class="line">	quadTree-&gt;find(QuadAABB(Ball-&gt;Position.x,Ball-&gt;Position.y,80,80), list, true); </span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;在窗口输出，观察每帧进行多少方块的比较</span><br><span class="line">        if (list.size() &gt; 0) &#123;</span><br><span class="line">		cout &lt;&lt; list.size() &lt;&lt; &quot; size   &quot; &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;只进行了部分比较</span><br><span class="line">	&#x2F;&#x2F;遍历区域内的方块与球的碰撞情况</span><br><span class="line">	for (auto &amp;box : list)</span><br><span class="line">	&#123;</span><br><span class="line">                ...</span><br><span class="line">        &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/" data-id="ckbp3mqln006948twcl55d57e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/通用/CIL/CIL" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/CIL/CIL/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/CIL/CIL/">CIL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Common Intermediate Language通用中间语言</p>
+<p><a href="https://www.cnblogs.com/murongxiaopifu/p/4211964.html" target="_blank" rel="noopener">https://www.cnblogs.com/murongxiaopifu/p/4211964.html</a></p>
+<p>CIL是指令集</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/CIL/CIL/" data-id="ckbp3mqlo006f48twci7da76w" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C#</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/通用/关于优化/优化总览" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E5%85%B3%E4%BA%8E%E4%BC%98%E5%8C%96/%E4%BC%98%E5%8C%96%E6%80%BB%E8%A7%88/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E5%85%B3%E4%BA%8E%E4%BC%98%E5%8C%96/%E4%BC%98%E5%8C%96%E6%80%BB%E8%A7%88/">游戏开发优化总览</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/pic1.png" alt="(path/to/image.png)"></p>
+<h1 id="运行效率优化"><a href="#运行效率优化" class="headerlink" title="运行效率优化"></a>运行效率优化</h1><p>运行效率主要影响的是CPU的运行效率，而引起效率下降的主要原因包括但不限于：</p>
+<ul>
+<li>代码质量</li>
+<li>频繁创建与销毁对象</li>
+<li>一帧处理过多计算</li>
+</ul>
+<h2 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h2><p>C#语言特性、以及一些托管堆垃圾回收的影响。<br>装箱与拆箱，使用泛型防止过多的装箱与拆箱操作。</p>
+<h2 id="缓存池和预处理"><a href="#缓存池和预处理" class="headerlink" title="缓存池和预处理"></a>缓存池和预处理</h2><p>缓存池通过提前创建好一些对象，留着备用，用完立即回收到池中，防止频繁创建与销毁。</p>
+<h2 id="分帧运行"><a href="#分帧运行" class="headerlink" title="分帧运行"></a>分帧运行</h2><p>一帧过多的渲染绘制、计算都会导致降帧或者掉帧，<br>把这一帧内的操作，分到几帧内执行，减少这一帧的执行压力，防止下一帧等待过久。</p>
+<h1 id="渲染优化"><a href="#渲染优化" class="headerlink" title="渲染优化"></a>渲染优化</h1><p>Verts与DrawCall过多都是渲染压力，主要优化也是这两点</p>
+<h2 id="贴图优化"><a href="#贴图优化" class="headerlink" title="贴图优化"></a>贴图优化</h2><p><a href="https://www.cnblogs.com/joeshifu/p/5489906.html" target="_blank" rel="noopener">https://www.cnblogs.com/joeshifu/p/5489906.html</a></p>
+<h3 id="自定义图片格式"><a href="#自定义图片格式" class="headerlink" title="自定义图片格式"></a>自定义图片格式</h3><h3 id="调色板算法"><a href="#调色板算法" class="headerlink" title="调色板算法"></a>调色板算法</h3><h2 id="定点优化"><a href="#定点优化" class="headerlink" title="定点优化"></a>定点优化</h2><h3 id="优化模型面数"><a href="#优化模型面数" class="headerlink" title="优化模型面数"></a>优化模型面数</h3><h2 id="Batch"><a href="#Batch" class="headerlink" title="Batch"></a>Batch</h2><h2 id="Shader优化"><a href="#Shader优化" class="headerlink" title="Shader优化"></a>Shader优化</h2><h3 id="避免复杂运算"><a href="#避免复杂运算" class="headerlink" title="避免复杂运算"></a>避免复杂运算</h3><h3 id="空间换时间"><a href="#空间换时间" class="headerlink" title="空间换时间"></a>空间换时间</h3><h3 id="采用效果类似的近似值算法"><a href="#采用效果类似的近似值算法" class="headerlink" title="采用效果类似的近似值算法"></a>采用效果类似的近似值算法</h3><h1 id="安装包大小优化"><a href="#安装包大小优化" class="headerlink" title="安装包大小优化"></a>安装包大小优化</h1><h2 id="适当降低资源质量与精度"><a href="#适当降低资源质量与精度" class="headerlink" title="适当降低资源质量与精度"></a>适当降低资源质量与精度</h2><h2 id="按需加载"><a href="#按需加载" class="headerlink" title="按需加载"></a>按需加载</h2><h1 id="加载速度优化"><a href="#加载速度优化" class="headerlink" title="加载速度优化"></a>加载速度优化</h1><h2 id="网络下载优化"><a href="#网络下载优化" class="headerlink" title="网络下载优化"></a>网络下载优化</h2><h3 id="如何突破下载器限制"><a href="#如何突破下载器限制" class="headerlink" title="如何突破下载器限制"></a>如何突破下载器限制</h3><h2 id="本地IO优化"><a href="#本地IO优化" class="headerlink" title="本地IO优化"></a>本地IO优化</h2><h3 id="小文件合并为一个大文件，减少IO"><a href="#小文件合并为一个大文件，减少IO" class="headerlink" title="小文件合并为一个大文件，减少IO"></a>小文件合并为一个大文件，减少IO</h3><h1 id="网络优化"><a href="#网络优化" class="headerlink" title="网络优化"></a>网络优化</h1><h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>适合网络通信频率较低的场景</p>
+<h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><p>对延迟不敏感的场景，要求不丢包</p>
+<h2 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h2><p>网络通信频繁，且对延迟敏感的场景</p>
+<p><a href="https://zhuanlan.zhihu.com/p/29087888" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29087888</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/29377705" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29377705</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/29849244" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29849244</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E5%85%B3%E4%BA%8E%E4%BC%98%E5%8C%96/%E4%BC%98%E5%8C%96%E6%80%BB%E8%A7%88/" data-id="ckbp3mqlo006g48twd1cv745g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/通用/DrawCall/DrawCall相关" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/DrawCall/DrawCall%E7%9B%B8%E5%85%B3/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/DrawCall/DrawCall%E7%9B%B8%E5%85%B3/">DrawCall</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Unity DrawCall 相关</p>
+<p> 首先我来简单讲讲什么是DC吧，这是我在一篇写的很好的博客上看到的，他是这样讲的，DC就是在每次绘图前，我们都需要先准备好顶点数据（位置、法线、颜色、纹理坐标，切线等），然后调用一系列API把它们放到GPU可以访问到的指定位置，最后，我们需要调用_glDraw<em>命令，来告诉GPU，“嘿嘿，我把东西都准备好了，你个懒家伙赶紧出来干活（渲染）吧！”。而调用_glDraw</em>命令的时候，就是一次DC。那么为什么DC会成为性能瓶颈呢（而且是CPU的瓶颈）？上面说到过，我们想要绘制图像时，就一定需要调用DC，而这DC就是在CPU下执行的。</p>
+<p> 前面说过了，DC是CPU调用底层图形接口。比如有上千个物体，每一个的渲染都需要去调用一次底层接口，而每一次的调用CPU都需要做很多工作，那么CPU必然不堪重负。但是对于GPU来说，图形处理的工作量是一样的。所以对DC的优化，主要就是为了尽量解放CPU在调用图形接口上的开销。所以针对DC我们主要的思路就是每个物体尽量减少渲染次数，多个物体最好一起渲染。所以，按照这个思路就有了以下几个方案：</p>
+<p>使用DC Batching，也就是描绘调用批处理。Unity在运行时可以将一些物体进行合并，从而用一个描绘调用来渲染他们。具体下面会介绍。<br>通过把纹理打包成图集来尽量减少材质的使用。<br>尽量少的使用反光，阴影啦之类的，因为那会使物体多次渲染。<br>使用Occlusion Culling算法，减少可见的物体数量同时也可以减少Draw Call。<br>删除不必要的Shader中的Pass通道，因为一个Pass对应一个DC。</p>
+<hr>
+<p><a href="https://blog.csdn.net/u3d_ysj/article/details/47906035" target="_blank" rel="noopener">https://blog.csdn.net/u3d_ysj/article/details/47906035</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/DrawCall/DrawCall%E7%9B%B8%E5%85%B3/" data-id="ckbp3mqlp006i48tw26cnh83o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-05.游戏编程/Unity3D/通用/游戏中的AI/关于游戏AI" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/%E6%B8%B8%E6%88%8F%E4%B8%AD%E7%9A%84AI/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8FAI/" class="article-date">
@@ -241,23 +471,23 @@
       <ul>
         
           <li>
-            <a href="/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/">链表</a>
+            <a href="/2020/06/27/Temporary/%E5%85%B3%E4%BA%8E%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">Temporary/关于图片压缩算法</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a>
+            <a href="/2020/06/27/Temporary/%E4%BB%8E%E4%B8%80%E4%B8%AA%E5%9B%BE%E7%89%87%E7%9A%84%E7%BB%98%E5%88%B6%E6%9D%A5%E8%AE%A4%E8%AF%86%E4%B8%80%E4%B8%AA%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B/">Temporary/从一个图片的绘制来认识一个渲染流程</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86%E6%A0%88/">堆栈</a>
+            <a href="/2020/06/27/Temporary/%E5%85%B3%E4%BA%8EUnity%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BA%8F/">Temporary/关于Unity的运行时序</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%98%9F%E5%88%97/">队列</a>
+            <a href="/2020/06/27/Temporary/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/">Temporary/十大排序</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a>
+            <a href="/2020/06/27/Temporary/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/">Temporary/渲染管线</a>
           </li>
         
       </ul>

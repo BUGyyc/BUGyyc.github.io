@@ -64,6 +64,266 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-01.计算机科学/算法/排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://mp.weixin.qq.com/s/MNn69G7Fg5KzO1cX4GVbVg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/MNn69G7Fg5KzO1cX4GVbVg</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/" data-id="ckbovw38l00034stwdfir4qws" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-01.计算机科学/算法/alpha-beta（Java）/AlphaBeta算法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/alpha-beta%EF%BC%88Java%EF%BC%89/AlphaBeta%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/alpha-beta%EF%BC%88Java%EF%BC%89/AlphaBeta%E7%AE%97%E6%B3%95/">AlphaBeta算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="AlphaBeta算法"><a href="#AlphaBeta算法" class="headerlink" title="AlphaBeta算法"></a>AlphaBeta算法</h1><p>九宫格游戏相对简单，因为步数有限，玩家和AI两者的总步数是9<br>而象棋的模式不一样，象棋的走法多样，步数在设定上是无穷<br>对于AI上的设定来说，AI未必当前步数需要选择最大收益步数，因为当前最大收益不一定绝对下一步是否最大收益，所以这意味着，向下搜索深度越大，意味着收益的计算才是最准确的</p>
+<hr>
+<p>AI的行为是在列举有限种情况，在有限种情况中选择当前有利或者是符合长远利益（为什么这么说？长远利益这种情况是存在的，因为只选择当前利益最大化也无法保证长期利益最大化，而当前非最优解，也可能是最符合长远利益的解，这种情况在象棋中就经常会发生）</p>
+<p>搜索深度越深，考虑的步子就越远，判断收益的精度将更准确</p>
+<p>井字棋是一个很简单的游戏，我们可以直接搜索到最终结果，再从下往上筛选，选择执行步子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * deep search</span><br><span class="line"> *&#x2F;</span><br><span class="line">private static int findAIStep(int value, int alpha, int beta) &#123;</span><br><span class="line">    if (isFull())</span><br><span class="line">        value &#x3D; Draw;</span><br><span class="line">    else if (checkAINearWin())</span><br><span class="line">        value &#x3D; CompWin;</span><br><span class="line">    else &#123;</span><br><span class="line">        value &#x3D; alpha;</span><br><span class="line">        for (int i &#x3D; 1; i &lt;&#x3D; 9 &amp;&amp; value &lt; beta; i++) &#123;</span><br><span class="line">            if (arr[i] &#x3D;&#x3D; 0) &#123;</span><br><span class="line">                arr[i] &#x3D; 2;</span><br><span class="line">                int response &#x3D; -1;</span><br><span class="line">                response &#x3D; findManStep(response, alpha, beta);</span><br><span class="line">                arr[i] &#x3D; 0;</span><br><span class="line">                if (response &gt; value) &#123;&#x2F;&#x2F;比较值，进行剪枝</span><br><span class="line">                    value &#x3D; response;</span><br><span class="line">                    bestMove &#x3D; i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static int findManStep(int value, int alpha, int beta) &#123;</span><br><span class="line">    if (isFull())</span><br><span class="line">        value &#x3D; Draw;</span><br><span class="line">    else if (checkManNearWin())</span><br><span class="line">        value &#x3D; HumanWin;</span><br><span class="line">    else &#123;</span><br><span class="line">        value &#x3D; beta;</span><br><span class="line">        for (int i &#x3D; 1; i &lt;&#x3D; 9 &amp;&amp; value &gt; alpha; i++) &#123;</span><br><span class="line">            if (arr[i] &#x3D;&#x3D; 0) &#123;</span><br><span class="line">                arr[i] &#x3D; 1;</span><br><span class="line">                int response &#x3D; -1;</span><br><span class="line">                response &#x3D; findAIStep(response, alpha, beta);</span><br><span class="line">                arr[i] &#x3D; 0;</span><br><span class="line">                if (response &lt; value) &#123;&#x2F;&#x2F;比较值，进行剪枝</span><br><span class="line">                    value &#x3D; response;</span><br><span class="line">                    bestMove &#x3D; i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/alpha-beta%EF%BC%88Java%EF%BC%89/AlphaBeta%E7%AE%97%E6%B3%95/" data-id="ckbovw38n00054stw7m280cvm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-01.计算机科学/算法/分治算法/分治" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB/">分治算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>分治算法</p>
+<p><a href="https://www.cnblogs.com/steven_oyj/archive/2010/05/22/1741370.html" target="_blank" rel="noopener">https://www.cnblogs.com/steven_oyj/archive/2010/05/22/1741370.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB/" data-id="ckbovw38o00064stw8pla9q4n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-01.计算机科学/算法/动态规划/动态规划" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line"> * @lc app&#x3D;leetcode.cn id&#x3D;377 lang&#x3D;java</span><br><span class="line"> *</span><br><span class="line"> * [377] 组合总和 Ⅳ</span><br><span class="line"> *&#x2F;</span><br><span class="line">class Solution &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 状态转移方程</span><br><span class="line">    &#x2F;&#x2F; 例如 [1,2,3,4] target &#x3D; 10</span><br><span class="line">    &#x2F;**</span><br><span class="line">     * dp[10] &#x3D; dp[10-1] + dp[10-2] + dp[10-3] + dp[10-4]</span><br><span class="line">     * dp[10-1]就是选了第一层选1</span><br><span class="line">     * dp[10-2]就是第一层选了2，依次类推</span><br><span class="line">     * </span><br><span class="line">     * 最后得到状态转移方程</span><br><span class="line">     * @param nums</span><br><span class="line">     * @param target</span><br><span class="line">     * @return</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public int combinationSum4(int[] nums, int target) &#123;</span><br><span class="line">        if (nums.length &#x3D;&#x3D; 0)</span><br><span class="line">            return 0;</span><br><span class="line"></span><br><span class="line">        int[] dp &#x3D; new int[target + 1];</span><br><span class="line">        dp[0] &#x3D; 1;</span><br><span class="line">        for (int i &#x3D; 1; i &lt;&#x3D; target; i++) &#123;</span><br><span class="line">            for (int j &#x3D; 0; j &lt; nums.length; j++) &#123;</span><br><span class="line">                if (i - nums[j] &gt;&#x3D; 0) &#123;</span><br><span class="line">                    dp[i] +&#x3D; dp[i - nums[j]];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return dp[target];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上，动态规划是对子问题做决策，并且子问题的决策是受其他子问题决策影响的<br>上面要求的是一种组合，并且求的是组合个数，那么用动态规划比较合适，如果要求所有的组合结果，那么可以考虑用回溯</p>
+<p>这里选择的是动态规划的解法</p>
+<p>首先分析一下，找到规律，得到状态转移方程</p>
+<p>如： 【1,2,3,4】  target = 10;</p>
+<p>列举树状结构，我们可以知道，第一层有四种可能<br>分别是： 1，2，3，4</p>
+<p>当我们分别选择了1，2，3，4<br>意味着这四个节点需要求解的是： 10-1，10-2，10-3，10-4</p>
+<p>子问题和原问题是一样的思路</p>
+<p>那么意味着状态方程式这样的：</p>
+<p>all = Node1 + Node2+Node3+Node4;</p>
+<p>求dp状态转移方程</p>
+<p>dp[i] 表示 和为i时，有多少种组合</p>
+<p>dp[i] = dp[target - nums[0]] + dp[target - nums[1]] …. + dp[target-nums[nums.length-1]]</p>
+<p>注意：上面列的方程必须要保证  target-nums[i] &gt;= 0 ，因为索引，target - nums[i] 必须不能是负数</p>
+<p>当i=0时，直接是一个空数组<br>所以<br>dp[0] = 1;</p>
+<p>那么可以通过dp[0]递推到dp[target]的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for (int i &#x3D; 1; i &lt;&#x3D; target; i++) &#123;</span><br><span class="line">    for (int j &#x3D; 0; j &lt; nums.length; j++) &#123;</span><br><span class="line">        if (i - nums[j] &gt;&#x3D; 0) &#123;</span><br><span class="line">            dp[i] +&#x3D; dp[i - nums[j]];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" data-id="ckbovw38o00074stw05oi4i0n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-01.计算机科学/算法/回溯算法/回溯" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF/">回溯</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>回溯算法</p>
+<p><a href="https://www.cnblogs.com/steven_oyj/archive/2010/05/22/1741376.html" target="_blank" rel="noopener">https://www.cnblogs.com/steven_oyj/archive/2010/05/22/1741376.html</a></p>
+<p>回溯算法实际上一个类似枚举的搜索尝试过程，主要是在搜索尝试过程中寻找问题的解，当发现已不满足求解条件时，就“回溯”返回，尝试别的路径。<br>回溯法是一种选优搜索法，按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回一步重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为“回溯点”。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF/" data-id="ckbovw38p00084stwehprch34" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-01.计算机科学/算法/寻路算法/A星算法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/A%E6%98%9F%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/A%E6%98%9F%E7%AE%97%E6%B3%95/">A星寻路</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>A星算法<br><a href="https://blog.csdn.net/denghecsdn/article/details/78778769" target="_blank" rel="noopener">https://blog.csdn.net/denghecsdn/article/details/78778769</a></p>
+<p><a href="https://blog.csdn.net/zerokkqq/article/details/76282908" target="_blank" rel="noopener">https://blog.csdn.net/zerokkqq/article/details/76282908</a></p>
+<p><a href="https://gameinstitute.qq.com/community/detail/117767" target="_blank" rel="noopener">https://gameinstitute.qq.com/community/detail/117767</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/A%E6%98%9F%E7%AE%97%E6%B3%95/" data-id="ckbovw38q00094stw8jlg9xmt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Readme" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/21/Readme/" class="article-date">
@@ -244,343 +504,6 @@
 
 
   
-    <article id="post-05.游戏编程/游戏开发技巧/多边形碰撞检测" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">多边形碰撞检测</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" data-id="ckbp3mqj0000348twemxs16d9" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-05.游戏编程/游戏开发技巧/关于游戏架构" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8F%E6%9E%B6%E6%9E%84/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8F%E6%9E%B6%E6%9E%84/">关于游戏架构</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://blog.csdn.net/pbymw8iwm/article/details/50750429" target="_blank" rel="noopener">https://blog.csdn.net/pbymw8iwm/article/details/50750429</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8F%E6%9E%B6%E6%9E%84/" data-id="ckbp3mqj1000448twbc8naqoy" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-05.游戏编程/游戏开发技巧/插值方法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%8F%92%E5%80%BC%E6%96%B9%E6%B3%95/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%8F%92%E5%80%BC%E6%96%B9%E6%B3%95/">插值方法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>插值方法</p>
-<p>在网络导致的掉帧情况下，造成游戏坐标与服务器下发坐标不一致是时常发生的，<br>这个时候选择平滑过渡到目标坐标是比较合适的方法。</p>
-<p><a href="http://gad.qq.com/program/translateview/7168875" target="_blank" rel="noopener">http://gad.qq.com/program/translateview/7168875</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%8F%92%E5%80%BC%E6%96%B9%E6%B3%95/" data-id="ckbp3mqj1000548twgh60g67g" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-05.游戏编程/游戏开发技巧/物理引擎的确定性" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E%E7%9A%84%E7%A1%AE%E5%AE%9A%E6%80%A7/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E%E7%9A%84%E7%A1%AE%E5%AE%9A%E6%80%A7/">物理引擎的确定性</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E%E7%9A%84%E7%A1%AE%E5%AE%9A%E6%80%A7/" data-id="ckbp3mqj2000648twf7ao4ghx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-05.游戏编程/游戏开发技巧/网络同步问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/">网络同步问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在进行多人游戏开发过程中，我们期望游戏在不同设备上保持一致的表现，或者说是结果一致，许多动作类游戏，多人游戏的要求就更高，我们不希望不同客户端看到的结果是不一样的。<br>这要求我们要保证物理计算的一致，包括随机数等等</p>
-<ul>
-<li><p>预测式输入，我们不希望长时间等待服务器响应，当然我们在网络波动延迟较大的情况下，可以做出相应的提示，让玩家感知到当前网络较差，</p>
-</li>
-<li><p>插值处理，线性的插值，在单纯的直线运动，我们可以直接采取，k*x+b = y的方式，得到中间值(x,y)。在update（或者协程中）中去lerp</p>
-</li>
-<li><p>光滑曲线的插值计算</p>
-</li>
-<li><p>三次样条插值，填补掉帧或延迟造成坐标跳跃，所以我们希望计算中间值，确定平滑曲线，得到最终的路径点</p>
-</li>
-<li><p>定点数计算，设备浮点数计算是有误差的，所以必要时候舍弃设备自带的四舍五入方式，采取手写确定，保持计算一致，客户端，有时候喜欢随机值单独计算，例如，玩家攻击的是否暴击，随机种子保证随机序列，只要保证，随机执行的顺序</p>
-</li>
-</ul>
-<hr>
-<h1 id="插值与补偿"><a href="#插值与补偿" class="headerlink" title="插值与补偿"></a>插值与补偿</h1><h2 id="线性插值"><a href="#线性插值" class="headerlink" title="线性插值"></a>线性插值</h2><p><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC.jpg" alt="(path/to/image.png)"></p>
-<p>直线式的补偿，可以满足要求不高的同步游戏。<br>线性插值其实是取当前点与网络目标点，得到线段，并且得到线段的线性函数，k*x+b = y 。只需求解k,b，在进行插值时，我们已知两个点（当前点与网络同步过来的目标点），已知两个不重合的点，可以求出直线方程，所有k,b求出结果。<br><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/ztest7.gif" alt="(path/to/image.png)"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;服务器的帧消息</span><br><span class="line">onUdpFrameInfo(bytes) &#123;</span><br><span class="line">    let msg ...</span><br><span class="line">    &#x2F;&#x2F;执行同步逻辑</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;对应渲染鸡，更改目标坐标</span><br><span class="line">    this.onRenderAll(index, msg);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;渲染需要移动的鸡</span><br><span class="line">onRenderAll(index, msg) &#123;</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;转成对象</span><br><span class="line">    let data &#x3D; this.byteData2Object(...);</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;发出消息更改鸡的目标坐标</span><br><span class="line">    SoulGame.EventDispatcher.dispatchEvent(&quot;Sync_Pos&quot;, data);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">&#x2F;&#x2F;鸡对象的部分代码</span><br><span class="line"></span><br><span class="line">onLoad() &#123;</span><br><span class="line">    SoulGame.EventDispatcher.addEventListener(&quot;Sync_Pos&quot;, this.onUpdatePos, this);  </span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;更新目标点</span><br><span class="line">onUpdatePos(data) &#123;</span><br><span class="line">    if (parseInt(data.id) &#x3D;&#x3D; this.id) &#123;</span><br><span class="line">        &#x2F;&#x2F;除以100,是因为服务器整数计算，放大了100倍，减少浮点数</span><br><span class="line">        let pos &#x3D; (data.pos &#x2F; 100);</span><br><span class="line">        this.targetPos &#x3D; pos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;每帧逻辑</span><br><span class="line">onEnterFrame() &#123;</span><br><span class="line">    &#x2F;&#x2F;插值补偿</span><br><span class="line">    let vec &#x3D; this.node.position.lerp(this.targetVec, 0.5);</span><br><span class="line">    this.node.position &#x3D; vec;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">lerp官方介绍</span><br><span class="line">&#x2F;**</span><br><span class="line">!#en TODO</span><br><span class="line">!#zh 线性插值。</span><br><span class="line">@param to to</span><br><span class="line">@param ratio the interpolation coefficient</span><br><span class="line">@param out optional, the receiving vector </span><br><span class="line">*&#x2F;</span><br><span class="line">lerp(to: Vec2, ratio: number, out?: Vec2): Vec2;</span><br></pre></td></tr></table></figure>
-
-<h3 id="线性内插"><a href="#线性内插" class="headerlink" title="线性内插"></a>线性内插</h3><pre><code>线性内插法的基本计算过程是根据一组已知的未知函数自变量的值和它相对应的函数值， 利用等比关系去求一种求未知函数其他值的近似计算方法，是一种求位置函数逼近数值的求解方法。
-公式表示：Y=Y1+（Y2-Y1）×（X-X1）/（X2-X1）</code></pre><h3 id="线性外插"><a href="#线性外插" class="headerlink" title="线性外插"></a>线性外插</h3><pre><code>外插亦称外推，是插值法的基本类型之一。当自变量 x 不是插值节点，且 x 位于插值区间之外时，用插值函数 P(x) 的值作为被插值函数 f(x) 的近似值，称为外插或外推。</code></pre><p><a href="https://www.cnblogs.com/luluathena/archive/2010/11/27/1889906.html" target="_blank" rel="noopener">https://www.cnblogs.com/luluathena/archive/2010/11/27/1889906.html</a></p>
-<h2 id="曲线插值"><a href="#曲线插值" class="headerlink" title="曲线插值"></a>曲线插值</h2><p>游戏对象的运行轨迹很多情况下是曲线，所以上面所提及的线性插值是无法满足需求的，我们希望通过一定数量的点模拟出非常真实光滑的曲线轨迹，下面将介绍几个常用的曲线插值的方法。</p>
-<h3 id="二次样条插值"><a href="#二次样条插值" class="headerlink" title="二次样条插值"></a>二次样条插值</h3><p>已知不在同一直线上的三点P1、P2、P3，要求通过给定的这三点定义一条抛物线。</p>
-<p>表达式为：</p>
-<p>P(t) = A1 + A2<em>t + A3</em>t^2    (0≤t≤1) </p>
-<p>A1、A2、A3为表达式的系数，且是向量形式。若是二维平面曲线，则为二维向量；若是三维空间曲线，则为三维向量。</p>
-<p><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/ztest13.gif" alt="(path/to/image.png)"></p>
-<p><a href="https://blog.csdn.net/zl908760230/article/details/53967828" target="_blank" rel="noopener">https://blog.csdn.net/zl908760230/article/details/53967828</a></p>
-<h3 id="三次样条插值"><a href="#三次样条插值" class="headerlink" title="三次样条插值"></a>三次样条插值</h3><p><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/ztest12.gif" alt="(path/to/image.png)"></p>
-<pre><code>值则是形似，每个已知点都必会穿过，但是高阶会出现龙格库塔现象，所以一般采用分段插值。今天我们就来说说这个分段三次样条插值。</code></pre><p>已知四个点，求解出近似的轨迹方程，然后分段取点，客户端按帧去更新点。</p>
-<p>表示的公式：</p>
-<p>a<em>x^3+b</em>x^2+c*x+d = y;</p>
-<p>求解出a,b,c,d系数</p>
-<p><a href="https://zhuanlan.zhihu.com/p/62860859" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/62860859</a></p>
-<p>贪吃蛇的实现方式</p>
-<p>客户端与服务器保持一致的三次样条插值方式，服务器采取10帧计算频率，客户端保持30帧左右的更新频率，也就是说客户端插值计算得到空缺帧的中间点，使得蛇可以沿着曲线光滑移动。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;帧数据处理（加入战场后，服务器主动下发）</span><br><span class="line">onFrameInfo (msg) &#123;</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;更新蛇</span><br><span class="line">    this.updateSnakeParams(frameInfos);</span><br><span class="line">    ...</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;更新所有蛇的状态</span><br><span class="line">updateSnakeParams (msg) &#123;</span><br><span class="line">    ...</span><br><span class="line">    if (snake) &#123;</span><br><span class="line">        let p &#x3D;  snake.node.convertToNodeSpaceAR(...);</span><br><span class="line">        if (snake._isDead) &#123;&#x2F;&#x2F;蛇死了</span><br><span class="line">            ...</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            ...</span><br><span class="line">            &#x2F;&#x2F;插值分段得到的轨迹</span><br><span class="line">            snake.AddBodyPosSvr_Head(p.x,p.y);</span><br><span class="line">            &#x2F;&#x2F;修改蛇头角度</span><br><span class="line">            snake.directTo(...);</span><br><span class="line">            &#x2F;&#x2F;修改蛇的速度</span><br><span class="line">            snake.setSpeed(...);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;</span><br><span class="line">&#x2F;&#x2F;snake脚本</span><br><span class="line"></span><br><span class="line">AddBodyPosSvr_Head(x,y)&#123;</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;加到数组头部</span><br><span class="line">    this.m_BodyPosArr_SvrX.unshift(x);</span><br><span class="line">    this.m_BodyPosArr_SvrY.unshift(y);</span><br><span class="line">    &#x2F;&#x2F;将数组进行填补，输出一个新数组</span><br><span class="line">    Utils.resize(this.m_BodyPosArr_SvrX,iEvalCount);</span><br><span class="line">    Utils.resize(this.m_BodyPosArr_SvrY,iEvalCount);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;渲染蛇</span><br><span class="line">rendererSnake()&#123;</span><br><span class="line">    ...</span><br><span class="line">    this.SplineSvr();</span><br><span class="line">    ...</span><br><span class="line">    this.localMove();</span><br><span class="line">    ...</span><br><span class="line">    this.LinearInterpolation();</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;样条处理</span><br><span class="line">SplineSvr()&#123;</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;三次样条插值</span><br><span class="line">    FitParametricDt(...);</span><br><span class="line">    ...</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;本地预测式移动</span><br><span class="line">localMove()&#123;</span><br><span class="line">    &#x2F;&#x2F;差值时间</span><br><span class="line">    let curFrameTurnSpeed &#x3D; Game.m_dTurnSpeed;</span><br><span class="line">    let now &#x3D; this.getCurMilliseconds();</span><br><span class="line">    let iTime &#x3D; now - this.m_iLastUpdateTime;</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;移动蛇头</span><br><span class="line">    this.updateHead(distantce * scale ,curFrameTurnSpeed * scale);</span><br><span class="line">    ...</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;将本地预测移动后的结果与服务器结果比较，差异大进行纠错移动</span><br><span class="line">LinearInterpolation()&#123;</span><br><span class="line">    ...</span><br><span class="line">    let real &#x3D; cc.v2(this.m_BodyPosArr_SvrX_Splined[i], this.m_BodyPosArr_SvrY_Splined[i]);</span><br><span class="line">    let now &#x3D; this.m_BodyPosList_Show[i];</span><br><span class="line">    &#x2F;&#x2F;差一大的话进行纠错</span><br><span class="line">    let result &#x3D; Utils.lerp_Perc(now, real, 0.016 * this.g_LinearInterpolation);</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;进行纠错移动</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>三次样条插值源代码</p>
-<p><a href="https://github.com/BUGyyc/myMd/blob/master/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%B8%89%E6%AC%A1%E6%A0%B7%E6%9D%A1%E6%8F%92%E5%80%BC/CubicSpline.h" target="_blank" rel="noopener">https://github.com/BUGyyc/myMd/blob/master/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%B8%89%E6%AC%A1%E6%A0%B7%E6%9D%A1%E6%8F%92%E5%80%BC/CubicSpline.h</a></p>
-<hr>
-<h1 id="确定性问题"><a href="#确定性问题" class="headerlink" title="确定性问题"></a>确定性问题</h1><p>多数物理引擎在不采取任何手段的情况下，是无法保证确定性的。</p>
-<p>这意味着</p>
-<p>相同的状态 + 相同的输入 = 不同输出结果</p>
-<p>造成这种现象的原因包括但不限于：</p>
-<ul>
-<li>浮点数精度问题</li>
-<li>随机数问题</li>
-<li>时间的细微差异问题</li>
-</ul>
-<h2 id="浮点数计算"><a href="#浮点数计算" class="headerlink" title="浮点数计算"></a>浮点数计算</h2><p>浮点计算因为设备硬件差异，会有计算误差，所以必要时候，需要定点计算，提供一个定点计算数学库。</p>
-<p>浮点数计算不仅仅在不同设备上存在不一致的可能性，甚至是速度也不如整数计算快，所以往往我们把浮点数放大特定倍数，例如放大1000倍，好比是在原有的基础上保留三位小数，客户端接收到放大后的数据，只需要缩小即可</p>
-<h2 id="随机数问题"><a href="#随机数问题" class="headerlink" title="随机数问题"></a>随机数问题</h2><p>事实上，大多数在计算领域用到的随机数都不是真正随机的，而是由伪随机数生成器生成的。伪随机数生成器都是确定性的算法，并且是唯一一种可不需要使用外界熵，诸如热噪声或用户行为来生成随机数的算法。</p>
-<h3 id="伪随机数生成器"><a href="#伪随机数生成器" class="headerlink" title="伪随机数生成器"></a>伪随机数生成器</h3><p>伪随机数生成器通过对一个内部状态进行计算，来生成一个看似随机的数列。这个初始的状态被称作种子。为一个特定算法选一个好种子是非常困难的。通常情况下，算法使用返回的随机值作为内部状态。因为这个内部状态是有限的，伪随机数生成器会在一些情况下重复。一个随机数生成器的周期就是它开始重复之前所能返回的随机数个数。一个使用n位内部状态值得伪随机数算法最多只有 2^n 的周期。用相同的种子开始一个伪随机数生成器，将得到相同的随机数数列，不过这个特性在调试其他模块时非常有用。当伪随机数生成器需要一个“随机”的种子时，通过会使用系统或者外部硬件的熵来源。</p>
-<h3 id="随机数生成算法"><a href="#随机数生成算法" class="headerlink" title="随机数生成算法"></a>随机数生成算法</h3><ul>
-<li><p>平方取中法：取一个10位数作为种子，取平方，返回中间10位作为下一个数和种子，这个算法有统计缺陷，已经不再使用</p>
-</li>
-<li><p>线性同余生成器（LCG）：<br><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190918142750.png" alt="(path/to/image.png)"></p>
-</li>
-<li><p>WELL算法：<br><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190918143206.png" alt="(path/to/image.png)"></p>
-</li>
-</ul>
-<hr>
-<h1 id="传输协议的选择"><a href="#传输协议的选择" class="headerlink" title="传输协议的选择"></a>传输协议的选择</h1><h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><p>TCP提供了一种可靠的面向连接的字节流传输层服务。<br>TCP将用户数据打包构成报文段，它发送数据后启动一个定时器，另一端对收到的数据进行确认，对失序的数据进行重新排序，丢弃重复数据，TCP提供端到端的流量控制，并计算和验证一个强制性的端到端的检验和。</p>
-<h3 id="为什么TCP具有可靠性"><a href="#为什么TCP具有可靠性" class="headerlink" title="为什么TCP具有可靠性"></a>为什么TCP具有可靠性</h3><ul>
-<li>当TCP发出一个段后，它启动一个定时器，等待目的端确认收到这个报文段。</li>
-<li>当TCP收到发自TCP连接另一端的数据，它将发送一个确认。</li>
-<li>TCP将保持它首部和数据的检验和。这是一个端到端的检验和，目的是检测数据在传输<br>过程中的任何变化。如果收到段的检验和有差错， TCP将丢弃这个报文段和不确认收到<br>此报文段（希望发端超时并重发）。</li>
-<li>既然TCP报文段作为IP数据报来传输，而IP数据报的到达可能会失序，因此 TCP报文段<br>的到达也可能会失序。如果必要， TCP将对收到的数据进行重新排序，将收到的数据以<br>正确的顺序交给应用层。</li>
-<li>既然IP数据报会发生重复，TCP的接收端必须丢弃重复的数据。</li>
-<li>TCP还能提供流量控制。 TCP连接的每一方都有固定大小的缓冲空间。 TCP的接收端只</li>
-<li>允许另一端发送接收端缓冲区所能接纳的数据。这将防止较快主机致使较慢主机的缓冲<br>区溢出。</li>
-</ul>
-<p><a href="https://github.com/BUGyyc/myMd/blob/master/%E7%BD%91%E7%BB%9C/TCP.md" target="_blank" rel="noopener">https://github.com/BUGyyc/myMd/blob/master/%E7%BD%91%E7%BB%9C/TCP.md</a></p>
-<h2 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h2><p>UDP是面向报文的。<br>发送方的UDP对应用程序交下来的报文，在添加首部后就向下交付给IP层。<br>既不拆分，也不合并，而是保留这些报文的边界，因此，应用程序需要选择合适的报文大小。</p>
-<p><a href="https://github.com/BUGyyc/myMd/blob/master/%E7%BD%91%E7%BB%9C/UDP.md" target="_blank" rel="noopener">https://github.com/BUGyyc/myMd/blob/master/%E7%BD%91%E7%BB%9C/UDP.md</a></p>
-<h2 id="KCP"><a href="#KCP" class="headerlink" title="KCP"></a>KCP</h2><p>TCP是为流量设计的（每秒内可以传输多少KB的数据），讲究的是充分利用带宽。而 KCP是为流速设计的（单个数据包从一端发送到一端需要多少时间），以10%-20%带宽浪费的代价换取了比 TCP快30%-40%的传输速度。TCP信道是一条流速很慢，但每秒流量很大的大运河，而KCP是水流湍急的小激流。KCP有正常模式和快速模式两种，通过以下策略达到提高流速的结果：</p>
-<ul>
-<li>选择性重传 vs 全部重传: TCP丢包时会全部重传从丢的那个包开始以后的数据，KCP是选择性重传，只重传真正丢失的数据包。</li>
-<li>快速重传：发送端发送了1,2,3,4,5几个包，然后收到远端的ACK: 1, 3, 4, 5，当收到ACK3时，KCP知道2被跳过1次，收到ACK4时，知道2被跳过了2次，此时可以认为2号丢失，不用等超时，直接重传2号包，大大改善了丢包时的传输速度。</li>
-<li>延迟ACK vs 非延迟ACK：TCP为了充分利用带宽，延迟发送ACK（NODELAY都没用），这样超时计算会算出较大 RTT时间，延长了丢包时的判断过程。KCP的ACK是否延迟发送可以调节。</li>
-</ul>
-<p><a href="https://github.com/skywind3000/kcp" target="_blank" rel="noopener">https://github.com/skywind3000/kcp</a></p>
-<h2 id="UDP实现可靠传输问题"><a href="#UDP实现可靠传输问题" class="headerlink" title="UDP实现可靠传输问题"></a>UDP实现可靠传输问题</h2><p>事实上，有不少行家指出，UDP基础上实现可靠传输存在许多无法预料的问题<br><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190918144901.png" alt="(path/to/image.png)"></p>
-<hr>
-<h1 id="同步策略"><a href="#同步策略" class="headerlink" title="同步策略"></a>同步策略</h1><h2 id="帧锁定与事件锁定"><a href="#帧锁定与事件锁定" class="headerlink" title="帧锁定与事件锁定"></a>帧锁定与事件锁定</h2><h2 id="时间同步"><a href="#时间同步" class="headerlink" title="时间同步"></a>时间同步</h2><h2 id="锁步协议"><a href="#锁步协议" class="headerlink" title="锁步协议"></a>锁步协议</h2><hr>
-<h1 id="Unet"><a href="#Unet" class="headerlink" title="Unet"></a>Unet</h1><p>Unity官方提供了NetworkManager的方式<br>如下运行结果：左边操作，右边同步更新</p>
-<p>git</p>
-<p><a href="https://github.com/BUGyyc/SyncProject" target="_blank" rel="noopener">https://github.com/BUGyyc/SyncProject</a></p>
-<hr>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p><a href="https://blog.csdn.net/yupu56/article/details/86822511" target="_blank" rel="noopener">https://blog.csdn.net/yupu56/article/details/86822511</a></p>
-<p><a href="https://blog.codingnow.com/2006/04/sync.html" target="_blank" rel="noopener">https://blog.codingnow.com/2006/04/sync.html</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/28617637" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/28617637</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/44341238" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/44341238</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/49482294" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/49482294</a></p>
-<p><a href="http://gad.qq.com/program/translateview/7168875" target="_blank" rel="noopener">http://gad.qq.com/program/translateview/7168875</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/49483467" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/49483467</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/49483875" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/49483875</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/50440945" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/50440945</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/" data-id="ckbp3mqj2000748twa7j04zmu" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-05.游戏编程/游戏开发技巧/网络相关" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/">网络相关</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>帧锁定与事件锁定</p>
-<p>时间同步的策略</p>
-<p>实时策略网络协议</p>
-<p>锁步协议</p>
-<hr>
-<p>出自游戏编程精粹3</p>
-<p>网络拥塞</p>
-<p><a href="https://blog.csdn.net/sicofield/article/details/9708383" target="_blank" rel="noopener">https://blog.csdn.net/sicofield/article/details/9708383</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/" data-id="ckbp3mqj3000848twaf5s7b8w" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -631,23 +554,23 @@
       <ul>
         
           <li>
-            <a href="/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/">链表</a>
+            <a href="/2020/06/27/Temporary/%E5%85%B3%E4%BA%8E%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">Temporary/关于图片压缩算法</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a>
+            <a href="/2020/06/27/Temporary/%E4%BB%8E%E4%B8%80%E4%B8%AA%E5%9B%BE%E7%89%87%E7%9A%84%E7%BB%98%E5%88%B6%E6%9D%A5%E8%AE%A4%E8%AF%86%E4%B8%80%E4%B8%AA%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B/">Temporary/从一个图片的绘制来认识一个渲染流程</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86%E6%A0%88/">堆栈</a>
+            <a href="/2020/06/27/Temporary/%E5%85%B3%E4%BA%8EUnity%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BA%8F/">Temporary/关于Unity的运行时序</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%98%9F%E5%88%97/">队列</a>
+            <a href="/2020/06/27/Temporary/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/">Temporary/十大排序</a>
           </li>
         
           <li>
-            <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a>
+            <a href="/2020/06/27/Temporary/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/">Temporary/渲染管线</a>
           </li>
         
       </ul>
