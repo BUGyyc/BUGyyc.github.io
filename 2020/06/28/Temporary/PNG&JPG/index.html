@@ -7,15 +7,15 @@
   
   <title>常用图片的构造原理 | Coder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="gif全称Graphics Interchange Format，采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。 文件小，是GIF格式的优点，同时，GIF格式还具有支持动画以及透明的优点。但是，GIF格式仅支持8bit的索引色，即在整个图片中，只能存在256种不同的颜色。 GIF适用于色彩要求不高同时要求文件较小的情况下。 LZW压缩算法LZW算法又叫“串表压缩算法”就是通过建立一个">
+  <meta name="description" content="前言我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。 GIF全称Graphics Interchange Format，采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。 文件小，是GIF格式的优点，同时，GIF格式还具有支持动画以及透明的优点。但是，GIF格式仅支持8bit的索引色，即在整个图片中，只能存在">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用图片的构造原理">
-<meta property="og:url" content="http://bugyyc.com/posts/coder/2020/06/27/Temporary/PNG&JPG/index.html">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/2020/06/28/Temporary/PNG&JPG/index.html">
 <meta property="og:site_name" content="Coder">
-<meta property="og:description" content="gif全称Graphics Interchange Format，采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。 文件小，是GIF格式的优点，同时，GIF格式还具有支持动画以及透明的优点。但是，GIF格式仅支持8bit的索引色，即在整个图片中，只能存在256种不同的颜色。 GIF适用于色彩要求不高同时要求文件较小的情况下。 LZW压缩算法LZW算法又叫“串表压缩算法”就是通过建立一个">
+<meta property="og:description" content="前言我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。 GIF全称Graphics Interchange Format，采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。 文件小，是GIF格式的优点，同时，GIF格式还具有支持动画以及透明的优点。但是，GIF格式仅支持8bit的索引色，即在整个图片中，只能存在">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-06-27T09:48:41.000Z">
-<meta property="article:modified_time" content="2020-06-28T13:48:54.529Z">
+<meta property="article:published_time" content="2020-06-28T09:48:41.000Z">
+<meta property="article:modified_time" content="2020-06-28T14:06:20.213Z">
 <meta property="article:author" content="Delevin">
 <meta property="article:tag" content="temp">
 <meta name="twitter:card" content="summary">
@@ -69,8 +69,8 @@
       <div class="outer">
         <section id="main"><article id="post-Temporary/PNG&amp;JPG" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/27/Temporary/PNG&JPG/" class="article-date">
-  <time datetime="2020-06-27T09:48:41.000Z" itemprop="datePublished">2020-06-27</time>
+    <a href="/2020/06/28/Temporary/PNG&JPG/" class="article-date">
+  <time datetime="2020-06-28T09:48:41.000Z" itemprop="datePublished">2020-06-28</time>
 </a>
     
   </div>
@@ -89,14 +89,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="gif"><a href="#gif" class="headerlink" title="gif"></a>gif</h1><p>全称Graphics Interchange Format，采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。</p>
+<h1 id="GIF"><a href="#GIF" class="headerlink" title="GIF"></a>GIF</h1><p>全称Graphics Interchange Format，采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。</p>
 <p>文件小，是GIF格式的优点，同时，GIF格式还具有支持动画以及透明的优点。但是，GIF格式仅支持8bit的索引色，即在整个图片中，只能存在256种不同的颜色。</p>
 <p>GIF适用于色彩要求不高同时要求文件较小的情况下。</p>
 <h2 id="LZW压缩算法"><a href="#LZW压缩算法" class="headerlink" title="LZW压缩算法"></a>LZW压缩算法</h2><p>LZW算法又叫“串表压缩算法”就是通过建立一个字符串表，用较短的代码来表示较长的字符串来实现压缩。</p>
 <p><a href="https://baike.baidu.com/item/LZW%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">https://baike.baidu.com/item/LZW%E7%AE%97%E6%B3%95</a></p>
-<h1 id="bmp"><a href="#bmp" class="headerlink" title="bmp"></a>bmp</h1><p>BMP 即 bitmap 位图格式，包含的图像信息丰富，但是几乎不进行压缩，导致它存在一个缺点，占用磁盘空间过大，被广泛应用于单片机上。</p>
+<h1 id="BMP"><a href="#BMP" class="headerlink" title="BMP"></a>BMP</h1><p>BMP 即 bitmap 位图格式，包含的图像信息丰富，但是几乎不进行压缩，导致它存在一个缺点，占用磁盘空间过大，被广泛应用于单片机上。</p>
 <p><a href="https://baike.baidu.com/item/BMP%E6%A0%BC%E5%BC%8F" target="_blank" rel="noopener">https://baike.baidu.com/item/BMP%E6%A0%BC%E5%BC%8F</a></p>
-<h1 id="jpg"><a href="#jpg" class="headerlink" title="jpg"></a>jpg</h1><h1 id="png"><a href="#png" class="headerlink" title="png"></a>png</h1><ul>
+<h1 id="JPG"><a href="#JPG" class="headerlink" title="JPG"></a>JPG</h1><h1 id="PNG"><a href="#PNG" class="headerlink" title="PNG"></a>PNG</h1><ul>
 <li>PNG图片采取了基于LZ77派生算法对文件进行压缩，使得它压缩比率更高，生成的文件体积更小，并且不损失数据。</li>
 <li>它利用特殊的编码方法标记重复出现的数据，使得同样格式的图片，PNG图片文件的体积更小。网络通讯中因受带宽制约，在保证图片清晰、逼真的前提下，优先选择PNG格式的图片。</li>
 <li>PNG支持对原图像定义256个透明层次，使得图像的边缘能与任何背景平滑融合，这种功能是GIF和JPEG没有的。</li>
@@ -107,6 +108,7 @@
 <li>PNG 24：24指的是24位，分为3个，即RGB，各占8bit，可以包含2^24种颜色。</li>
 <li>PNG 32：32表示有32bit,除了RGB占了24bit，还有8 bit可以表示透明度，0-255表示透明程度</li>
 </ul>
+<h2 id="PNG的数据结构"><a href="#PNG的数据结构" class="headerlink" title="PNG的数据结构"></a>PNG的数据结构</h2><p>用编码模式打开一种图片，</p>
 <h2 id="PNG的压缩流程"><a href="#PNG的压缩流程" class="headerlink" title="PNG的压缩流程"></a>PNG的压缩流程</h2><h3 id="预解析"><a href="#预解析" class="headerlink" title="预解析"></a>预解析</h3><p>这个阶段会对PNG进行预处理，这个处理过程也是为了让PNG更好的被压缩。</p>
 <p>PNG 图片会使用差分编码对图片进行预处理，处理每一个的像素点中每条通道的值，差分编码有如下几种：</p>
 <ul>
@@ -135,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/27/Temporary/PNG&JPG/" data-id="ckbp3mqk9001z48tw7lzr08om" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/28/Temporary/PNG&JPG/" data-id="ckbp3mqk9001z48tw7lzr08om" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/temp/" rel="tag">temp</a></li></ul>
@@ -146,19 +148,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/06/27/Temporary/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Temporary/渲染管线
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/06/27/Temporary/%E5%85%B3%E4%BA%8E%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">链表</div>
+      <div class="article-nav-title">Temporary/关于图片压缩算法</div>
     </a>
   
 </nav>
@@ -209,6 +202,10 @@
       <ul>
         
           <li>
+            <a href="/2020/06/28/Temporary/PNG&JPG/">常用图片的构造原理</a>
+          </li>
+        
+          <li>
             <a href="/2020/06/27/Temporary/%E5%85%B3%E4%BA%8E%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">Temporary/关于图片压缩算法</a>
           </li>
         
@@ -222,10 +219,6 @@
         
           <li>
             <a href="/2020/06/27/Temporary/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/">Temporary/十大排序</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/27/Temporary/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/">Temporary/渲染管线</a>
           </li>
         
       </ul>
