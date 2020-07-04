@@ -66,8 +66,8 @@
   
     <article id="post-Temporary/PNG&amp;JPG" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/28/Temporary/PNG&JPG/" class="article-date">
-  <time datetime="2020-06-28T09:48:41.000Z" itemprop="datePublished">2020-06-28</time>
+    <a href="/2020/07/04/Temporary/PNG&JPG/" class="article-date">
+  <time datetime="2020-07-04T09:48:41.000Z" itemprop="datePublished">2020-07-04</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/28/Temporary/PNG&JPG/">常用图片的构造原理</a>
+      <a class="article-title" href="/2020/07/04/Temporary/PNG&JPG/">常用图片的构造及其压缩原理</a>
     </h1>
   
 
@@ -86,42 +86,157 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。</p>
-<h1 id="GIF"><a href="#GIF" class="headerlink" title="GIF"></a>GIF</h1><p>全称Graphics Interchange Format，采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。</p>
-<p>文件小，是GIF格式的优点，同时，GIF格式还具有支持动画以及透明的优点。但是，GIF格式仅支持8bit的索引色，即在整个图片中，只能存在256种不同的颜色。</p>
-<p>GIF适用于色彩要求不高同时要求文件较小的情况下。</p>
-<h2 id="LZW压缩算法"><a href="#LZW压缩算法" class="headerlink" title="LZW压缩算法"></a>LZW压缩算法</h2><p>LZW算法又叫“串表压缩算法”就是通过建立一个字符串表，用较短的代码来表示较长的字符串来实现压缩。</p>
-<p><a href="https://baike.baidu.com/item/LZW%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">https://baike.baidu.com/item/LZW%E7%AE%97%E6%B3%95</a></p>
-<h1 id="BMP"><a href="#BMP" class="headerlink" title="BMP"></a>BMP</h1><p>BMP 即 bitmap 位图格式，包含的图像信息丰富，但是几乎不进行压缩，导致它存在一个缺点，占用磁盘空间过大，被广泛应用于单片机上。</p>
-<p><a href="https://baike.baidu.com/item/BMP%E6%A0%BC%E5%BC%8F" target="_blank" rel="noopener">https://baike.baidu.com/item/BMP%E6%A0%BC%E5%BC%8F</a></p>
-<h1 id="JPG"><a href="#JPG" class="headerlink" title="JPG"></a>JPG</h1><h1 id="PNG"><a href="#PNG" class="headerlink" title="PNG"></a>PNG</h1><ul>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。<br>翻阅了大量资料，结合自身实践和思考，总结出这篇博客。这篇博客将从广度上铺开介绍常用的图片的存储格式及其部分压缩原理。</p>
+<h1 id="GIF"><a href="#GIF" class="headerlink" title="GIF"></a>GIF</h1><p>全称Graphics Interchange Format，原义是“图像互换格式”。采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。<br>文件小，是GIF格式的优点，同时，GIF格式还具有支持动画以及透明的优点。但是，GIF格式仅支持8bit的索引色，即在整个图片中，只能存在256种不同的颜色。<br>GIF适用于色彩要求不高同时要求文件较小的情况下。<br>GIF的认识不能停留在动图的概念上，动图只是GIF的一种。GIF一样可以展示静态图像。</p>
+<h2 id="LZW压缩算法"><a href="#LZW压缩算法" class="headerlink" title="LZW压缩算法"></a>LZW压缩算法</h2><p>LZW算法又叫“串表压缩算法”就是通过建立一个字符串表，用较短的代码来表示较长的字符串来实现压缩。<br>LZW算法就是将字符串映射到表，然后用表中的编码来对应相应的字符串，减少字符串的总体长度。<br>LZW压缩有三个重要的对象：</p>
+<ul>
+<li>数据流</li>
+<li>编码流</li>
+<li>编译表</li>
+</ul>
+<p>在编码时，数据流就是输入对象，编码流就是输出对象。在解码时，编码流就是输入对象，数据流就是输出对象。<br>而编码和解码所定的转换标准就是按照编译表来的。<br>LZW压缩算法的原理是：提取数据中的不同字符，然后基于这些字符创建一个编译表，然后用编译表中的字符索引来替换原数据中的字符，从而减少原数据流的大小。值得注意的是编译表并不是在压缩之前就创建好的，而是在压缩过程中动态创建的，这个下面会提及。</p>
+<p>例如，如下字符串：</p>
+<pre><code>ABABAB</code></pre><p>AB子串重复出现。<br>若映射表如下：</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>String</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>A</td>
+</tr>
+<tr>
+<td>1</td>
+<td>B</td>
+</tr>
+<tr>
+<td>2</td>
+<td>AB</td>
+</tr>
+</tbody></table>
+<p>以表为参照，得出结果如下：</p>
+<pre><code>0122</code></pre><p>有同学会疑惑，为什么第一个AB不直接用2表示，这其实是LZW算法的一个流程，A和B是最先加入到映射表中的，而AB是在进行完A、B标识后，才有了AB组合的记录，所以第一个AB在进行映射时，表里面还没有AB组合的映射，只能用A、B两个对应的结果标识。而后的AB在映射表中有了记录，才能进行直接的表示。</p>
+<p>注意：这里用0、1、2只是为了更简单的介绍说明，真实的LZW用的是ASCII值。</p>
+<p>对于数据流中连续重复出现的字节或字串，LZW可以做到很高的压缩比。LZW除了可以应用于图像压缩，也可以用于文本压缩，本身处理的数据也是一样的。</p>
+<h2 id="GIF的存储结构"><a href="#GIF的存储结构" class="headerlink" title="GIF的存储结构"></a>GIF的存储结构</h2><p>GIF的存储结构可以分为控制块和数据块，控制块里是决定GIF表现的参数，数据块里的数据由前面的控制块里的参数来解释。<br>如图所示:</p>
+<ul>
+<li>“GIF89a”<br>GIF就是GIF的签名，而89a表示不同年份的版本号</li>
+<li>“0A000A00 B30000”：其中第一个0A00表示图像宽度，第二个0A00表示图像高度。B3表示压缩字节，第一个00表示背景色索引，第二个00表示像素宽高比。</li>
+</ul>
+<h2 id="GIF的动画原理"><a href="#GIF的动画原理" class="headerlink" title="GIF的动画原理"></a>GIF的动画原理</h2><p>GIF动画的循环次数是由应用扩展来控制的，而GIF动画每一帧的过渡方式是由图形控制扩展控制,图像描述符控制图像绘制的区域。<br>图形控制扩展中控制动画的参数分别是：disposal method，user input flag，delay time，transparency color。</p>
+<ul>
+<li>disposal method：<ul>
+<li>disposal method = 1: 解码器不会清理画布，直接将下一幅图像渲染上一幅图像上;</li>
+<li>disposal method = 2: 解码器会以背景色清理画布，然后渲染下一幅图像。背景色在逻辑屏幕描述符中设置;</li>
+<li>disposal method = 3: 解码器会将画布设置为上之前的状态，然后渲染下一幅图像;</li>
+<li>disposal method = 4-7: 预留的值;</li>
+</ul>
+</li>
+<li>user input flag: 当user input flag为1时，GIF会在有用户输入事件（鼠标、键盘）时才会过渡到下一幅图像。</li>
+<li>delay time: delay time: 占两个字节，为无符号整数，控制当前帧的展示时间，单位是0.01秒。</li>
+<li>transparency color: 如果图形控制扩展的透明色标志位为1，那么解码器会通过透明色索引在颜色列表中找到改颜色，标记为透明，当渲染图像时，标记为透明色的颜色将不会绘制，显示下面的背景。</li>
+</ul>
+<h1 id="BMP"><a href="#BMP" class="headerlink" title="BMP"></a>BMP</h1><p>BMP 即 bitmap 位图格式，包含的图像信息丰富，但是几乎不进行压缩，导致它存在一个缺点，占用磁盘空间过大，被广泛应用于单片机上。<br>BMP可以分为两类：</p>
+<ul>
+<li>设备相关位图（DDB）</li>
+<li>设备无关位图（DIB）</li>
+</ul>
+<p>BMP通常不采用任何压缩，所以BMP占用空间大。</p>
+<p><a href="https://www.jianshu.com/p/0ba324e9e8c1" target="_blank" rel="noopener">https://www.jianshu.com/p/0ba324e9e8c1</a></p>
+<h2 id="BMP的组成"><a href="#BMP的组成" class="headerlink" title="BMP的组成"></a>BMP的组成</h2><p>BMP主要由四部分组成：</p>
+<ul>
+<li>位图头文件数据结构：BMP图像文件的类型，显示内容等等；</li>
+<li>位图信息数据结构：图像的宽高、压缩算法等等；</li>
+<li>调试板：部分BMP需要调试板，部分BMP是真彩色图（24bit）不需要调色板；</li>
+<li>位图数据：（24bit）使用RGB，还有一种就是调色板对应的颜色索引值。</li>
+</ul>
+<h3 id="BMP文件头"><a href="#BMP文件头" class="headerlink" title="BMP文件头"></a>BMP文件头</h3><pre><code>typedef struct tagBITMAPFILEHEADER
+{
+    WORD bfType;//位图文件的类型，必须为BM(1-2字节）
+    DWORD bfSize;//位图文件的大小，以字节为单位（3-6字节，低位在前）
+    WORD bfReserved1;//位图文件保留字，必须为0(7-8字节）
+    WORD bfReserved2;//位图文件保留字，必须为0(9-10字节）
+    DWORD bfOffBits;//位图数据的起始位置，以相对于位图（11-14字 节，低位在前）
+    //文件头的偏移量表示，以字节为单位
+}__attribute__((packed)) BITMAPFILEHEADER;</code></pre><p>如下图所示：</p>
+<h3 id="BMP信息头"><a href="#BMP信息头" class="headerlink" title="BMP信息头"></a>BMP信息头</h3><pre><code>typedef struct tagBITMAPINFOHEADER{
+DWORD biSize;//本结构所占用字节数（15-18字节）
+LONG biWidth;//位图的宽度，以像素为单位（19-22字节）
+LONG biHeight;//位图的高度，以像素为单位（23-26字节）
+WORD biPlanes;//目标设备的级别，必须为1(27-28字节）
+WORD biBitCount;//每个像素所需的位数，必须是1（双色），（29-30字节）
+//4(16色），8(256色）16(高彩色)或24（真彩色）之一
+DWORD biCompression;//位图压缩类型，必须是0（不压缩），（31-34字节）
+//1(BI_RLE8压缩类型）或2(BI_RLE4压缩类型）之一
+DWORD biSizeImage;//位图的大小(其中包含了为了补齐行数是4的倍数而添加的空字节)，以字节为单位（35-38字节）
+LONG biXPelsPerMeter;//位图水平分辨率，每米像素数（39-42字节）
+LONG biYPelsPerMeter;//位图垂直分辨率，每米像素数（43-46字节)
+DWORD biClrUsed;//位图实际使用的颜色表中的颜色数（47-50字节）
+DWORD biClrImportant;//位图显示过程中重要的颜色数（51-54字节）
+}__attribute__((packed)) BITMAPINFOHEADER;</code></pre><p>如下图所示：</p>
+<h3 id="BMP颜色表"><a href="#BMP颜色表" class="headerlink" title="BMP颜色表"></a>BMP颜色表</h3><pre><code>typedef struct tagRGBQUAD{
+BYTE rgbBlue;//蓝色的亮度（值范围为0-255)
+BYTE rgbGreen;//绿色的亮度（值范围为0-255)
+BYTE rgbRed;//红色的亮度（值范围为0-255)
+BYTE rgbReserved;//保留，必须为0
+}__attribute__((packed)) RGBQUAD;</code></pre><h3 id="BMP位图数据"><a href="#BMP位图数据" class="headerlink" title="BMP位图数据"></a>BMP位图数据</h3><p>位图数据记录了位图的每一个像素值，记录顺序是在扫描行内是从左到右，扫描行之间是从下到上。位图的一个像素值所占的字节数：</p>
+<ul>
+<li>当biBitCount=1时，8个像素占1个字节；</li>
+<li>当biBitCount=4时，2个像素占1个字节；</li>
+<li>当biBitCount=8时，1个像素占1个字节；</li>
+<li>当biBitCount=24时，1个像素占3个字节,按顺序分别为B,G,R；</li>
+</ul>
+<p>Windows规定一个扫描行所占的字节数必须是<br>4的倍数（即以long为单位），不足的以0填充。</p>
+<h1 id="JPG-JPEG"><a href="#JPG-JPEG" class="headerlink" title="JPG (JPEG)"></a>JPG (JPEG)</h1><p>JPG即JPEG（Joint Photographic Experts Group）。<br>JPEG 是互联网上常见的图像存储和传送方式。但是此格式不适合用来绘制线条、文字或图标，因为JPEG的压缩方式通常会导致图片质量严重受损。对比之下PNG、GIF更适合做绘制线条、文字或图标的首选，不过GIF只支持8bit的颜色，不适合颜色丰富的图片。</p>
+<p><a href="https://www.jianshu.com/p/f5557c0e689e" target="_blank" rel="noopener">https://www.jianshu.com/p/f5557c0e689e</a></p>
+<h2 id="JPEG的格式"><a href="#JPEG的格式" class="headerlink" title="JPEG的格式"></a>JPEG的格式</h2><p>JPEG的格式可以分为三种：</p>
+<ul>
+<li>标准JPEG格式：在网页上下载显示图像时，是从上至下逐步显示图片，直到下载完成，才能看到图像原貌；</li>
+<li>渐进式JPEG格式：在网页上显示图像时，先显示粗略的图像，然后随着下载进度，逐步精细图像细节。渐进式JPEG格式图像要比标准JPEG格式要小很多，网页上的JPEG格式多用这种格式；</li>
+<li>JPEG2000：新一代影像压缩法，压缩品质更高。</li>
+</ul>
+<h2 id="JPEG的优缺点"><a href="#JPEG的优缺点" class="headerlink" title="JPEG的优缺点"></a>JPEG的优缺点</h2><ul>
+<li>JPEG可以支持极高的压缩率，所以JPEG的下载速度特别快；</li>
+<li>JPEG的压缩可能造成图像质量受损，因此不太适用于高清晰的图像应用场景；</li>
+</ul>
+<h2 id="JPEG的压缩方式"><a href="#JPEG的压缩方式" class="headerlink" title="JPEG的压缩方式"></a>JPEG的压缩方式</h2><p>JPEG的压缩方式主要有四种，其中一种是基于空间DPCM的无损压缩，另外三种是基于DCT的有损压缩。</p>
+<ul>
+<li>基于DCT的顺序编码：基于DCT变换原理，按照从上之下，从左至右的顺序对图像数据进行编码压缩。当接收端收到数据后，再按照这个顺序进行解码，在此过程中存在图像丢失，因此是有损压缩；</li>
+<li>基于DCT的累进编码：也是基于DCT变换原理，不过是对图像进行多次扫描，从而对图像进行进一步的数据压缩。所以图像还原时，看到的图像时粗略图，而后逐步细化，直到结束；</li>
+<li>基于DCT的分层编码：以图像分辨率为基准进行编码，从低分辨率开始，逐渐提高分辨率，直到于原图像的分辨率一致。图像的解码也是这样的步骤；</li>
+<li>基于空间DPCM的无损压缩：采用预测法和哈夫曼编码（或算术编码）以保证重建图像与原图像完全相同（设均方误差为零）；</li>
+</ul>
+<h3 id="DCT变换"><a href="#DCT变换" class="headerlink" title="DCT变换"></a>DCT变换</h3><p>DCT变换，即离散余弦变换是与傅里叶变换相关的一种变换。</p>
+<p><a href="https://baike.baidu.com/item/%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2/7118270" target="_blank" rel="noopener">https://baike.baidu.com/item/%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2/7118270</a></p>
+<p><a href="https://blog.csdn.net/BigDream123/article/details/101426393" target="_blank" rel="noopener">https://blog.csdn.net/BigDream123/article/details/101426393</a></p>
+<h3 id="空间DPCM"><a href="#空间DPCM" class="headerlink" title="空间DPCM"></a>空间DPCM</h3><p>DPCM(差分脉冲编码调制）是一种典型的预测编码系统，在传输图像、视频数据时，相邻的像素点的值往往相差很小，在空间上存在很大得到冗余，DMCP便是利用这个特点，通过相邻像素点的值进行预测，对图像数据进行压缩。</p>
+<p><a href="https://blog.csdn.net/weixin_44949552/article/details/106042450" target="_blank" rel="noopener">https://blog.csdn.net/weixin_44949552/article/details/106042450</a></p>
+<h2 id="JPEG的特点"><a href="#JPEG的特点" class="headerlink" title="JPEG的特点"></a>JPEG的特点</h2><h1 id="PNG"><a href="#PNG" class="headerlink" title="PNG"></a>PNG</h1><p>去年在开发多个微信小游戏时，为了减少微信小游戏包体，其中一个方式就是压缩png图片。<br>当时用的较多的一个工具是：<a href="https://tinify.cn/" target="_blank" rel="noopener">https://tinify.cn/</a></p>
+<ul>
 <li>PNG图片采取了基于LZ77派生算法对文件进行压缩，使得它压缩比率更高，生成的文件体积更小，并且不损失数据。</li>
 <li>它利用特殊的编码方法标记重复出现的数据，使得同样格式的图片，PNG图片文件的体积更小。网络通讯中因受带宽制约，在保证图片清晰、逼真的前提下，优先选择PNG格式的图片。</li>
 <li>PNG支持对原图像定义256个透明层次，使得图像的边缘能与任何背景平滑融合，这种功能是GIF和JPEG没有的。</li>
 </ul>
 <p>PNG图片可以分为三个类型，分别为 PNG 8/ PNG 24 / PNG 32。</p>
 <ul>
-<li>PNG 8：8即指8bit，2^8 = 256种颜色，这表示一张Png8 最多能存储256种颜色。</li>
-<li>PNG 24：24指的是24位，分为3个，即RGB，各占8bit，可以包含2^24种颜色。</li>
-<li>PNG 32：32表示有32bit,除了RGB占了24bit，还有8 bit可以表示透明度，0-255表示透明程度</li>
+<li>PNG 8：8即指8bit，2^8 = 256种颜色，这表示一张Png8 最多能存储256种颜色;</li>
+<li>PNG 24：24指的是24位，分为3个，即RGB，各占8bit，可以包含2^24种颜色;</li>
+<li>PNG 32：32表示有32bit,除了RGB占了24bit，还有8 bit可以表示透明度，0-255表示透明程度;</li>
 </ul>
-<h2 id="PNG的数据结构"><a href="#PNG的数据结构" class="headerlink" title="PNG的数据结构"></a>PNG的数据结构</h2><p>用编码模式打开一种图片，</p>
-<h2 id="PNG的压缩流程"><a href="#PNG的压缩流程" class="headerlink" title="PNG的压缩流程"></a>PNG的压缩流程</h2><h3 id="预解析"><a href="#预解析" class="headerlink" title="预解析"></a>预解析</h3><p>这个阶段会对PNG进行预处理，这个处理过程也是为了让PNG更好的被压缩。</p>
-<p>PNG 图片会使用差分编码对图片进行预处理，处理每一个的像素点中每条通道的值，差分编码有如下几种：</p>
+<h2 id="LZ77派生算法"><a href="#LZ77派生算法" class="headerlink" title="LZ77派生算法"></a>LZ77派生算法</h2><p>LZ77编码是一种基于字典的、“滑动窗”的无损压缩算法。<br>LZ77编码步骤如下：<br>1.从当前压缩位置开始，考察未编码的数据，并试图在滑动窗口中找出最长的匹配字符串，如果找到，则进行步骤 2 ，否则进行步骤 3<br>2.输出三元符号组（ off,len,c ）。其中 off 为窗口中匹配字符串相对窗口边界的偏移，len为可匹配的长度，c 为下一个字符，即不匹配的第一个字符。然后将窗口向后滑动 len+1 个字符，继续步骤 1.<br>3.输出三元符号组（ 0,0,c ）。其中 c 为下一个字符。然后将窗口向后滑动一个字符，继续步骤 1.</p>
+<h3 id="预解析"><a href="#预解析" class="headerlink" title="预解析"></a>预解析</h3><p>这个阶段会对PNG进行预处理，这个处理过程也是为了让PNG更好的被压缩。<br>PNG 图片会使用差分编码对图片进行预处理，处理每一个的像素点中每条通道的值，差分编码有如下几种：</p>
 <ul>
-<li>不过滤</li>
-<li>X - A</li>
-<li>X - B</li>
-<li>X - (A+B)/2</li>
-<li>Paeth推断</li>
+<li>不过滤；</li>
+<li>X - A；</li>
+<li>X - B；</li>
+<li>X - (A+B)/2；</li>
+<li>Paeth推断；</li>
 </ul>
-<p>假设有图片为从左至右均匀渐变色，列举像素信息映射成数组为：[1,2,3,4,5,6,7,8]。<br>使用 X - A 编码为 [2-1,3-2,4-3,6-5,7-6,8-7] =&gt; [1,1,1,1,1,1,1]</p>
-<p>[1,1,1,1,1,1,1] 出现大量重复数字，这非常容易进行压缩。</p>
-<p>这也是多数颜色单一、颜色变化规律的图片特别好压缩，且可以压缩得特别小的原因。</p>
-<h3 id="压缩阶段"><a href="#压缩阶段" class="headerlink" title="压缩阶段"></a>压缩阶段</h3><p>这个阶段会执行Deflate压缩，该算法结合LZ77算法和Huffman算法对图片进行编码。</p>
-<p>压缩阶段，会对进行预解析后的图片数据进行Deflate压缩。</p>
-<p>Deflate压缩会标记图片所有的重复数据，并记录数据的特征和结构，最后得到一个压缩比最大的PNG图片编码数据。</p>
-<p>Deflate是一种压缩数据流的算法，任何需要流式压缩的地方都可以使用这种算法。</p>
+<p>假设有图片为从左至右均匀渐变色，列举像素信息映射成数组为：[1,2,3,4,5,6,7,8]。<br>使用 X - A 编码为 [2-1,3-2,4-3,6-5,7-6,8-7] =&gt; [1,1,1,1,1,1,1]<br>[1,1,1,1,1,1,1] 出现大量重复数字，这非常容易进行压缩。<br>这也是多数颜色单一、颜色变化规律的图片特别好压缩，且可以压缩得特别小的原因。</p>
+<h3 id="压缩阶段"><a href="#压缩阶段" class="headerlink" title="压缩阶段"></a>压缩阶段</h3><p>这个阶段会执行Deflate压缩，该算法结合LZ77算法和Huffman算法对图片进行编码。<br>压缩阶段，会对进行预解析后的图片数据进行Deflate压缩。<br>Deflate压缩会标记图片所有的重复数据，并记录数据的特征和结构，最后得到一个压缩比最大的PNG图片编码数据。<br>Deflate是一种压缩数据流的算法，任何需要流式压缩的地方都可以使用这种算法。</p>
 <hr>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.zhihu.com/question/29758228" target="_blank" rel="noopener">https://www.zhihu.com/question/29758228</a></p>
 <p><a href="https://blog.csdn.net/qq_30541261/article/details/70154282" target="_blank" rel="noopener">https://blog.csdn.net/qq_30541261/article/details/70154282</a></p>
@@ -130,11 +245,14 @@
 <p><a href="http://www.360doc.com/content/19/0822/15/15312904_856439392.shtml" target="_blank" rel="noopener">http://www.360doc.com/content/19/0822/15/15312904_856439392.shtml</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/40356456" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/40356456</a></p>
 <p><a href="https://www.zhihu.com/question/20028452" target="_blank" rel="noopener">https://www.zhihu.com/question/20028452</a></p>
+<p><a href="https://baike.baidu.com/item/LZW%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">https://baike.baidu.com/item/LZW%E7%AE%97%E6%B3%95</a></p>
+<p><a href="https://www.cnblogs.com/luov/p/10953981.html" target="_blank" rel="noopener">https://www.cnblogs.com/luov/p/10953981.html</a><br><a href="https://www.linuxidc.com/Linux/2017-06/145156.htm" target="_blank" rel="noopener">https://www.linuxidc.com/Linux/2017-06/145156.htm</a></p>
+<p><a href="https://www.cnblogs.com/qcloud1001/p/6647080.html" target="_blank" rel="noopener">https://www.cnblogs.com/qcloud1001/p/6647080.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/28/Temporary/PNG&JPG/" data-id="ckbp3mqk9001z48tw7lzr08om" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/07/04/Temporary/PNG&JPG/" data-id="ckbp3mqk9001z48tw7lzr08om" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/temp/" rel="tag">temp</a></li></ul>
@@ -587,7 +705,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
     </div>
   </div>
 
@@ -600,7 +718,7 @@
       <ul>
         
           <li>
-            <a href="/2020/06/28/Temporary/PNG&JPG/">常用图片的构造原理</a>
+            <a href="/2020/07/04/Temporary/PNG&JPG/">常用图片的构造及其压缩原理</a>
           </li>
         
           <li>
