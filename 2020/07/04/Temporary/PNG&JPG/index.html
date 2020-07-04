@@ -7,15 +7,15 @@
   
   <title>常用图片的构造及其压缩原理 | Coder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。翻阅了大量资料，结合自身实践和思考，总结出这篇博客。这篇博客将从广度上铺开介绍常用的图片的存储格式及其部分压缩原理。 GIF全称Graphics Interchange Format，原义是“图像互换格式”。采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。">
+  <meta name="description" content="前言我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。翻阅了大量资料，结合自身实践和思考，总结出这篇博客。这篇博客将从广度上铺开介绍常用的图片的存储格式及其部分压缩原理。  GIF全称Graphics Interchange Format，原义是“图像互换格式”。可采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用图片的构造及其压缩原理">
 <meta property="og:url" content="http://bugyyc.com/posts/coder/2020/07/04/Temporary/PNG&JPG/index.html">
 <meta property="og:site_name" content="Coder">
-<meta property="og:description" content="前言我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。翻阅了大量资料，结合自身实践和思考，总结出这篇博客。这篇博客将从广度上铺开介绍常用的图片的存储格式及其部分压缩原理。 GIF全称Graphics Interchange Format，原义是“图像互换格式”。采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。">
+<meta property="og:description" content="前言我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。翻阅了大量资料，结合自身实践和思考，总结出这篇博客。这篇博客将从广度上铺开介绍常用的图片的存储格式及其部分压缩原理。  GIF全称Graphics Interchange Format，原义是“图像互换格式”。可采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-04T09:50:41.000Z">
-<meta property="article:modified_time" content="2020-07-04T09:40:11.526Z">
+<meta property="article:modified_time" content="2020-07-04T15:05:52.384Z">
 <meta property="article:author" content="Delevin">
 <meta property="article:tag" content="temp">
 <meta name="twitter:card" content="summary">
@@ -90,8 +90,35 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我们所熟知、常用的图片格式有：gif、bmp、Jpg、png等，这篇博客将主要介绍gif、bmp、jpg、png四种常用的图片。<br>翻阅了大量资料，结合自身实践和思考，总结出这篇博客。这篇博客将从广度上铺开介绍常用的图片的存储格式及其部分压缩原理。</p>
-<h1 id="GIF"><a href="#GIF" class="headerlink" title="GIF"></a>GIF</h1><p>全称Graphics Interchange Format，原义是“图像互换格式”。采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。<br>文件小，是GIF格式的优点，同时，GIF格式还具有支持动画以及透明的优点。但是，GIF格式仅支持8bit的索引色，即在整个图片中，只能存在256种不同的颜色。<br>GIF适用于色彩要求不高同时要求文件较小的情况下。<br>GIF的认识不能停留在动图的概念上，动图只是GIF的一种。GIF一样可以展示静态图像。</p>
-<h2 id="LZW压缩算法"><a href="#LZW压缩算法" class="headerlink" title="LZW压缩算法"></a>LZW压缩算法</h2><p>LZW算法又叫“串表压缩算法”就是通过建立一个字符串表，用较短的代码来表示较长的字符串来实现压缩。<br>LZW算法就是将字符串映射到表，然后用表中的编码来对应相应的字符串，减少字符串的总体长度。<br>LZW压缩有三个重要的对象：</p>
+<hr>
+<h1 id="GIF"><a href="#GIF" class="headerlink" title="GIF"></a>GIF</h1><p>全称Graphics Interchange Format，原义是“图像互换格式”。可采用LZW压缩算法进行编码。是无损的、采用索引色的、点阵图。<br>文件小，是GIF格式的优点，同时，GIF格式还具有支持动画以及透明的优点。但是，GIF格式仅支持8bit的索引色，即在整个图片中，只能存在256种不同的颜色。<br>GIF适用于色彩要求不高同时要求文件较小的情况下。<br>GIF的认识不能停留在动图的概念上，动图只是GIF的一种。GIF一样可以展示静态图像。</p>
+<h2 id="GIF文件格式"><a href="#GIF文件格式" class="headerlink" title="GIF文件格式"></a>GIF文件格式</h2><p>如下图描述，共有11块组成部分，其中实线框为必备组成部分，另外三个虚线框为可选块。</p>
+<p>八个必备组成部分：</p>
+<pre><code>Header（头）、Logical Screen Descriptor（逻辑屏幕描述符）、Image Descriptor（图像描述符）、Image Data（图像数据流）、Plain Text Extension（文本扩展）、Application Extension（应用扩展）、Comment Extension（注释扩展）、Trailer（尾部标记）</code></pre><p>三个可选组成部分：</p>
+<pre><code>Global Color Table（全局颜色表）、Graphic Control Extension（图形控制扩展）、Local Color Table（本地颜色表）</code></pre><h2 id="GIF的存储结构"><a href="#GIF的存储结构" class="headerlink" title="GIF的存储结构"></a>GIF的存储结构</h2><p>GIF的存储结构可以分为控制块和数据块，控制块里是决定GIF表现的参数，数据块里的数据由前面的控制块里的参数来解释。<br>如图所示:</p>
+<ul>
+<li>“GIF89a”<br>GIF就是GIF的签名，而89a表示不同年份的版本号</li>
+<li>“0A000A00 B30000”：其中第一个0A00表示图像宽度，第二个0A00表示图像高度。B3表示压缩字节，第一个00表示背景色索引，第二个00表示像素宽高比。</li>
+</ul>
+<h2 id="GIF的动画原理"><a href="#GIF的动画原理" class="headerlink" title="GIF的动画原理"></a>GIF的动画原理</h2><p>GIF动画的循环次数是由应用扩展来控制的，而GIF动画每一帧的过渡方式是由图形控制扩展控制,图像描述符控制图像绘制的区域。<br>图形控制扩展中控制动画的参数分别是：disposal method，user input flag，delay time，transparency color。</p>
+<ul>
+<li>disposal method：<ul>
+<li>disposal method = 1: 解码器不会清理画布，直接将下一幅图像渲染上一幅图像上;</li>
+<li>disposal method = 2: 解码器会以背景色清理画布，然后渲染下一幅图像。背景色在逻辑屏幕描述符中设置;</li>
+<li>disposal method = 3: 解码器会将画布设置为上之前的状态，然后渲染下一幅图像;</li>
+<li>disposal method = 4-7: 预留的值;</li>
+</ul>
+</li>
+<li>user input flag: 当user input flag为1时，GIF会在有用户输入事件（鼠标、键盘）时才会过渡到下一幅图像。</li>
+<li>delay time: delay time: 占两个字节，为无符号整数，控制当前帧的展示时间，单位是0.01秒。</li>
+<li>transparency color: 如果图形控制扩展的透明色标志位为1，那么解码器会通过透明色索引在颜色列表中找到改颜色，标记为透明，当渲染图像时，标记为透明色的颜色将不会绘制，显示下面的背景。</li>
+</ul>
+<p>GIF 比较特别的一点是，即使保存多帧图片，却可以使得存储不至于过大。这得益于，相邻帧之间没有过大差异，使得局部图像块不需要改变，重复使用，使得存储压力小了很多。<br>GIF 的压缩，如果不追求无损，可牺牲图片色彩丰富度的情况下，单独以黑白色值来存储，可以使得图片得到更多幅度的压缩。<br>GIF 的减少存储有两种方式：</p>
+<ul>
+<li>减少颜色值，使得图片的色彩丰富度降低，每个像素点占位减小，颜色越少，观感上图片越单一朴素；</li>
+<li>减少帧数，从数量上减少总的存储，帧数减少过多，会有视觉上的跳跃卡顿，效果没有那么平滑； </li>
+</ul>
+<h2 id="LZW压缩算法"><a href="#LZW压缩算法" class="headerlink" title="LZW压缩算法"></a>LZW压缩算法</h2><p>上面提到，GIF可采用LZW压缩算法，这是一种无损压缩。<br>LZW算法又叫“串表压缩算法”就是通过建立一个字符串表，用较短的代码来表示较长的字符串来实现压缩。<br>LZW算法就是将字符串映射到表，然后用表中的编码来对应相应的字符串，减少字符串的总体长度。<br>LZW压缩有三个重要的对象：</p>
 <ul>
 <li>数据流</li>
 <li>编码流</li>
@@ -122,34 +149,23 @@
 </tbody></table>
 <p>以表为参照，得出结果如下：</p>
 <pre><code>0122</code></pre><p>有同学会疑惑，为什么第一个AB不直接用2表示，这其实是LZW算法的一个流程，A和B是最先加入到映射表中的，而AB是在进行完A、B标识后，才有了AB组合的记录，所以第一个AB在进行映射时，表里面还没有AB组合的映射，只能用A、B两个对应的结果标识。而后的AB在映射表中有了记录，才能进行直接的表示。</p>
-<p>注意：这里用0、1、2只是为了更简单的介绍说明，真实的LZW用的是ASCII值。</p>
-<p>对于数据流中连续重复出现的字节或字串，LZW可以做到很高的压缩比。LZW除了可以应用于图像压缩，也可以用于文本压缩，本身处理的数据也是一样的。</p>
-<h2 id="GIF的存储结构"><a href="#GIF的存储结构" class="headerlink" title="GIF的存储结构"></a>GIF的存储结构</h2><p>GIF的存储结构可以分为控制块和数据块，控制块里是决定GIF表现的参数，数据块里的数据由前面的控制块里的参数来解释。<br>如图所示:</p>
-<ul>
-<li>“GIF89a”<br>GIF就是GIF的签名，而89a表示不同年份的版本号</li>
-<li>“0A000A00 B30000”：其中第一个0A00表示图像宽度，第二个0A00表示图像高度。B3表示压缩字节，第一个00表示背景色索引，第二个00表示像素宽高比。</li>
-</ul>
-<h2 id="GIF的动画原理"><a href="#GIF的动画原理" class="headerlink" title="GIF的动画原理"></a>GIF的动画原理</h2><p>GIF动画的循环次数是由应用扩展来控制的，而GIF动画每一帧的过渡方式是由图形控制扩展控制,图像描述符控制图像绘制的区域。<br>图形控制扩展中控制动画的参数分别是：disposal method，user input flag，delay time，transparency color。</p>
-<ul>
-<li>disposal method：<ul>
-<li>disposal method = 1: 解码器不会清理画布，直接将下一幅图像渲染上一幅图像上;</li>
-<li>disposal method = 2: 解码器会以背景色清理画布，然后渲染下一幅图像。背景色在逻辑屏幕描述符中设置;</li>
-<li>disposal method = 3: 解码器会将画布设置为上之前的状态，然后渲染下一幅图像;</li>
-<li>disposal method = 4-7: 预留的值;</li>
-</ul>
-</li>
-<li>user input flag: 当user input flag为1时，GIF会在有用户输入事件（鼠标、键盘）时才会过渡到下一幅图像。</li>
-<li>delay time: delay time: 占两个字节，为无符号整数，控制当前帧的展示时间，单位是0.01秒。</li>
-<li>transparency color: 如果图形控制扩展的透明色标志位为1，那么解码器会通过透明色索引在颜色列表中找到改颜色，标记为透明，当渲染图像时，标记为透明色的颜色将不会绘制，显示下面的背景。</li>
-</ul>
-<h1 id="BMP"><a href="#BMP" class="headerlink" title="BMP"></a>BMP</h1><p>BMP 即 bitmap 位图格式，包含的图像信息丰富，但是几乎不进行压缩，导致它存在一个缺点，占用磁盘空间过大，被广泛应用于单片机上。<br>BMP可以分为两类：</p>
+<pre><code>注意：这里用0、1、2只是为了更简单的介绍说明，真实的LZW用的是ASCII值。</code></pre><p>对于数据流中连续重复出现的字节或字串，LZW可以做到很高的压缩比。LZW除了可以应用于图像压缩，也可以用于文本压缩，本身处理的数据也是一样的。</p>
+<hr>
+<h1 id="BMP"><a href="#BMP" class="headerlink" title="BMP"></a>BMP</h1><p>BMP 即 bitmap 位图格式，包含的图像信息丰富，但是几乎不进行压缩，导致它存在一个缺点，占用磁盘空间过大，被广泛应用于单片机上。<br>BMP通常不采用任何压缩，所以BMP占用空间大。<br>BMP可以分为两类：</p>
 <ul>
 <li>设备相关位图（DDB）</li>
 <li>设备无关位图（DIB）</li>
 </ul>
-<p>BMP通常不采用任何压缩，所以BMP占用空间大。</p>
-<p><a href="https://www.jianshu.com/p/0ba324e9e8c1" target="_blank" rel="noopener">https://www.jianshu.com/p/0ba324e9e8c1</a></p>
-<h2 id="BMP的组成"><a href="#BMP的组成" class="headerlink" title="BMP的组成"></a>BMP的组成</h2><p>BMP主要由四部分组成：</p>
+<h2 id="设备无关位图（DIB）"><a href="#设备无关位图（DIB）" class="headerlink" title="设备无关位图（DIB）"></a>设备无关位图（DIB）</h2><p>DIB位图包含下列的颜色和尺寸信息：</p>
+<ul>
+<li>原始设备（即创建图片的设备）的颜色格式；</li>
+<li>原始设备的分辨率；</li>
+<li>原始设备的调色板；</li>
+<li>一个位数组，由红、绿、蓝（RGB）三个值代表一个像素；</li>
+<li>一个数组压缩标志，用于表明数据的压缩方案（如果需要的话）</li>
+</ul>
+<h2 id="设备相关位图（DDB）"><a href="#设备相关位图（DDB）" class="headerlink" title="设备相关位图（DDB）"></a>设备相关位图（DDB）</h2><pre><code>设备相关位图（DDB）之所以现在还被系统支持，只是为了兼容旧的Windows 3.0软件，如果程序员现在要开发一个与位图有关的程序，则应该尽量使用或生成DIB格式的位图。
+DDB位图是被一个单个结构BITMAP所描述，这个结构的成员标明了该位图的宽度、高度、设备的颜色格式等信息。</code></pre><h2 id="BMP的组成"><a href="#BMP的组成" class="headerlink" title="BMP的组成"></a>BMP的组成</h2><p>BMP主要由四部分组成：</p>
 <ul>
 <li>位图头文件数据结构：BMP图像文件的类型，显示内容等等；</li>
 <li>位图信息数据结构：图像的宽高、压缩算法等等；</li>
@@ -193,8 +209,8 @@ BYTE rgbReserved;//保留，必须为0
 <li>当biBitCount=24时，1个像素占3个字节,按顺序分别为B,G,R；</li>
 </ul>
 <p>Windows规定一个扫描行所占的字节数必须是<br>4的倍数（即以long为单位），不足的以0填充。</p>
+<hr>
 <h1 id="JPG-JPEG"><a href="#JPG-JPEG" class="headerlink" title="JPG (JPEG)"></a>JPG (JPEG)</h1><p>JPG即JPEG（Joint Photographic Experts Group）。<br>JPEG 是互联网上常见的图像存储和传送方式。但是此格式不适合用来绘制线条、文字或图标，因为JPEG的压缩方式通常会导致图片质量严重受损。对比之下PNG、GIF更适合做绘制线条、文字或图标的首选，不过GIF只支持8bit的颜色，不适合颜色丰富的图片。</p>
-<p><a href="https://www.jianshu.com/p/f5557c0e689e" target="_blank" rel="noopener">https://www.jianshu.com/p/f5557c0e689e</a></p>
 <h2 id="JPEG的格式"><a href="#JPEG的格式" class="headerlink" title="JPEG的格式"></a>JPEG的格式</h2><p>JPEG的格式可以分为三种：</p>
 <ul>
 <li>标准JPEG格式：在网页上下载显示图像时，是从上至下逐步显示图片，直到下载完成，才能看到图像原貌；</li>
@@ -212,12 +228,24 @@ BYTE rgbReserved;//保留，必须为0
 <li>基于DCT的分层编码：以图像分辨率为基准进行编码，从低分辨率开始，逐渐提高分辨率，直到于原图像的分辨率一致。图像的解码也是这样的步骤；</li>
 <li>基于空间DPCM的无损压缩：采用预测法和哈夫曼编码（或算术编码）以保证重建图像与原图像完全相同（设均方误差为零）；</li>
 </ul>
-<h3 id="DCT变换"><a href="#DCT变换" class="headerlink" title="DCT变换"></a>DCT变换</h3><p>DCT变换，即离散余弦变换是与傅里叶变换相关的一种变换。</p>
-<p><a href="https://baike.baidu.com/item/%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2/7118270" target="_blank" rel="noopener">https://baike.baidu.com/item/%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2/7118270</a></p>
-<p><a href="https://blog.csdn.net/BigDream123/article/details/101426393" target="_blank" rel="noopener">https://blog.csdn.net/BigDream123/article/details/101426393</a></p>
+<h3 id="关于DCT变换"><a href="#关于DCT变换" class="headerlink" title="关于DCT变换"></a>关于DCT变换</h3><p>DCT变换，即离散余弦变换是与傅里叶变换相关的一种变换。</p>
+<pre><code>离散余弦变换(DCT for Discrete Cosine Transform)是与傅里叶变换相关的一种变换，它类似于离散傅里叶变换(DFT for Discrete Fourier Transform),但是只使用实数。离散余弦变换相当于一个长度大概是它两倍的离散傅里叶变换，这个离散傅里叶变换是对一个实偶函数进行的（因为一个实偶函数的傅里叶变换仍然是一个实偶函数），在有些变形里面需要将输入或者输出的位置移动半个单位(DCT有8种标准类型，其中4种是常见的)。</code></pre><p>DCT变换，经常应用于信号处理和图像处理中，对信号或图像进行有损压缩。</p>
+<p>如下图，取一张160<em>160的JPEG图像，进行分割成 20</em>20 个小块，每个小块是8*8个像素。</p>
+<p>将RGB转换为YUV（亮度、色调、饱和度），然后重新采样。</p>
+<pre><code>YUV与RGB可以互相转换。
+Y=0.299R+0.587G+0.114B
+U=0.148R-0.289G+0.473B
+V=0.615R-0.515G-0.1B</code></pre><p>上文图中展示的FDCT、IDCT表示的是正变换、反变换。<br>这里不深究DCT变换的具体底层细节，先由浅入深的认识这个过程。<br>输入就是8x8的数据矩阵，经过计算，输出还是一个8x8的数据矩阵。公式如下：</p>
+<h4 id="量化"><a href="#量化" class="headerlink" title="量化"></a>量化</h4><pre><code>将DCT变换后的临时结果，除以各自量化步长并四舍五入后取整，得到量化系数。
+经过DCT后，数据就不同了，左上方都是大数值，右下方都是小数值。
+结构上，左上方称为低频数据，右下方称为高频数据</code></pre><p>原8*8小图像块的亮度数据如下：</p>
+<p>最后量化的结果：</p>
+<p>因此整个8*8的图像块大小将大大缩小。</p>
+<p><a href="https://blog.csdn.net/newchenxf/article/details/51719597" target="_blank" rel="noopener">https://blog.csdn.net/newchenxf/article/details/51719597</a><br><a href="https://blog.csdn.net/BigDream123/article/details/101426393" target="_blank" rel="noopener">https://blog.csdn.net/BigDream123/article/details/101426393</a></p>
 <h3 id="空间DPCM"><a href="#空间DPCM" class="headerlink" title="空间DPCM"></a>空间DPCM</h3><p>DPCM(差分脉冲编码调制）是一种典型的预测编码系统，在传输图像、视频数据时，相邻的像素点的值往往相差很小，在空间上存在很大得到冗余，DMCP便是利用这个特点，通过相邻像素点的值进行预测，对图像数据进行压缩。</p>
 <p><a href="https://blog.csdn.net/weixin_44949552/article/details/106042450" target="_blank" rel="noopener">https://blog.csdn.net/weixin_44949552/article/details/106042450</a></p>
-<h2 id="JPEG的特点"><a href="#JPEG的特点" class="headerlink" title="JPEG的特点"></a>JPEG的特点</h2><h1 id="PNG"><a href="#PNG" class="headerlink" title="PNG"></a>PNG</h1><p>去年在开发多个微信小游戏时，为了减少微信小游戏包体，其中一个方式就是压缩png图片。<br>当时用的较多的一个工具是：<a href="https://tinify.cn/" target="_blank" rel="noopener">https://tinify.cn/</a></p>
+<h2 id="JPEG的特点"><a href="#JPEG的特点" class="headerlink" title="JPEG的特点"></a>JPEG的特点</h2><hr>
+<h1 id="PNG"><a href="#PNG" class="headerlink" title="PNG"></a>PNG</h1><p>去年在开发多个微信小游戏时，为了减少微信小游戏包体，其中一个方式就是压缩png图片。<br>当时用的较多的一个工具是：<a href="https://tinify.cn/" target="_blank" rel="noopener">https://tinify.cn/</a></p>
 <ul>
 <li>PNG图片采取了基于LZ77派生算法对文件进行压缩，使得它压缩比率更高，生成的文件体积更小，并且不损失数据。</li>
 <li>它利用特殊的编码方法标记重复出现的数据，使得同样格式的图片，PNG图片文件的体积更小。网络通讯中因受带宽制约，在保证图片清晰、逼真的前提下，优先选择PNG格式的图片。</li>
@@ -251,6 +279,8 @@ BYTE rgbReserved;//保留，必须为0
 <p><a href="https://baike.baidu.com/item/LZW%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">https://baike.baidu.com/item/LZW%E7%AE%97%E6%B3%95</a></p>
 <p><a href="https://www.cnblogs.com/luov/p/10953981.html" target="_blank" rel="noopener">https://www.cnblogs.com/luov/p/10953981.html</a><br><a href="https://www.linuxidc.com/Linux/2017-06/145156.htm" target="_blank" rel="noopener">https://www.linuxidc.com/Linux/2017-06/145156.htm</a></p>
 <p><a href="https://www.cnblogs.com/qcloud1001/p/6647080.html" target="_blank" rel="noopener">https://www.cnblogs.com/qcloud1001/p/6647080.html</a></p>
+<p><a href="https://www.jianshu.com/p/4fabac6b15b3" target="_blank" rel="noopener">https://www.jianshu.com/p/4fabac6b15b3</a></p>
+<p><a href="https://blog.csdn.net/newchenxf/article/details/51719597" target="_blank" rel="noopener">https://blog.csdn.net/newchenxf/article/details/51719597</a></p>
 
       
     </div>
