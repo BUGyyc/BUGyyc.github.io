@@ -64,9 +64,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-05.游戏编程/Cocos/Cocos creator 优化" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-02.编程语言/C#/堆栈和托管堆/堆栈和托管堆" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/Cocos%20creator%20%E4%BC%98%E5%8C%96/" class="article-date">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/" class="article-date">
   <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
@@ -78,7 +78,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/Cocos%20creator%20%E4%BC%98%E5%8C%96/">Cocos creator 小游戏优化</a>
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/">堆栈与托管堆</a>
     </h1>
   
 
@@ -86,64 +86,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://www.cocos.com/4388" target="_blank" rel="noopener">https://www.cocos.com/4388</a></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>和其他游戏开发思路一样，对小游戏的优化也主要围绕下面三个点</p>
-<ul>
-<li>CPU方面优化</li>
-<li>GPU方面优化</li>
-<li>内存优化</li>
-</ul>
-<hr>
-<h1 id="CPU方面优化"><a href="#CPU方面优化" class="headerlink" title="CPU方面优化"></a>CPU方面优化</h1><ul>
-<li>一帧内执行过多操作，导致这一帧压力过大，通常采取分帧<br>三消游戏一帧内执行过多计算、播放过多特效，在低配设备上，必然会出现卡顿掉帧的问题。<br>多个特效在多个帧中分别开始播放，减少聚集在同一帧导致的运行压力</li>
-</ul>
-<ul>
-<li>避免重复，重复的查找与重复的计算等操作都是多余的消耗。</li>
-</ul>
-<p>例如在Unity中，update中常用到的对象，如：GetComponent<XXX>()，我们希望它在update执行之前就已经获取到，而不需要每一帧都是获取。</p>
-<p>例如</p>
-<ul>
-<li>非必要逻辑，可以适当延迟执行，或者间隔一定时间去执行<br>如下NPC执行一些随机性的逻辑，非直接触发式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">update() &#123;</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;检测NPC是否对话</span><br><span class="line">    this.step++;</span><br><span class="line">    if (this.step &gt; this.value) &#123;</span><br><span class="line">        this.onNpcCheckTalk();</span><br><span class="line">        this.step &#x3D; 0;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    &#x2F;&#x2F;检测NPC是否移动</span><br><span class="line">    this.checkNpcState++;</span><br><span class="line">    if (this.checkNpcState &gt; this.checkValue) &#123;</span><br><span class="line">        this.onNpcWalk();</span><br><span class="line">        this.checkNpcState &#x3D; 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-上面代码展示的是放在update中执行检测，当然我们也可以通过计时器去控制，具体问题具体分析。<br>在Unity中通常不提倡写在update中，而是写在协程中。例如A*寻路的计算与移动逻辑分散到几帧中执行。<br>如下：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; 按路径移动过去</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;</span><br><span class="line">IEnumerator TravelPath () &#123;</span><br><span class="line">    Vector3 a, b, c &#x3D; pathToTravel[0].Position;</span><br><span class="line">    &#x2F;&#x2F;朝向</span><br><span class="line">    yield return LookAt (pathToTravel[1].Position);</span><br><span class="line">    if (!currentTravelLocation) &#123;</span><br><span class="line">        currentTravelLocation &#x3D; pathToTravel[0];</span><br><span class="line">    &#125;</span><br><span class="line">    Grid.DecreaseVisibility (currentTravelLocation, VisionRange);</span><br><span class="line">    int currentColumn &#x3D; currentTravelLocation.ColumnIndex;</span><br><span class="line">    float t &#x3D; Time.deltaTime * travelSpeed;</span><br><span class="line">    &#x2F;&#x2F;按照路径去移动</span><br><span class="line">    for (int i &#x3D; 1; i &lt; pathToTravel.Count; i++) &#123;</span><br><span class="line">        currentTravelLocation &#x3D; pathToTravel[i];</span><br><span class="line">        a &#x3D; c;</span><br><span class="line">        b &#x3D; pathToTravel[i - 1].Position;</span><br><span class="line">        int nextColumn &#x3D; currentTravelLocation.ColumnIndex;</span><br><span class="line">        if (currentColumn !&#x3D; nextColumn) &#123;</span><br><span class="line">            if (nextColumn &lt; currentColumn - 1) &#123;</span><br><span class="line">                a.x -&#x3D; HexMetrics.innerDiameter * HexMetrics.wrapSize;</span><br><span class="line">                b.x -&#x3D; HexMetrics.innerDiameter * HexMetrics.wrapSize;</span><br><span class="line">            &#125; else if (nextColumn &gt; currentColumn + 1) &#123;</span><br><span class="line">                a.x +&#x3D; HexMetrics.innerDiameter * HexMetrics.wrapSize;</span><br><span class="line">                b.x +&#x3D; HexMetrics.innerDiameter * HexMetrics.wrapSize;</span><br><span class="line">            &#125;</span><br><span class="line">            Grid.MakeChildOfColumn (transform, nextColumn);</span><br><span class="line">            currentColumn &#x3D; nextColumn;</span><br><span class="line">        &#125;</span><br><span class="line">        c &#x3D; (b + currentTravelLocation.Position) * 0.5f;</span><br><span class="line">        Grid.IncreaseVisibility (pathToTravel[i], VisionRange);</span><br><span class="line">        for (; t &lt; 1f; t +&#x3D; Time.deltaTime * travelSpeed) &#123;</span><br><span class="line">            transform.localPosition &#x3D; Bezier.GetPoint (a, b, c, t);</span><br><span class="line">            Vector3 d &#x3D; Bezier.GetDerivative (a, b, c, t);</span><br><span class="line">            d.y &#x3D; 0f;</span><br><span class="line">            transform.localRotation &#x3D; Quaternion.LookRotation (d);</span><br><span class="line">            yield return null;</span><br><span class="line">        &#125;</span><br><span class="line">        Grid.DecreaseVisibility (pathToTravel[i], VisionRange);</span><br><span class="line">        t -&#x3D; 1f;</span><br><span class="line">    &#125;</span><br><span class="line">    currentTravelLocation &#x3D; null;</span><br><span class="line">    a &#x3D; c;</span><br><span class="line">    b &#x3D; location.Position;</span><br><span class="line">    c &#x3D; b;</span><br><span class="line">    Grid.IncreaseVisibility (location, VisionRange);</span><br><span class="line">    for (; t &lt; 1f; t +&#x3D; Time.deltaTime * travelSpeed) &#123;</span><br><span class="line">        transform.localPosition &#x3D; Bezier.GetPoint (a, b, c, t);</span><br><span class="line">        Vector3 d &#x3D; Bezier.GetDerivative (a, b, c, t);</span><br><span class="line">        d.y &#x3D; 0f;</span><br><span class="line">        transform.localRotation &#x3D; Quaternion.LookRotation (d);</span><br><span class="line">        yield return null;</span><br><span class="line">    &#125;</span><br><span class="line">    transform.localPosition &#x3D; location.Position;</span><br><span class="line">    orientation &#x3D; transform.localRotation.eulerAngles.y;</span><br><span class="line">    ListPool&lt;HexCell&gt;.Add (pathToTravel);</span><br><span class="line">    pathToTravel &#x3D; null;</span><br><span class="line">    &#x2F;&#x2F;移动完成，返回默认状态动画</span><br><span class="line">    Common.getInstance ().dispatchEvent (new CEvent (CEventName.HERO_MOVE_COMPLETE));</span><br><span class="line">    this.GetComponent&lt;HeroBehaviours&gt; ().SetAnimatorState (&quot;isIdle&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>减少频繁的创建与销毁操作，对象池<br>如下，抓到大金矿后，爆出多个金币，就是用到了对象池</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line">* 爆金币动画</span><br><span class="line">*&#x2F;</span><br><span class="line">onMoneyCoinAni(startPos, num) &#123;</span><br><span class="line">    for (let i &#x3D; 0; i &lt; num; i++) &#123;</span><br><span class="line">        &#x2F;&#x2F;从对象池中取</span><br><span class="line">        let coin &#x3D; this.onCreateOneCoinByPool();</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        let bezier &#x3D; [startPos, targetPos1, targetPos2];</span><br><span class="line">        let time &#x3D; Math.random() * 0.5;</span><br><span class="line">        let pos &#x3D; cc.v2(this.boomNode.position.x, this.pushBoom.position.y);</span><br><span class="line">        coin.runAction(</span><br><span class="line">            cc.sequence(</span><br><span class="line">                cc.bezierTo(0.2 + time, bezier),</span><br><span class="line">                cc.delayTime(0.1),</span><br><span class="line">                cc.moveTo(0.2, pos),</span><br><span class="line">                cc.callFunc(() &#x3D;&gt; &#123;</span><br><span class="line">                    &#x2F;&#x2F;最后回收到对象池</span><br><span class="line">                    this.coinPool.put(coin);</span><br><span class="line">                &#125;)</span><br><span class="line">            )</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<h1 id="GPU方面优化"><a href="#GPU方面优化" class="headerlink" title="GPU方面优化"></a>GPU方面优化</h1><ul>
-<li>图集合并</li>
-</ul>
-<p>creator有打包图集的流程</p>
-<p><a href="https://docs.cocos.com/creator/manual/zh/asset-workflow/auto-atlas.html" target="_blank" rel="noopener">https://docs.cocos.com/creator/manual/zh/asset-workflow/auto-atlas.html</a></p>
-<ul>
-<li>防止交叉渲染<br>相邻节点的所用的贴图应该尽可能来自同一个图集</li>
-</ul>
-<p>例如jz1、jz2使用图集1，claw1、claw2使用图集2，在绘制jz1后，准备绘制claw1,原本使用的图集1将无法运用于claw1,因为claw1使用的是图集2。<br>最后DrawCall将是4次。</p>
-<p>如果将顺序修改，如下所示</p>
-<p>DrawCall将降低到2次</p>
-<h1 id="内存方面"><a href="#内存方面" class="headerlink" title="内存方面"></a>内存方面</h1><ul>
-<li>资源加载时机选择</li>
-<li>资源卸载时机选择</li>
-</ul>
-<ul>
-<li>压缩资源</li>
-</ul>
-<hr>
-<p><a href="https://cloud.tencent.com/developer/article/1336507" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1336507</a></p>
-<p><a href="https://www.cnblogs.com/bigfishzhou/p/5885997.html" target="_blank" rel="noopener">https://www.cnblogs.com/bigfishzhou/p/5885997.html</a></p>
-<p><a href="https://developers.weixin.qq.com/community/develop/article/doc/00008edebb42f853622814fb356c13" target="_blank" rel="noopener">https://developers.weixin.qq.com/community/develop/article/doc/00008edebb42f853622814fb356c13</a></p>
-<p><a href="https://www.jianshu.com/p/d4fb22509eb9" target="_blank" rel="noopener">https://www.jianshu.com/p/d4fb22509eb9</a></p>
-<p><a href="https://www.jianshu.com/p/56d2b215a48f" target="_blank" rel="noopener">https://www.jianshu.com/p/56d2b215a48f</a></p>
+        <p>堆栈是存储值类型，什么是值类型？<br>值类型可以理解为变量类型，例如 int float long 等</p>
+<p>托管堆是存储引用类型，什么是引用类型？<br>引用类型是对象的引用，例如 Object obj = new Object();<br>obj就是Object对象的引用</p>
+<p>.Net中，托管堆是由垃圾收集器自动管理，类似于Java中，GC自动管理，对引用进行检索，检索到没被引用的，则会被GC清除<br>注意，托管堆存储的是引用类型，不是对象，只是对象的引用地址。<br>Object obj = new Object();<br>如上，存储的是Object对象的引用地址</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/Cocos%20creator%20%E4%BC%98%E5%8C%96/" data-id="ckbp3mql4004948tw9ksy7vdd" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/%E5%A0%86%E6%A0%88%E5%92%8C%E6%89%98%E7%AE%A1%E5%A0%86/" data-id="ckbp3mqli005s48tw1c1x2sjn" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cocos-Creator/" rel="tag">Cocos Creator</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C#</a></li></ul>
 
     </footer>
   </div>
@@ -152,9 +105,9 @@
 
 
   
-    <article id="post-05.游戏编程/Cocos/H5游戏开发框架" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-02.编程语言/C#/其他/this扩展" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/H5%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" class="article-date">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%85%B6%E4%BB%96/this%E6%89%A9%E5%B1%95/" class="article-date">
   <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
@@ -166,7 +119,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/H5%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/">小游戏开发框架</a>
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%85%B6%E4%BB%96/this%E6%89%A9%E5%B1%95/">This 扩展</a>
     </h1>
   
 
@@ -174,25 +127,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><pre><code>如果你手里有一把锤子，所有东西看上去都像钉子。</code></pre><p>每隔几年看这篇文章都有些许不一样的心得，这篇文章讲的内容值得时不时的思考。</p>
-<p><a href="https://blog.csdn.net/pongba/article/details/3796771" target="_blank" rel="noopener">https://blog.csdn.net/pongba/article/details/3796771</a></p>
-<p>随着工作经验、代码量、项目经历的增长。对框架的</p>
-<h2 id="框架的目的"><a href="#框架的目的" class="headerlink" title="框架的目的"></a>框架的目的</h2><ul>
-<li>简化，将复杂需求拆分简化，可重用模块不必重复。</li>
-<li>规范，不管是游戏项目，还是软件项目，需求都是可以梳理的，框架制定责任划分规则，拆分需求划分模块，让代码逻辑更加清晰。</li>
-</ul>
-<p>当然框架是个好东西，但有些情况下，过度遵守规则，做事只会束缚自己的手脚，这就违背了框架的初衷了，出现这类情况的原因也很可能是当前框架不适用于当前情景，这个时候可能要做的就是把框架修改了。</p>
-<p>那改框架是否是必须的呢？当然不是必须的，对于多数开发哥们，开发时间其实是紧迫的，改框架并不会让当前需求立即完成，所以时间不允许还是别做这打算。<br>目前来说，世界上还不存在哪一个框架能适用于所有的开发场景，或许勉强适合，但绝对保证不了最适用。</p>
-<hr>
-<p>早期在大学期间，做Android开发的时候，接触最多的是MVC框架</p>
-
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/H5%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" data-id="ckbp3mql5004b48twa97kfj2y" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C#/%E5%85%B6%E4%BB%96/this%E6%89%A9%E5%B1%95/" data-id="ckbp3mqlj005t48twhyssgvkz" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="tag">游戏开发框架</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C#</a></li></ul>
 
     </footer>
   </div>
@@ -201,9 +143,9 @@
 
 
   
-    <article id="post-05.游戏编程/Cocos/JSBind" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-03.软件开发/移动开发/Android开发/四大组件" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/JSBind/" class="article-date">
+    <a href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/" class="article-date">
   <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
@@ -215,7 +157,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/JSBind/">JSBind</a>
+      <a class="article-title" href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/">四大组件</a>
     </h1>
   
 
@@ -223,17 +165,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>JS 绑定的大部分工作其实就是设定 JS 相关操作的 CPP 回调，在回调函数中关联 CPP 对象。其实主要包含如下两种类型：</p>
-<pre><code>注册 JS 函数（包含全局函数，类构造函数、类析构函数、类成员函数，类静态成员函数），绑定一个 CPP 回调
-注册 JS 对象的属性读写访问器，分别绑定读与写的 CPP 回调</code></pre><p><a href="https://docs.cocos.com/creator/manual/zh/advanced-topics/jsb/JSB2.0-learning.html" target="_blank" rel="noopener">https://docs.cocos.com/creator/manual/zh/advanced-topics/jsb/JSB2.0-learning.html</a></p>
-
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/JSBind/" data-id="ckbp3mql6004e48twcwfgfyq3" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6/" data-id="ckbp3mqlj005v48twexjegarf" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
 
     </footer>
   </div>
@@ -242,9 +181,9 @@
 
 
   
-    <article id="post-05.游戏编程/Cocos/Shader" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-03.软件开发/移动开发/Android开发/Servive保活" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/Shader/" class="article-date">
+    <a href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/Servive%E4%BF%9D%E6%B4%BB/" class="article-date">
   <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
@@ -256,7 +195,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/Shader/">Shader</a>
+      <a class="article-title" href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/Servive%E4%BF%9D%E6%B4%BB/">Service保活</a>
     </h1>
   
 
@@ -268,7 +207,84 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Cocos/Shader/" data-id="ckbp3mql7004g48tw0j9da0z8" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/Servive%E4%BF%9D%E6%B4%BB/" data-id="ckbp3mqlj005x48tw4k86dcpw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-03.软件开发/移动开发/Android开发/生命周期" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">生命周期</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" data-id="ckbp3mqlk005z48twa7u1afoa" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/通用/Unity手册" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/Unity%E6%89%8B%E5%86%8C/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/Unity%E6%89%8B%E5%86%8C/">关于Unity</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://docs.manew.com/" target="_blank" rel="noopener">http://docs.manew.com/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/Unity%E6%89%8B%E5%86%8C/" data-id="ckbp3mqlk006048twba4412l5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
@@ -280,9 +296,9 @@
 
 
   
-    <article id="post-05.游戏编程/Unity3D/Unity基础" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-06.游戏引擎/物理引擎/2D碰撞/2D多边形碰撞" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/Unity%E5%9F%BA%E7%A1%80/" class="article-date">
+    <a href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%A2%B0%E6%92%9E/" class="article-date">
   <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
@@ -294,7 +310,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/Unity%E5%9F%BA%E7%A1%80/">Unity基础</a>
+      <a class="article-title" href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%A2%B0%E6%92%9E/">2D多边形碰撞</a>
     </h1>
   
 
@@ -302,24 +318,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://blog.csdn.net/u010019717/article/details/38414771" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/38414771</a></p>
+        <h1 id="轴对称包围盒（Axis-Aligned-Bounding-Box）"><a href="#轴对称包围盒（Axis-Aligned-Bounding-Box）" class="headerlink" title="轴对称包围盒（Axis-Aligned Bounding Box）"></a>轴对称包围盒（Axis-Aligned Bounding Box）</h1><p>通过两个矩形包围盒（无旋转），判断是否有碰撞</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rect1.x &lt; rect2.x + rect2.width &amp;&amp;</span><br><span class="line">rect1.x + rect1.width &gt; rect2.x &amp;&amp;</span><br><span class="line">rect1.y &lt; rect2.y + rect2.height &amp;&amp;</span><br><span class="line">rect1.height + rect1.y &gt; rect2.y</span><br></pre></td></tr></table></figure>
+
+<h1 id="圆形碰撞"><a href="#圆形碰撞" class="headerlink" title="圆形碰撞"></a>圆形碰撞</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Math.sqrt(Math.pow(circleA.x - circleB.x, 2) +</span><br><span class="line">          Math.pow(circleA.y - circleB.y, 2)) </span><br><span class="line">    &lt; circleA.radius + circleB.radius</span><br></pre></td></tr></table></figure>
+
+<h1 id="圆形与矩形碰撞检测"><a href="#圆形与矩形碰撞检测" class="headerlink" title="圆形与矩形碰撞检测"></a>圆形与矩形碰撞检测</h1><p>在矩形上，求得离圆心最近的点，然后通过该点与圆心的距离，和半径做比较，小于等于半径说明有碰撞，大于半径说明无碰撞</p>
 <hr>
-<p>UGUI</p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/38929685" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/38929685</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/38929789" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/38929789</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/38929899" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/38929899</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/38935077" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/38935077</a></p>
-<hr>
-<p>脚本编译顺序</p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/40474631" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/40474631</a></p>
+<h1 id="光影投射法"><a href="#光影投射法" class="headerlink" title="光影投射法"></a>光影投射法</h1><h1 id="分离轴定理"><a href="#分离轴定理" class="headerlink" title="分离轴定理"></a>分离轴定理</h1><p>通过判断任意两个 凸多边形 在任意角度下的投影是否均存在重叠，来判断是否发生碰撞。若在某一角度光源下，两物体的投影存在间隙，则为不碰撞，否则为发生碰撞。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function polygonsCollide(polygon1, polygon2) &#123;</span><br><span class="line">    var axes, projection1, projection2</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 根据多边形获取所有投影轴</span><br><span class="line">    axes &#x3D; polygon1.getAxes()</span><br><span class="line">    axes.push(polygon2.getAxes())</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 遍历所有投影轴，获取多边形在每条投影轴上的投影</span><br><span class="line">    for(each axis in axes) &#123;</span><br><span class="line">        projection1 &#x3D; polygon1.project(axis)</span><br><span class="line">        projection2 &#x3D; polygon2.project(axis)</span><br><span class="line">        </span><br><span class="line">        &#x2F;&#x2F; 判断投影轴上的投影是否存在重叠，若检测到存在间隙则立刻退出判断，消除不必要的运算。</span><br><span class="line">        if(!projection1.overlaps(projection2))</span><br><span class="line">            return false</span><br><span class="line">    &#125;</span><br><span class="line">    return true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="投影轴"><a href="#投影轴" class="headerlink" title="投影轴"></a>投影轴</h2><p><a href="https://www.cnblogs.com/sevenyuan/p/7125642.html" target="_blank" rel="noopener">https://www.cnblogs.com/sevenyuan/p/7125642.html</a></p>
+<p><a href="https://www.cnblogs.com/programmer-kaima/p/5195781.html" target="_blank" rel="noopener">https://www.cnblogs.com/programmer-kaima/p/5195781.html</a></p>
+<p><a href="http://acuilab.com/articles/2019/08/05/1564988815015.html" target="_blank" rel="noopener">http://acuilab.com/articles/2019/08/05/1564988815015.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/Unity%E5%9F%BA%E7%A1%80/" data-id="ckbp3mql7004j48twagtggrq5" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%A2%B0%E6%92%9E/" data-id="ckbp3mqll006148twhscrh5oz" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li></ul>
 
     </footer>
   </div>
@@ -328,9 +348,9 @@
 
 
   
-    <article id="post-05.游戏编程/Unity3D/TODO" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-04.计算机数学/其他相关/噪声函数/柏林噪声" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/TODO/" class="article-date">
+    <a href="/2020/06/21/04.%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/%E5%85%B6%E4%BB%96%E7%9B%B8%E5%85%B3/%E5%99%AA%E5%A3%B0%E5%87%BD%E6%95%B0/%E6%9F%8F%E6%9E%97%E5%99%AA%E5%A3%B0/" class="article-date">
   <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
@@ -342,7 +362,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/TODO/">待补充文章</a>
+      <a class="article-title" href="/2020/06/21/04.%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/%E5%85%B6%E4%BB%96%E7%9B%B8%E5%85%B3/%E5%99%AA%E5%A3%B0%E5%87%BD%E6%95%B0/%E6%9F%8F%E6%9E%97%E5%99%AA%E5%A3%B0/">柏林噪声</a>
     </h1>
   
 
@@ -350,37 +370,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="HexHero"><a href="#HexHero" class="headerlink" title="HexHero"></a>HexHero</h1><ul>
-<li><p>阅读Hex源码</p>
-</li>
-<li><p>战争迷雾</p>
-</li>
-<li><p>适配</p>
-</li>
-<li><p>战斗逻辑</p>
-</li>
-<li><p>NGUI/UGUI</p>
-</li>
-<li><p>战斗效果</p>
-</li>
-<li><p>AI</p>
-</li>
-<li><p>优化</p>
-</li>
-</ul>
-<h1 id="CandyBoom"><a href="#CandyBoom" class="headerlink" title="CandyBoom"></a>CandyBoom</h1><ul>
-<li>导出安卓包</li>
-<li>加载特效的策略</li>
-<li>生成算法的思考</li>
-</ul>
+        <p>噪声函数<br>perlin<br>柏林噪声</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/TODO/" data-id="ckbp3mql8004l48tw16nzhrmt" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/04.%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/%E5%85%B6%E4%BB%96%E7%9B%B8%E5%85%B3/%E5%99%AA%E5%A3%B0%E5%87%BD%E6%95%B0/%E6%9F%8F%E6%9E%97%E5%99%AA%E5%A3%B0/" data-id="ckbp3mqll006448twcwn59tnp" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" rel="tag">计算机数学</a></li></ul>
 
     </footer>
   </div>
@@ -389,9 +387,9 @@
 
 
   
-    <article id="post-05.游戏编程/Unity3D/UI系统" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-03.软件开发/移动开发/Android开发/Android唤起的流程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/UI%E7%B3%BB%E7%BB%9F/" class="article-date">
+    <a href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/Android%E5%94%A4%E8%B5%B7%E7%9A%84%E6%B5%81%E7%A8%8B/" class="article-date">
   <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
@@ -403,7 +401,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/UI%E7%B3%BB%E7%BB%9F/">UI系统</a>
+      <a class="article-title" href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/Android%E5%94%A4%E8%B5%B7%E7%9A%84%E6%B5%81%E7%A8%8B/">Android唤起</a>
     </h1>
   
 
@@ -411,15 +409,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://blog.csdn.net/aa294194253/article/details/48813531" target="_blank" rel="noopener">https://blog.csdn.net/aa294194253/article/details/48813531</a></p>
-
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/UI%E7%B3%BB%E7%BB%9F/" data-id="ckbp3mql8004n48tw0f8a04a1" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/Android%E5%BC%80%E5%8F%91/Android%E5%94%A4%E8%B5%B7%E7%9A%84%E6%B5%81%E7%A8%8B/" data-id="ckbp3mqlm006648tw90oqezmz" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
 
     </footer>
   </div>
@@ -428,9 +425,9 @@
 
 
   
-    <article id="post-05.游戏编程/Unity3D/关于Unet" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-06.游戏引擎/物理引擎/2D碰撞/2D碰撞（二）四叉树" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%85%B3%E4%BA%8EUnet/" class="article-date">
+    <a href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/" class="article-date">
   <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
 </a>
     
@@ -442,7 +439,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%85%B3%E4%BA%8EUnet/">关于Unet</a>
+      <a class="article-title" href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/">2D多边形碰撞-四叉树</a>
     </h1>
   
 
@@ -450,104 +447,27 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>git<br><a href="https://github.com/BUGyyc/SyncProject" target="_blank" rel="noopener">https://github.com/BUGyyc/SyncProject</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46845753" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46845753</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46852293" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46852293</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46873153" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46873153</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46849341" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46849341</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46850559" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46850559</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46850893" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46850893</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46851033" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46851033</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46851547" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46851547</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46852511" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46852511</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46872833" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46872833</a></p>
+        <p>上一篇博客讲解了一下简单2D游戏的开发流程</p>
+<p><a href="https://zhuanlan.zhihu.com/p/82301894" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82301894</a></p>
+<p>上一篇提到的检测碰撞是遍历所有的方块，进行检测，每一帧都进行检测碰撞，效率极其低下，一旦游戏对象过多，意味着每帧需要遍历检测的对象太多，为此，我们需要将碰撞检测的游戏对象数量降低，减少不必要的计算检测。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行碰撞</span><br><span class="line">void Game::DoCollisions()</span><br><span class="line">&#123;	</span><br><span class="line">	&#x2F;&#x2F;遍历所有的方块与球的碰撞情况</span><br><span class="line">	for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks)</span><br><span class="line">	&#123;</span><br><span class="line">         &#x2F;&#x2F;......</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F;......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事实上，真正需要进行检测的方块只有其中一部分，因为大多数方块在距离上是完全不需要进行检测的，基于这一点，我们需要通过某种手段将处在2D世界中的游戏对象进行划分。</p>
+<p>这里用到的手段就是四叉树。</p>
+<h1 id="四叉树的结构"><a href="#四叉树的结构" class="headerlink" title="四叉树的结构"></a>四叉树的结构</h1><p>如下图所示：<br><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/14e27b989d0f9d1ff8f0800cb9c8a38e_hd.jpg" alt="(path/to/image.png)"></p>
+<p>代码：</p>
+<p><a href="https://github.com/BUGyyc/SimpleCraft/blob/master/quad_tree.h" target="_blank" rel="noopener">https://github.com/BUGyyc/SimpleCraft/blob/master/quad_tree.h</a></p>
+<h1 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h1><h1 id="运用四叉树减少比较次数"><a href="#运用四叉树减少比较次数" class="headerlink" title="运用四叉树减少比较次数"></a>运用四叉树减少比较次数</h1><p>牺牲空间换时间，每一帧都通过最新的四叉树取节点下来进行检测判断，在减少数量上减少了大半。因为提升了很大的效率，不过，不可避免的是每帧都需要维护这个四叉树，这是空间上必须要有所让步的，不过好在所占空间并不大。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;每一帧都需要更新四叉树，并且要在检测之前</span><br><span class="line">void Game::QuadTreeExcute() </span><br><span class="line">&#123;</span><br><span class="line">	quadTree &#x3D; new QuadTree&lt;GameObject*&gt;();</span><br><span class="line">	for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks) &#123;</span><br><span class="line">		quadTree-&gt;add(&amp;box,QuadAABB(box.Position.x,box.Position.y,80,80));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Game::DoCollisions()</span><br><span class="line">&#123;	</span><br><span class="line">	vector&lt;GameObject*&gt; list;</span><br><span class="line">	quadTree-&gt;find(QuadAABB(Ball-&gt;Position.x,Ball-&gt;Position.y,80,80), list, true); </span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;在窗口输出，观察每帧进行多少方块的比较</span><br><span class="line">        if (list.size() &gt; 0) &#123;</span><br><span class="line">		cout &lt;&lt; list.size() &lt;&lt; &quot; size   &quot; &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;只进行了部分比较</span><br><span class="line">	&#x2F;&#x2F;遍历区域内的方块与球的碰撞情况</span><br><span class="line">	for (auto &amp;box : list)</span><br><span class="line">	&#123;</span><br><span class="line">                ...</span><br><span class="line">        &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%85%B3%E4%BA%8EUnet/" data-id="ckbp3mql9004p48tw3hz7crfp" class="article-share-link">Share</a>
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/" data-id="ckbp3mqln006948twcl55d57e" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-05.游戏编程/Unity3D/内存管理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://onevcat.com/2012/11/memory-in-unity3d/" target="_blank" rel="noopener">https://onevcat.com/2012/11/memory-in-unity3d/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" data-id="ckbp3mql9004s48tw6vhk3i3v" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-05.游戏编程/Unity3D/垃圾回收" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">垃圾回收</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://zhuanlan.zhihu.com/p/51587240" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/51587240</a></p>
-<p><a href="https://blog.csdn.net/zjz520yy/article/details/77103118" target="_blank" rel="noopener">https://blog.csdn.net/zjz520yy/article/details/77103118</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" data-id="ckbp3mqla004u48tw974h720a" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li></ul>
 
     </footer>
   </div>
@@ -574,7 +494,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos-Creator/" rel="tag">Cocos Creator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayaBox/" rel="tag">LayaBox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/temp/" rel="tag">temp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" rel="tag">图形渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" rel="tag">框架设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="tag">游戏开发框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" rel="tag">计算机数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" rel="tag">计算机硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" rel="tag">计算机科学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86-%E5%9B%BE%E5%83%8F/" rel="tag">计算机组成原理,图像</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos-Creator/" rel="tag">Cocos Creator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayaBox/" rel="tag">LayaBox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/temp/" rel="tag">temp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F/" rel="tag">图像</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" rel="tag">图形渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" rel="tag">框架设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="tag">游戏开发框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" rel="tag">计算机数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" rel="tag">计算机硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" rel="tag">计算机科学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
     </div>
   </div>
 
@@ -584,7 +504,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 13.75px;">Android</a> <a href="/tags/C/" style="font-size: 17.5px;">C#</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cocos-Creator/" style="font-size: 11.25px;">Cocos Creator</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/LayaBox/" style="font-size: 10px;">LayaBox</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/Unity/" style="font-size: 15px;">Unity</a> <a href="/tags/temp/" style="font-size: 18.75px;">temp</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" style="font-size: 13.75px;">图形渲染</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12.5px;">数据结构</a> <a href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 11.25px;">框架设计</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 20px;">游戏开发</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">游戏开发框架</a> <a href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" style="font-size: 12.5px;">物理引擎</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.25px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.25px;">网络</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" style="font-size: 11.25px;">计算机数学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">计算机硬件</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" style="font-size: 10px;">计算机科学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86-%E5%9B%BE%E5%83%8F/" style="font-size: 10px;">计算机组成原理,图像</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">软件工程</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 13.75px;">随笔</a>
+      <a href="/tags/Android/" style="font-size: 13.75px;">Android</a> <a href="/tags/C/" style="font-size: 17.5px;">C#</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cocos-Creator/" style="font-size: 11.25px;">Cocos Creator</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/LayaBox/" style="font-size: 10px;">LayaBox</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/Unity/" style="font-size: 15px;">Unity</a> <a href="/tags/temp/" style="font-size: 18.75px;">temp</a> <a href="/tags/%E5%9B%BE%E5%83%8F/" style="font-size: 10px;">图像</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" style="font-size: 13.75px;">图形渲染</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12.5px;">数据结构</a> <a href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 11.25px;">框架设计</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 20px;">游戏开发</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">游戏开发框架</a> <a href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" style="font-size: 12.5px;">物理引擎</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.25px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.25px;">网络</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" style="font-size: 11.25px;">计算机数学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">计算机硬件</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" style="font-size: 10px;">计算机科学</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 13.75px;">软件工程</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 13.75px;">随笔</a>
     </div>
   </div>
 
@@ -606,23 +526,23 @@
       <ul>
         
           <li>
+            <a href="/2020/07/05/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/">十大排序</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/05/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/05/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%B8%AD%E7%9A%84AI%E8%BF%90%E7%94%A8/">05.游戏编程/游戏开发技巧/游戏中的AI运用</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/05/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%89%87%E7%9A%84%E6%9E%84%E9%80%A0%E5%8F%8A%E5%85%B6%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86/">常用图片的构造及其压缩原理</a>
           </li>
         
           <li>
-            <a href="/2020/06/27/Temporary/%E5%85%B3%E4%BA%8E%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">Temporary/关于图片压缩算法</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/27/Temporary/%E4%BB%8E%E4%B8%80%E4%B8%AA%E5%9B%BE%E7%89%87%E7%9A%84%E7%BB%98%E5%88%B6%E6%9D%A5%E8%AE%A4%E8%AF%86%E4%B8%80%E4%B8%AA%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B/">Temporary/从一个图片的绘制来认识一个渲染流程</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/27/Temporary/%E5%85%B3%E4%BA%8EUnity%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BA%8F/">Temporary/关于Unity的运行时序</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/27/Temporary/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/">Temporary/渲染管线</a>
+            <a href="/2020/06/27/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E5%85%B3%E4%BA%8E%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">01.计算机科学/关于图片压缩算法</a>
           </li>
         
       </ul>

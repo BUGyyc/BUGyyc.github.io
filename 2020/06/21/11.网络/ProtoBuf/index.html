@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>关于ProtoBuf | Coder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言Protobuf实际是一套类似Json或者XML的数据传输格式和规范，用于不同应用或进程之间进行通信时使用。通信时所传递的信息是通过Protobuf定义的message数据结构进行打包，然后编译成二进制的码流再进行传输或者存储。 protobuf常规结构123456789101112message MsgA &amp;#123;        required uint32 a &#x3D; 1;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于ProtoBuf">
+<meta property="og:url" content="http://bugyyc.com/posts/coder/2020/06/21/11.%E7%BD%91%E7%BB%9C/ProtoBuf/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="前言Protobuf实际是一套类似Json或者XML的数据传输格式和规范，用于不同应用或进程之间进行通信时使用。通信时所传递的信息是通过Protobuf定义的message数据结构进行打包，然后编译成二进制的码流再进行传输或者存储。 protobuf常规结构123456789101112message MsgA &amp;#123;        required uint32 a &#x3D; 1;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-21T09:48:41.000Z">
+<meta property="article:modified_time" content="2020-07-05T03:26:32.286Z">
+<meta property="article:author" content="Delevin">
+<meta property="article:tag" content="temp">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coder</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-11.网络/ProtoBuf" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/ProtoBuf/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      关于ProtoBuf
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Protobuf实际是一套类似Json或者XML的数据传输格式和规范，用于不同应用或进程之间进行通信时使用。通信时所传递的信息是通过Protobuf定义的message数据结构进行打包，然后编译成二进制的码流再进行传输或者存储。</p>
+<h1 id="protobuf常规结构"><a href="#protobuf常规结构" class="headerlink" title="protobuf常规结构"></a>protobuf常规结构</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">message MsgA </span><br><span class="line">&#123;</span><br><span class="line">        required uint32 a &#x3D; 1;</span><br><span class="line">        required MsgB b &#x3D; 2; &#x2F;&#x2F;MsgB也是个 message 对象</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message MsgB</span><br><span class="line">&#123;</span><br><span class="line">    required uint32 temp &#x3D; 1;</span><br><span class="line">    optional uint32 temp2 &#x3D; 2;</span><br><span class="line">    repeated uint32 temp3 &#x3D; 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>required、optional、repeated的含义<br>required不可缺少字段<br>optional可缺少字段<br>repeated可重复字段，类似List、数组</li>
+</ul>
+<h1 id="protobuf源码"><a href="#protobuf源码" class="headerlink" title="protobuf源码"></a>protobuf源码</h1><p><a href="http://code.google.com/p/protobuf/downloads/list" target="_blank" rel="noopener">http://code.google.com/p/protobuf/downloads/list</a></p>
+<h1 id="protobuf的优势"><a href="#protobuf的优势" class="headerlink" title="protobuf的优势"></a>protobuf的优势</h1><ul>
+<li>序列化后体积很小:消息大小只需要XML的1/10 ~ 1/3</li>
+<li>解析速度快:解析速度比XML快20 ~ 100倍</li>
+</ul>
+<h1 id="为什么protobuf-可以更小更快"><a href="#为什么protobuf-可以更小更快" class="headerlink" title="为什么protobuf 可以更小更快"></a>为什么protobuf 可以更小更快</h1><p>传统的Json存储格式如下<br><code>{ &quot;id&quot;: 1, &quot;name&quot;: &quot;hello&quot;,  &quot;height&quot;: 170, &quot;weight&quot;: 140 }</code></p>
+<p>每个Key对应一个Value。实际上，每个Key也是要占一定存储的，并且所占并不小。不仅仅是存储上，JSON 必须全文扫描无法跳过不需要的字段，意味着速度上会更慢一些</p>
+<p>JSON 的字段是用字符串指定的，相比之下字符串比对应该比基于数字的字段 tag 更耗时。</p>
+<p>我们希望存储的数据是紧凑有效的，所以Protobuf选择了下面的方式</p>
+<ul>
+<li><p>Tag配对</p>
+<p>  Tag|Value 与 Json 中 Key|Value有什么区别呢？<br>  JSON 中 Key是用字符串表示的，意味着占的字节比较多，而Tag采用二进制进行存储，通常只占一个字节，所以也相比JSON更小。</p>
+</li>
+<li><p>Varint 存储较小数据</p>
+<p>  通常Integer是32位表示，需要4个字节，而我们操作数据的过程中，一般情况下，数字不会太大，小于255是多数情况，也就是说，如果按照之前的存储方式，为了表示一个小于255的数字。它真实的有用的数据只占一个字节，我们却用4字节（32位）来存储它，真造成了极大的浪费。采用 Varint 后，可以用更少的字节数来表示数字信息。</p>
+</li>
+<li><p>Leg 确定数据长度，加快解析速度</p>
+<p>  仅仅是Tag|Value是无法让我们直接确定数据的长度，我们希望在查找的时候就直接获得准确长度，以便快速解析。所以采取Tag|Leg|Value.<br>  相比于JSON，JSON需要通过Key,因为Key是字符串，需要先从字符串中识别出数据类型，最后才能知道数据的长度，速度是不如protobuf.</p>
+</li>
+</ul>
+<hr>
+<p>参考</p>
+<p>  <a href="https://www.ibm.com/developerworks/cn/linux/l-cn-gpb/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/linux/l-cn-gpb/index.html</a></p>
+<p>  <a href="https://www.jianshu.com/p/72108f0aefca" target="_blank" rel="noopener">https://www.jianshu.com/p/72108f0aefca</a></p>
+<p>  <a href="http://www.sohu.com/a/136487507_505779" target="_blank" rel="noopener">http://www.sohu.com/a/136487507_505779</a></p>
+<p>  <a href="https://zhuanlan.zhihu.com/p/53339153" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/53339153</a></p>
+<p>  <a href="https://halfrost.com/protobuf_encode/" target="_blank" rel="noopener">https://halfrost.com/protobuf_encode/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/11.%E7%BD%91%E7%BB%9C/ProtoBuf/" data-id="ckc94qetx000f9slu4phn3k4x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/temp/" rel="tag">temp</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/21/09.%E9%9F%B3%E9%A2%91%E4%B8%8E%E5%8A%A8%E7%94%BB/IK%20&%20FK/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          IK &amp; FK
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/CPU/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CPU</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos-Creator/" rel="tag">Cocos Creator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayaBox/" rel="tag">LayaBox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/temp/" rel="tag">temp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F/" rel="tag">图像</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" rel="tag">图形渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" rel="tag">框架设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="tag">游戏开发框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" rel="tag">计算机数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" rel="tag">计算机硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" rel="tag">计算机科学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 13.75px;">Android</a> <a href="/tags/C/" style="font-size: 17.5px;">C#</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cocos-Creator/" style="font-size: 11.25px;">Cocos Creator</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/LayaBox/" style="font-size: 10px;">LayaBox</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/Unity/" style="font-size: 15px;">Unity</a> <a href="/tags/temp/" style="font-size: 18.75px;">temp</a> <a href="/tags/%E5%9B%BE%E5%83%8F/" style="font-size: 10px;">图像</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" style="font-size: 13.75px;">图形渲染</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12.5px;">数据结构</a> <a href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 11.25px;">框架设计</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 20px;">游戏开发</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">游戏开发框架</a> <a href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" style="font-size: 12.5px;">物理引擎</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.25px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.25px;">网络</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" style="font-size: 11.25px;">计算机数学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">计算机硬件</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" style="font-size: 10px;">计算机科学</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 13.75px;">软件工程</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 13.75px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/05/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/">十大排序</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/05/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/05/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%B8%AD%E7%9A%84AI%E8%BF%90%E7%94%A8/">05.游戏编程/游戏开发技巧/游戏中的AI运用</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/05/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%89%87%E7%9A%84%E6%9E%84%E9%80%A0%E5%8F%8A%E5%85%B6%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86/">常用图片的构造及其压缩原理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/27/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E5%85%B3%E4%BA%8E%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">01.计算机科学/关于图片压缩算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Delevin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
