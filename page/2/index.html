@@ -64,89 +64,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-01.计算机科学/算法/排序" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://mp.weixin.qq.com/s/MNn69G7Fg5KzO1cX4GVbVg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/MNn69G7Fg5KzO1cX4GVbVg</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/" data-id="ckbovw38l00034stwdfir4qws" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-01.计算机科学/算法/alpha-beta（Java）/AlphaBeta算法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/alpha-beta%EF%BC%88Java%EF%BC%89/AlphaBeta%E7%AE%97%E6%B3%95/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/alpha-beta%EF%BC%88Java%EF%BC%89/AlphaBeta%E7%AE%97%E6%B3%95/">AlphaBeta算法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="AlphaBeta算法"><a href="#AlphaBeta算法" class="headerlink" title="AlphaBeta算法"></a>AlphaBeta算法</h1><p>九宫格游戏相对简单，因为步数有限，玩家和AI两者的总步数是9<br>而象棋的模式不一样，象棋的走法多样，步数在设定上是无穷<br>对于AI上的设定来说，AI未必当前步数需要选择最大收益步数，因为当前最大收益不一定绝对下一步是否最大收益，所以这意味着，向下搜索深度越大，意味着收益的计算才是最准确的</p>
-<hr>
-<p>AI的行为是在列举有限种情况，在有限种情况中选择当前有利或者是符合长远利益（为什么这么说？长远利益这种情况是存在的，因为只选择当前利益最大化也无法保证长期利益最大化，而当前非最优解，也可能是最符合长远利益的解，这种情况在象棋中就经常会发生）</p>
-<p>搜索深度越深，考虑的步子就越远，判断收益的精度将更准确</p>
-<p>井字棋是一个很简单的游戏，我们可以直接搜索到最终结果，再从下往上筛选，选择执行步子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * deep search</span><br><span class="line"> *&#x2F;</span><br><span class="line">private static int findAIStep(int value, int alpha, int beta) &#123;</span><br><span class="line">    if (isFull())</span><br><span class="line">        value &#x3D; Draw;</span><br><span class="line">    else if (checkAINearWin())</span><br><span class="line">        value &#x3D; CompWin;</span><br><span class="line">    else &#123;</span><br><span class="line">        value &#x3D; alpha;</span><br><span class="line">        for (int i &#x3D; 1; i &lt;&#x3D; 9 &amp;&amp; value &lt; beta; i++) &#123;</span><br><span class="line">            if (arr[i] &#x3D;&#x3D; 0) &#123;</span><br><span class="line">                arr[i] &#x3D; 2;</span><br><span class="line">                int response &#x3D; -1;</span><br><span class="line">                response &#x3D; findManStep(response, alpha, beta);</span><br><span class="line">                arr[i] &#x3D; 0;</span><br><span class="line">                if (response &gt; value) &#123;&#x2F;&#x2F;比较值，进行剪枝</span><br><span class="line">                    value &#x3D; response;</span><br><span class="line">                    bestMove &#x3D; i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static int findManStep(int value, int alpha, int beta) &#123;</span><br><span class="line">    if (isFull())</span><br><span class="line">        value &#x3D; Draw;</span><br><span class="line">    else if (checkManNearWin())</span><br><span class="line">        value &#x3D; HumanWin;</span><br><span class="line">    else &#123;</span><br><span class="line">        value &#x3D; beta;</span><br><span class="line">        for (int i &#x3D; 1; i &lt;&#x3D; 9 &amp;&amp; value &gt; alpha; i++) &#123;</span><br><span class="line">            if (arr[i] &#x3D;&#x3D; 0) &#123;</span><br><span class="line">                arr[i] &#x3D; 1;</span><br><span class="line">                int response &#x3D; -1;</span><br><span class="line">                response &#x3D; findAIStep(response, alpha, beta);</span><br><span class="line">                arr[i] &#x3D; 0;</span><br><span class="line">                if (response &lt; value) &#123;&#x2F;&#x2F;比较值，进行剪枝</span><br><span class="line">                    value &#x3D; response;</span><br><span class="line">                    bestMove &#x3D; i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/alpha-beta%EF%BC%88Java%EF%BC%89/AlphaBeta%E7%AE%97%E6%B3%95/" data-id="ckbovw38n00054stw7m280cvm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-01.计算机科学/算法/分治算法/分治" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/21/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB/" class="article-date">
@@ -504,6 +421,83 @@
 
 
   
+    <article id="post-05.游戏编程/游戏开发技巧/多边形碰撞检测" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">多边形碰撞检测</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" data-id="ckbp3mqj0000348twemxs16d9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/游戏开发技巧/关于游戏架构" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8F%E6%9E%B6%E6%9E%84/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8F%E6%9E%B6%E6%9E%84/">关于游戏架构</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://blog.csdn.net/pbymw8iwm/article/details/50750429" target="_blank" rel="noopener">https://blog.csdn.net/pbymw8iwm/article/details/50750429</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E5%85%B3%E4%BA%8E%E6%B8%B8%E6%88%8F%E6%9E%B6%E6%9E%84/" data-id="ckbp3mqj1000448twbc8naqoy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
@@ -522,7 +516,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos-Creator/" rel="tag">Cocos Creator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayaBox/" rel="tag">LayaBox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/temp/" rel="tag">temp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" rel="tag">图形渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" rel="tag">框架设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="tag">游戏开发框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" rel="tag">计算机数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" rel="tag">计算机硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" rel="tag">计算机科学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos-Creator/" rel="tag">Cocos Creator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayaBox/" rel="tag">LayaBox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/temp/" rel="tag">temp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" rel="tag">图形渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" rel="tag">框架设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="tag">游戏开发框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" rel="tag">计算机数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" rel="tag">计算机硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" rel="tag">计算机科学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86-%E5%9B%BE%E5%83%8F/" rel="tag">计算机组成原理,图像</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
     </div>
   </div>
 
@@ -532,7 +526,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 13.75px;">Android</a> <a href="/tags/C/" style="font-size: 17.5px;">C#</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cocos-Creator/" style="font-size: 11.25px;">Cocos Creator</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/LayaBox/" style="font-size: 10px;">LayaBox</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/Unity/" style="font-size: 15px;">Unity</a> <a href="/tags/temp/" style="font-size: 18.75px;">temp</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" style="font-size: 13.75px;">图形渲染</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12.5px;">数据结构</a> <a href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 11.25px;">框架设计</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 20px;">游戏开发</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">游戏开发框架</a> <a href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" style="font-size: 12.5px;">物理引擎</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.25px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.25px;">网络</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" style="font-size: 11.25px;">计算机数学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">计算机硬件</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" style="font-size: 10px;">计算机科学</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">软件工程</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 13.75px;">随笔</a>
+      <a href="/tags/Android/" style="font-size: 13.75px;">Android</a> <a href="/tags/C/" style="font-size: 17.5px;">C#</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cocos-Creator/" style="font-size: 11.25px;">Cocos Creator</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/LayaBox/" style="font-size: 10px;">LayaBox</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/Unity/" style="font-size: 15px;">Unity</a> <a href="/tags/temp/" style="font-size: 18.75px;">temp</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" style="font-size: 13.75px;">图形渲染</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12.5px;">数据结构</a> <a href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 11.25px;">框架设计</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 20px;">游戏开发</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">游戏开发框架</a> <a href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" style="font-size: 12.5px;">物理引擎</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.25px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.25px;">网络</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" style="font-size: 11.25px;">计算机数学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">计算机硬件</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" style="font-size: 10px;">计算机科学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86-%E5%9B%BE%E5%83%8F/" style="font-size: 10px;">计算机组成原理,图像</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">软件工程</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 13.75px;">随笔</a>
     </div>
   </div>
 
@@ -554,7 +548,7 @@
       <ul>
         
           <li>
-            <a href="/2020/07/04/Temporary/PNG&JPG/">常用图片的构造及其压缩原理</a>
+            <a href="/2020/07/05/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%89%87%E7%9A%84%E6%9E%84%E9%80%A0%E5%8F%8A%E5%85%B6%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86/">常用图片的构造及其压缩原理</a>
           </li>
         
           <li>
@@ -570,7 +564,7 @@
           </li>
         
           <li>
-            <a href="/2020/06/27/Temporary/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/">Temporary/十大排序</a>
+            <a href="/2020/06/27/Temporary/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/">Temporary/渲染管线</a>
           </li>
         
       </ul>
