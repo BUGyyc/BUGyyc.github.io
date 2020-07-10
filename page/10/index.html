@@ -64,6 +64,57 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-06.游戏引擎/物理引擎/2D碰撞/2D碰撞（二）四叉树" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/">2D多边形碰撞-四叉树</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一篇博客讲解了一下简单2D游戏的开发流程</p>
+<p><a href="https://zhuanlan.zhihu.com/p/82301894" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82301894</a></p>
+<p>上一篇提到的检测碰撞是遍历所有的方块，进行检测，每一帧都进行检测碰撞，效率极其低下，一旦游戏对象过多，意味着每帧需要遍历检测的对象太多，为此，我们需要将碰撞检测的游戏对象数量降低，减少不必要的计算检测。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;执行碰撞</span><br><span class="line">void Game::DoCollisions()</span><br><span class="line">&#123;	</span><br><span class="line">	&#x2F;&#x2F;遍历所有的方块与球的碰撞情况</span><br><span class="line">	for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks)</span><br><span class="line">	&#123;</span><br><span class="line">         &#x2F;&#x2F;......</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F;......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事实上，真正需要进行检测的方块只有其中一部分，因为大多数方块在距离上是完全不需要进行检测的，基于这一点，我们需要通过某种手段将处在2D世界中的游戏对象进行划分。</p>
+<p>这里用到的手段就是四叉树。</p>
+<h1 id="四叉树的结构"><a href="#四叉树的结构" class="headerlink" title="四叉树的结构"></a>四叉树的结构</h1><p>如下图所示：<br><img src="https://raw.githubusercontent.com/BUGyyc/MyGallery/master/res/14e27b989d0f9d1ff8f0800cb9c8a38e_hd.jpg" alt="(path/to/image.png)"></p>
+<p>代码：</p>
+<p><a href="https://github.com/BUGyyc/SimpleCraft/blob/master/quad_tree.h" target="_blank" rel="noopener">https://github.com/BUGyyc/SimpleCraft/blob/master/quad_tree.h</a></p>
+<h1 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h1><h1 id="运用四叉树减少比较次数"><a href="#运用四叉树减少比较次数" class="headerlink" title="运用四叉树减少比较次数"></a>运用四叉树减少比较次数</h1><p>牺牲空间换时间，每一帧都通过最新的四叉树取节点下来进行检测判断，在减少数量上减少了大半。因为提升了很大的效率，不过，不可避免的是每帧都需要维护这个四叉树，这是空间上必须要有所让步的，不过好在所占空间并不大。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;每一帧都需要更新四叉树，并且要在检测之前</span><br><span class="line">void Game::QuadTreeExcute() </span><br><span class="line">&#123;</span><br><span class="line">	quadTree &#x3D; new QuadTree&lt;GameObject*&gt;();</span><br><span class="line">	for (GameObject &amp;box : this-&gt;Levels[this-&gt;Level].Bricks) &#123;</span><br><span class="line">		quadTree-&gt;add(&amp;box,QuadAABB(box.Position.x,box.Position.y,80,80));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Game::DoCollisions()</span><br><span class="line">&#123;	</span><br><span class="line">	vector&lt;GameObject*&gt; list;</span><br><span class="line">	quadTree-&gt;find(QuadAABB(Ball-&gt;Position.x,Ball-&gt;Position.y,80,80), list, true); </span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;在窗口输出，观察每帧进行多少方块的比较</span><br><span class="line">        if (list.size() &gt; 0) &#123;</span><br><span class="line">		cout &lt;&lt; list.size() &lt;&lt; &quot; size   &quot; &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;只进行了部分比较</span><br><span class="line">	&#x2F;&#x2F;遍历区域内的方块与球的碰撞情况</span><br><span class="line">	for (auto &amp;box : list)</span><br><span class="line">	&#123;</span><br><span class="line">                ...</span><br><span class="line">        &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/06.%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/2D%E7%A2%B0%E6%92%9E/2D%E7%A2%B0%E6%92%9E%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%9B%E5%8F%89%E6%A0%91/" data-id="ckbp3mqln006948twcl55d57e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-05.游戏编程/Unity3D/通用/CIL/CIL" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E9%80%9A%E7%94%A8/CIL/CIL/" class="article-date">
@@ -501,54 +552,6 @@
 
 
   
-    <article id="post-03.软件开发/面向对象" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">面向对象</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>面向对象的三大核心</p>
-<ul>
-<li><p>封装<br>对外不公开内部实现的细节</p>
-</li>
-<li><p>继承<br>子类可以持有父类非私有得属性和方法</p>
-</li>
-<li><p>多态<br>父类可以作为子类的引用</p>
-</li>
-</ul>
-<p><a href="https://blog.csdn.net/sunshineyang1205/article/details/78872426" target="_blank" rel="noopener">https://blog.csdn.net/sunshineyang1205/article/details/78872426</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" data-id="ckc94qetv00099sluhtfp7kvc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -577,7 +580,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 13.75px;">Android</a> <a href="/tags/C/" style="font-size: 17.5px;">C#</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cocos-Creator/" style="font-size: 11.25px;">Cocos Creator</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/LayaBox/" style="font-size: 10px;">LayaBox</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/Unity/" style="font-size: 15px;">Unity</a> <a href="/tags/temp/" style="font-size: 18.75px;">temp</a> <a href="/tags/%E5%9B%BE%E5%83%8F/" style="font-size: 10px;">图像</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" style="font-size: 13.75px;">图形渲染</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12.5px;">数据结构</a> <a href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 11.25px;">框架设计</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 20px;">游戏开发</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">游戏开发框架</a> <a href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" style="font-size: 12.5px;">物理引擎</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.25px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.25px;">网络</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" style="font-size: 11.25px;">计算机数学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">计算机硬件</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" style="font-size: 10px;">计算机科学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 12.5px;">计算机组成原理</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 13.75px;">软件工程</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 13.75px;">随笔</a>
+      <a href="/tags/Android/" style="font-size: 13.75px;">Android</a> <a href="/tags/C/" style="font-size: 17.5px;">C#</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cocos-Creator/" style="font-size: 11.25px;">Cocos Creator</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/LayaBox/" style="font-size: 10px;">LayaBox</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/Unity/" style="font-size: 15px;">Unity</a> <a href="/tags/temp/" style="font-size: 18.75px;">temp</a> <a href="/tags/%E5%9B%BE%E5%83%8F/" style="font-size: 10px;">图像</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" style="font-size: 16.25px;">图形渲染</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12.5px;">数据结构</a> <a href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 11.25px;">框架设计</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 20px;">游戏开发</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">游戏开发框架</a> <a href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" style="font-size: 12.5px;">物理引擎</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.25px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.25px;">网络</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" style="font-size: 11.25px;">计算机数学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">计算机硬件</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" style="font-size: 10px;">计算机科学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 12.5px;">计算机组成原理</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 13.75px;">软件工程</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 13.75px;">随笔</a>
     </div>
   </div>
 
@@ -603,19 +606,19 @@
           </li>
         
           <li>
+            <a href="/2020/07/10/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/">细说渲染管线</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/10/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB/">冯诺依曼体系结构</a>
           </li>
         
           <li>
+            <a href="/2020/07/10/Temporary/%E6%B7%B1%E5%BA%A6%E5%89%96%E6%9E%90%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">细说渲染管线</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/07/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%89%87%E7%9A%84%E6%9E%84%E9%80%A0%E5%8F%8A%E5%85%B6%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86/">常用图片的构造及其压缩原理</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/05/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E7%AE%97%E6%B3%95/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F/">十大排序</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/05/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
           </li>
         
       </ul>
