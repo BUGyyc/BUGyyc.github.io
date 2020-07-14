@@ -64,6 +64,159 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-02.编程语言/JavaScript/JavaScript" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/JavaScript/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/JavaScript/">JavaScript要点</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.w3cschool.cn/javascript/javascript-skillmap.html" target="_blank" rel="noopener">https://www.w3cschool.cn/javascript/javascript-skillmap.html</a></p>
+<h1 id="javascript-中的类型"><a href="#javascript-中的类型" class="headerlink" title="javascript 中的类型"></a>javascript 中的类型</h1><p>Undefined NULL Number String Boolean Object</p>
+<h2 id="typeof-与-instanceof"><a href="#typeof-与-instanceof" class="headerlink" title="typeof 与 instanceof"></a>typeof 与 instanceof</h2><p><a href="http://jartto.wang/2019/01/17/js-typeof/" target="_blank" rel="noopener">http://jartto.wang/2019/01/17/js-typeof/</a></p>
+<h1 id="typeof-判断返回以下结果"><a href="#typeof-判断返回以下结果" class="headerlink" title="typeof 判断返回以下结果"></a>typeof 判断返回以下结果</h1><ul>
+<li>udefined ， 值未定义</li>
+<li>boolean , 值为布尔型</li>
+<li>string , 值为字符串</li>
+<li>number ， 值为数值类型</li>
+<li>object , 值为对象类型或者null，null是特殊值，被认为是空的对象引用</li>
+<li>function , 值为函数</li>
+</ul>
+<h1 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h1><ul>
+<li>push() 尾部添加元素</li>
+<li>unshift() 数组头部添加元素</li>
+<li>concat() 合并两个数组</li>
+<li>pop() 删除尾部元素并返回</li>
+<li>shift() 删除头部元素并返回</li>
+</ul>
+<p>值类型用 typeOf 检测类型，引用类型用 instanceOf 检测类型</p>
+<hr>
+<h1 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h1><p>内层函数可以访问外层函数局部变量，外层函数不能访问内层函数局部变量</p>
+<hr>
+<h1 id="回收机制"><a href="#回收机制" class="headerlink" title="回收机制"></a>回收机制</h1><p>标记回收、引用计数</p>
+<p><a href="https://segmentfault.com/a/1190000019276047" target="_blank" rel="noopener">https://segmentfault.com/a/1190000019276047</a></p>
+<h2 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h2><h2 id="减少垃圾回收"><a href="#减少垃圾回收" class="headerlink" title="减少垃圾回收"></a>减少垃圾回收</h2><h3 id="数组优化"><a href="#数组优化" class="headerlink" title="数组优化"></a>数组优化</h3><p>将[]赋值给一个数组对象，是清空数组的捷径（例如： arr = [];），但是需要注意的是，这种方式又创建了一个新的空对象，并且将原来的数组对象变成了一小片内存垃圾！实际上，将数组长度赋值为0（arr.length = 0）也能达到清空数组的目的，并且同时能实现数组重用，减少内存垃圾的产生。</p>
+<p><a href="https://www.cnblogs.com/zhwl/p/4664604.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhwl/p/4664604.html</a></p>
+<hr>
+<h1 id="执行域"><a href="#执行域" class="headerlink" title="执行域"></a>执行域</h1><p>var 局部变量<br>出现变量提升</p>
+<hr>
+<h1 id="function"><a href="#function" class="headerlink" title="function"></a>function</h1><h2 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h2><p>函数的参数以数组形式传递</p>
+<h2 id="call"><a href="#call" class="headerlink" title="call"></a>call</h2><p>函数的参数直接传递</p>
+<h2 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h2><p><a href="https://www.runoob.com/w3cnote/js-call-apply-bind.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/js-call-apply-bind.html</a></p>
+<hr>
+<h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><p>JavaScript 变量可以是局部变量或全局变量。</p>
+<p>私有变量可以用到闭包。</p>
+<p>闭包是一种保护私有变量的机制，在函数执行时形成私有的作用域，保护里面的私有变量不受外界干扰。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function add() &#123;</span><br><span class="line">    var counter &#x3D; 0;</span><br><span class="line">    function plus() &#123;counter +&#x3D; 1;&#125;</span><br><span class="line">    plus();    </span><br><span class="line">    return counter; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果为1<br>counter被修改了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var name &#x3D; &quot;The Window&quot;;</span><br><span class="line">　　var object &#x3D; &#123;</span><br><span class="line">　　　　name : &quot;My Object&quot;,</span><br><span class="line">　　　　getNameFunc : function()&#123;</span><br><span class="line">　　　　　　return function()&#123;</span><br><span class="line">　　　　　　　　return this.name;</span><br><span class="line">　　　　　　&#125;;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;;</span><br><span class="line">　　alert(object.getNameFunc()());</span><br></pre></td></tr></table></figure>
+<p>输出为 The Window<br>name没有被修改</p>
+<p>因为：<br>getNameFunc: function() {//假设函数名为Ａ<br>return function()/<em>假设函数名为Ｂ</em>/ { return this.name; };<br>}<br>在函数里面构建函数的时候，闭包产生。<br>在函数Ｂ内调用函数Ａ的this.name,由于函数Ａ没有name属性，所以就去找全局变量name，找到了，所以返回“The Window”，要是没有找到，则返回“undefined”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var name &#x3D; &quot;The Window&quot;;</span><br><span class="line">　　var object &#x3D; &#123;</span><br><span class="line">　　　　name : &quot;My Object&quot;,</span><br><span class="line">　　　　getNameFunc : function()&#123;</span><br><span class="line">　　　　　　var that &#x3D; this;</span><br><span class="line">　　　　　　return function()&#123;</span><br><span class="line">　　　　　　　　return that.name;</span><br><span class="line">　　　　　　&#125;;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;;</span><br><span class="line">　　alert(object.getNameFunc()());</span><br></pre></td></tr></table></figure>
+<p>var <em>this = this;<br>return function() { return <em>this.name +”</em></em>“+ this.name; };</p>
+<p>父对象的所有变量，对子对象都是可见的，反之则不成立。</p>
+<p><a href="http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html</a></p>
+<p>this的指向是由它所在函数调用的上下文决定的，而不是由它所在函数定义的上下文决定的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var name &#x3D; &quot;The Window&quot;;</span><br><span class="line">var object &#x3D; &#123;</span><br><span class="line">    name: &quot;My Object&quot;,</span><br><span class="line">    getNameFunc: function () &#123;</span><br><span class="line">        return function () &#123;</span><br><span class="line">            return this.name;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">alert(object.getNameFunc()());</span><br></pre></td></tr></table></figure>
+
+<h1 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 让我们从一个自身拥有属性a和b的函数里创建一个对象o：</span><br><span class="line">let f &#x3D; function () &#123;</span><br><span class="line">   this.a &#x3D; 1;</span><br><span class="line">   this.b &#x3D; 2;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;* 这么写也一样</span><br><span class="line">function f() &#123;</span><br><span class="line">  this.a &#x3D; 1;</span><br><span class="line">  this.b &#x3D; 2;</span><br><span class="line">&#125;</span><br><span class="line">*&#x2F;</span><br><span class="line">let o &#x3D; new f(); &#x2F;&#x2F; &#123;a: 1, b: 2&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 在f函数的原型上定义属性</span><br><span class="line">f.prototype.b &#x3D; 3;</span><br><span class="line">f.prototype.c &#x3D; 4;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 不要在 f 函数的原型上直接定义 f.prototype &#x3D; &#123;b:3,c:4&#125;;这样会直接打破原型链</span><br><span class="line">&#x2F;&#x2F; o.[[Prototype]] 有属性 b 和 c</span><br><span class="line">&#x2F;&#x2F;  (其实就是 o.__proto__ 或者 o.constructor.prototype)</span><br><span class="line">&#x2F;&#x2F; o.[[Prototype]].[[Prototype]] 是 Object.prototype.</span><br><span class="line">&#x2F;&#x2F; 最后o.[[Prototype]].[[Prototype]].[[Prototype]]是null</span><br><span class="line">&#x2F;&#x2F; 这就是原型链的末尾，即 null，</span><br><span class="line">&#x2F;&#x2F; 根据定义，null 就是没有 [[Prototype]]。</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 综上，整个原型链如下: </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; &#123;a:1, b:2&#125; ---&gt; &#123;b:3, c:4&#125; ---&gt; Object.prototype---&gt; null</span><br><span class="line"></span><br><span class="line">console.log(o.a); &#x2F;&#x2F; 1</span><br><span class="line">&#x2F;&#x2F; a是o的自身属性吗？是的，该属性的值为 1</span><br><span class="line"></span><br><span class="line">console.log(o.b); &#x2F;&#x2F; 2</span><br><span class="line">&#x2F;&#x2F; b是o的自身属性吗？是的，该属性的值为 2</span><br><span class="line">&#x2F;&#x2F; 原型上也有一个&#39;b&#39;属性，但是它不会被访问到。</span><br><span class="line">&#x2F;&#x2F; 这种情况被称为&quot;属性遮蔽 (property shadowing)&quot;</span><br><span class="line"></span><br><span class="line">console.log(o.c); &#x2F;&#x2F; 4</span><br><span class="line">&#x2F;&#x2F; c是o的自身属性吗？不是，那看看它的原型上有没有</span><br><span class="line">&#x2F;&#x2F; c是o.[[Prototype]]的属性吗？是的，该属性的值为 4</span><br><span class="line"></span><br><span class="line">console.log(o.d); &#x2F;&#x2F; undefined</span><br><span class="line">&#x2F;&#x2F; d 是 o 的自身属性吗？不是，那看看它的原型上有没有</span><br><span class="line">&#x2F;&#x2F; d 是 o.[[Prototype]] 的属性吗？不是，那看看它的原型上有没有</span><br><span class="line">&#x2F;&#x2F; o.[[Prototype]].[[Prototype]] 为 null，停止搜索</span><br><span class="line">&#x2F;&#x2F; 找不到 d 属性，返回 undefined</span><br></pre></td></tr></table></figure>
+<p>优先找自身属性，然后再在原型链上找</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function doSomething()&#123;&#125;</span><br><span class="line">doSomething.prototype.foo &#x3D; &quot;bar&quot;;</span><br><span class="line">var doSomeInstancing &#x3D; new doSomething();</span><br><span class="line">doSomeInstancing.prop &#x3D; &quot;some value&quot;;</span><br><span class="line">console.log(&quot;doSomeInstancing.prop:      &quot; + doSomeInstancing.prop);</span><br><span class="line">console.log(&quot;doSomeInstancing.foo:       &quot; + doSomeInstancing.foo);</span><br><span class="line">console.log(&quot;doSomething.prop:           &quot; + doSomething.prop);</span><br><span class="line">console.log(&quot;doSomething.foo:            &quot; + doSomething.foo);</span><br><span class="line">console.log(&quot;doSomething.prototype.prop: &quot; + doSomething.prototype.prop);</span><br><span class="line">console.log(&quot;doSomething.prototype.foo:  &quot; + doSomething.prototype.foo);</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain</a></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p><a href="https://blog.fundebug.com/2017/07/17/10-javascript-difficulties/" target="_blank" rel="noopener">https://blog.fundebug.com/2017/07/17/10-javascript-difficulties/</a></p>
+<p><a href="https://juejin.im/entry/588037d38d6d810058af5d01" target="_blank" rel="noopener">https://juejin.im/entry/588037d38d6d810058af5d01</a></p>
+<hr>
+<h1 id="Js中的变量与对象"><a href="#Js中的变量与对象" class="headerlink" title="Js中的变量与对象"></a>Js中的变量与对象</h1><p>在Js中所有的变量都可以当作对象使用，除了两个例外null和undefined</p>
+<pre><code>function foo(){}
+foo.a = 1;</code></pre><h2 id="访问属性"><a href="#访问属性" class="headerlink" title="访问属性"></a>访问属性</h2><pre><code>var a = {b:1};
+a[&apos;b&apos;]; //1</code></pre><h2 id="删除属性"><a href="#删除属性" class="headerlink" title="删除属性"></a>删除属性</h2><p>delete ，remove 数组中删除，数组长度不会变，被删除的项变为Undefined</p>
+<h1 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h1><p>Js 不包含传统的类继承模型，而是使用prototype原型模型</p>
+<h2 id="属性查找"><a href="#属性查找" class="headerlink" title="属性查找"></a>属性查找</h2><p>Js的属性查找，会向上遍历查找原型链，直到找到给定名称的属性为止。<br>到达原型链顶部Object.prototype，未找到就返回Undefined.<br>优先查找自身，然后再查找原型链</p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p>函数是Js中的一种对象，它可以像值一样传递。</p>
+<h1 id="This"><a href="#This" class="headerlink" title="This"></a>This</h1><p>执行上下文</p>
+<h1 id="闭包与引用"><a href="#闭包与引用" class="headerlink" title="闭包与引用"></a>闭包与引用</h1><pre><code>for(var i = 0;i&lt;10;i++){
+    setTimeout(function(){
+        console.log(i);
+    },1000);
+}
+
+for(var i =0;i&lt;10;i++){
+    (function(a){
+        setTimeout(function(){
+            console.log(a);
+        },1000)
+    })(i);
+}
+
+for(var i = 0;i&lt;10;i++){
+    setTimeout(
+        (function(a){
+            return function(){
+                console.log(a);
+            }
+        })(i),1000)
+}</code></pre><h1 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h1><h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><h1 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h1><h2 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h2><p>var的问题，Js先编译再执行<br>建议使用let</p>
+<h1 id="数组的操作技巧"><a href="#数组的操作技巧" class="headerlink" title="数组的操作技巧"></a>数组的操作技巧</h1><p>Js中数组是对象，<br>避免使用 for in 遍历数组，因为会查找到原型链上，需要使用hasOwnProperty</p>
+<h2 id="数组合并"><a href="#数组合并" class="headerlink" title="数组合并"></a>数组合并</h2><pre><code>Array.prototype.push.apply(arr1,arr2)
+//相当于如下
+arr1 = arr1 + arr2//arr1包含1，2</code></pre><h2 id="数组最大值与最小值"><a href="#数组最大值与最小值" class="headerlink" title="数组最大值与最小值"></a>数组最大值与最小值</h2><pre><code>var arr = [1,2,3]
+Math.max.apply(Math,arr);//3
+Math.min.apply(Math,arr);//1</code></pre><p>delete 与 remove 都不能完全清理干净数组，数组长度依然没变，只是值变成了undefined</p>
+<h2 id="Array构造函数"><a href="#Array构造函数" class="headerlink" title="Array构造函数"></a>Array构造函数</h2><h1 id="类型判断与比较"><a href="#类型判断与比较" class="headerlink" title="类型判断与比较"></a>类型判断与比较</h1><p>Js是弱类型语言，这就意味着，==操作符会在比较前先进行强制类型转换</p>
+<pre><code>“” == “0” //false
+0  == “”  //true
+0  == &quot;0&quot; //true
+false == &quot;false&quot; //false
+false == &quot;0&quot;  //true
+false == undefined  //false
+false == null   //false
+null == undefined //true</code></pre><h2 id="typeOf"><a href="#typeOf" class="headerlink" title="typeOf"></a>typeOf</h2><ul>
+<li>typeof：JavaScript一元操作符，用于以字符串的形式返回变量的原始类型，注意，typeof null也会返回object，大多数的对象类型（数组Array、时间Date等）也会返回object</li>
+</ul>
+<h2 id="instanceOf"><a href="#instanceOf" class="headerlink" title="instanceOf"></a>instanceOf</h2><p>instanceOf操作符应该仅仅用来比较来自同一个Js上下文的自定义对象。</p>
+<ul>
+<li>instanceof：JavaScript操作符，会在原型链中的构造器中搜索，找到则返回true，否则 返回false</li>
+</ul>
+<pre><code>var arr = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;];
+typeof arr;   
+// 返回 &quot;object&quot; 
+arr instanceof Array // true
+arr.constructor();  //[]</code></pre><h2 id="undefined与null"><a href="#undefined与null" class="headerlink" title="undefined与null"></a>undefined与null</h2><p>两者都表示‘空’，</p>
+<p>undefined表示一个值为undefined的类型</p>
+<p>在Js中null也是一种数据类型</p>
+<h2 id="setTimeout与setInterval"><a href="#setTimeout与setInterval" class="headerlink" title="setTimeout与setInterval"></a>setTimeout与setInterval</h2><p>由于Js是异步的，可以使用setTimeout与setInterval来计划执行函数</p>
+<h1 id="其他-1"><a href="#其他-1" class="headerlink" title="其他"></a>其他</h1><h2 id="对象转数组"><a href="#对象转数组" class="headerlink" title="对象转数组"></a>对象转数组</h2><pre><code>var arr = Array.prototype.slice.call(arguments)</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/JavaScript/" data-id="ckc94qeu9000t9slu0p5teid8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-02.编程语言/JavaScript/TypeScript" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/TypeScript/" class="article-date">
@@ -495,6 +648,14 @@ Zz = Zz1+Zz2+...+Zzn;//增值累积</code></pre><p>当然上面提及的公式�
       <ul>
         
           <li>
+            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/">05.游戏编程/游戏开发技巧/人群拟合移动方案</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/10/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">05.游戏编程/游戏开发技巧/技能系统设计</a>
           </li>
         
@@ -504,14 +665,6 @@ Zz = Zz1+Zz2+...+Zzn;//增值累积</code></pre><p>当然上面提及的公式�
         
           <li>
             <a href="/2020/07/10/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB/">冯诺依曼体系结构</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/10/Temporary/%E6%B7%B1%E5%BA%A6%E5%89%96%E6%9E%90%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">细说渲染管线</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/07/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%89%87%E7%9A%84%E6%9E%84%E9%80%A0%E5%8F%8A%E5%85%B6%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86/">常用图片的构造及其压缩原理</a>
           </li>
         
       </ul>

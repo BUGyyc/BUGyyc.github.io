@@ -64,6 +64,76 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-11.网络/TCP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/TCP/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/TCP/">关于TCP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>尽管TCP和UDP都使用相同的网络层（IP），TCP却向应用层提供与UDP完全不同的服务。<br>TCP提供一种面向连接的、可靠的字节流服务。</p>
+<h1 id="TCP的特点与网络处理方式"><a href="#TCP的特点与网络处理方式" class="headerlink" title="TCP的特点与网络处理方式"></a>TCP的特点与网络处理方式</h1><ul>
+<li>面向连接的、可靠的、基于字节流的传输层通信协议。<br>流量控制采用滑动窗口协议</li>
+<li>拥塞控制的几种方式：<ul>
+<li>慢启动，拥塞避免，</li>
+<li>快速重传，快速恢复，</li>
+<li>网络拥塞</li>
+</ul>
+</li>
+<li>流量控制滑动窗口<ul>
+<li>滑动窗口算法<br>//TODO</li>
+</ul>
+</li>
+</ul>
+<h1 id="TCP为什么具备可靠性"><a href="#TCP为什么具备可靠性" class="headerlink" title="TCP为什么具备可靠性"></a>TCP为什么具备可靠性</h1><ul>
+<li>应用数据被分割成TCP认为最适合发送的数据块。由 TCP传递给I P的信息单位称为报文段或段。</li>
+<li>当TCP发出一个段后，它启动一个定时器，等待目的端确认收到这个报文段。</li>
+<li>当TCP收到发自TCP连接另一端的数据，它将发送一个确认。</li>
+<li>TCP将保持它首部和数据的检验和。这是一个端到端的检验和，目的是检测数据在传输<br>过程中的任何变化。如果收到段的检验和有差错， TCP将丢弃这个报文段和不确认收到<br>此报文段（希望发端超时并重发）。</li>
+<li>既然TCP报文段作为I P数据报来传输，而I P数据报的到达可能会失序，因此 TCP报文段<br>的到达也可能会失序。如果必要， TCP将对收到的数据进行重新排序，将收到的数据以<br>正确的顺序交给应用层。</li>
+<li>既然I P数据报会发生重复，TCP的接收端必须丢弃重复的数据。</li>
+<li>TCP还能提供流量控制。 TCP连接的每一方都有固定大小的缓冲空间。 TCP的接收端只</li>
+<li>允许另一端发送接收端缓冲区所能接纳的数据。这将防止较快主机致使较慢主机的缓冲<br>区溢出。</li>
+</ul>
+<h1 id="TCP首部组成"><a href="#TCP首部组成" class="headerlink" title="TCP首部组成"></a>TCP首部组成</h1><p>TCP通常是20个字节</p>
+<h1 id="TCP的连接"><a href="#TCP的连接" class="headerlink" title="TCP的连接"></a>TCP的连接</h1><p>需要三次握手</p>
+<p>1) 请求端（通常称为客户）发送一个 S Y N段指明客户打算连接的服务器的端口，以及初<br>始序号（I S N，在这个例子中为1 4 1 5 5 3 1 5 2 1）。这个S Y N段为报文段1。<br>2) 服务器发回包含服务器的初始序号的 S Y N报文段（报文段2）作为应答。同时，将确认<br>序号设置为客户的I S N加1以对客户的S Y N报文段进行确认。一个S Y N将占用一个序号。<br>3) 客户必须将确认序号设置为服务器的 I S N加1以对服务器的S Y N报文段进行确认（报文<br>段3）。</p>
+<h1 id="TCP的关闭"><a href="#TCP的关闭" class="headerlink" title="TCP的关闭"></a>TCP的关闭</h1><p>需要四次握手。<br>既然一个TCP连接是全双工（即数据在两个方向上能同时传递），因此每个方<br>向必须单独地进行关闭。</p>
+<h1 id="TCP的半关闭"><a href="#TCP的半关闭" class="headerlink" title="TCP的半关闭"></a>TCP的半关闭</h1><p>TCP提供了连接的一端在结束它的发送后还能接收来自另一端数据的能力。这就是所谓<br>的半关闭。正如我们早些时候提到的只有很少的应用程序使用它。</p>
+<h1 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h1><p>防止速度快的一方主机导致速度慢一方主机缓冲溢出问题</p>
+<h1 id="慢启动"><a href="#慢启动" class="headerlink" title="慢启动"></a>慢启动</h1><p>事先不以较大的量来设置窗口大小，先以较小的设置，防止窗口立即到达峰值。防止拥筛</p>
+<h1 id="TCP的超时与重传机制"><a href="#TCP的超时与重传机制" class="headerlink" title="TCP的超时与重传机制"></a>TCP的超时与重传机制</h1><p>TCP提供可靠的运输层。它使用的方法之一就是确认从另一端收到的数据。但数据和确<br>认都有可能会丢失。 TCP通过在发送时设置一个定时器来解决这种问题。如果当定时器溢出<br>时还没有收到确认，它就重传该数据。对任何实现而言，关键之处就在于超时和重传的策略，<br>即怎样决定超时间隔和如何确定重传的频率。</p>
+<h1 id="拥塞避免算法"><a href="#拥塞避免算法" class="headerlink" title="拥塞避免算法"></a>拥塞避免算法</h1><h1 id="快速重传与快速恢复算法"><a href="#快速重传与快速恢复算法" class="headerlink" title="快速重传与快速恢复算法"></a>快速重传与快速恢复算法</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/11.%E7%BD%91%E7%BB%9C/TCP/" data-id="ckbp3mqjw000z48twcxuoaxaq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-11.网络/KCP" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/21/11.%E7%BD%91%E7%BB%9C/KCP/" class="article-date">
@@ -482,72 +552,6 @@
 
 
   
-    <article id="post-05.游戏编程/游戏开发技巧/游戏优化/CPU方面优化" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/CPU%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/CPU%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96/">CPU方面的优化</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>DrawCall<br>DrawCall是CPU对底层图形接口的调用，目的是在设备上绘制出对象。DrawCall的消耗就在于每次只提交少量数据，这样会导致GPU会在等待CPU提交数据，耗费时间。<br>优化的方向就是合并数据为一次</p>
-</li>
-<li><ul>
-<li>DrawCall的优化方案<br>打包图集，尽可能减少光照阴影等消耗<br>静态批处理：部分游戏对象可以选择static<br>动态批处理：是Unity自动进行的，按照一定规则即可，mesh顶点数不能超过900，非统一缩放轴可以合并批次<br>对渲染顺序要注意，渲染是可能被打断的，所以同材质的对象，尽可能放一起</li>
-</ul>
-</li>
-<li><p>GC<br>在托管堆上，一些不合理或者不正确的代码风格也是会导致托管堆内存碎片化</p>
-</li>
-<li><ul>
-<li>字符拼接，采取stringBuild</li>
-</ul>
-</li>
-<li><ul>
-<li>用for循环代替foreach迭代。</li>
-</ul>
-</li>
-<li><ul>
-<li>能使用对象池就使用对象池</li>
-</ul>
-</li>
-<li><ul>
-<li>能用Struct就使用Struct，而不是Class</li>
-</ul>
-</li>
-</ul>
-<p>drawcall是啥？其实就是对底层图形程序（比如：OpenGL ES)接口的调用，以在屏幕上画出东西。所以，是谁去调用这些接口呢？CPU。</p>
-<p><a href="https://www.cnblogs.com/murongxiaopifu/p/4284988.html" target="_blank" rel="noopener">https://www.cnblogs.com/murongxiaopifu/p/4284988.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%BC%98%E5%8C%96/CPU%E6%96%B9%E9%9D%A2%E4%BC%98%E5%8C%96/" data-id="ckbp3mqkq003s48tw6ae1cg7y" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -598,6 +602,14 @@
       <ul>
         
           <li>
+            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/">05.游戏编程/游戏开发技巧/人群拟合移动方案</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/10/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">05.游戏编程/游戏开发技巧/技能系统设计</a>
           </li>
         
@@ -607,14 +619,6 @@
         
           <li>
             <a href="/2020/07/10/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB/">冯诺依曼体系结构</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/10/Temporary/%E6%B7%B1%E5%BA%A6%E5%89%96%E6%9E%90%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">细说渲染管线</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/07/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%89%87%E7%9A%84%E6%9E%84%E9%80%A0%E5%8F%8A%E5%85%B6%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86/">常用图片的构造及其压缩原理</a>
           </li>
         
       </ul>

@@ -64,6 +64,116 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-05.游戏编程/游戏开发技巧/人群拟合移动方案" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/" class="article-date">
+  <time datetime="2020-07-14T13:45:25.724Z" itemprop="datePublished">2020-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/">05.游戏编程/游戏开发技巧/人群拟合移动方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/" data-id="ckcm1546w00001sluc35t693j" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-05.游戏编程/Unity3D/深入理解协程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/" class="article-date">
+  <time datetime="2020-07-14T04:09:41.000Z" itemprop="datePublished">2020-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们知道Unity是单线程的，所以我们需要一种机制来实现“多线程”。协程可以不使用异步执行的方案来实现异步的手段，协程不是线程，协程和 Update 一样是主线程中执行的。所以使用协程可以不考虑同步和锁的问题。</p>
+<hr>
+<h2 id="什么是协程"><a href="#什么是协程" class="headerlink" title="什么是协程"></a>什么是协程</h2><p>从程序设计的角度上理解，协程可以被认为是一个有限状态机，将逻辑分散到各个小状态中，然后通过MoveNext()，来确保状态转移下去。这听起来像是 Update 中去执行一个逻辑，例如：移动一个物体，每一帧移动一小段距离，每一次Update中移动的逻辑就可以认为是上面提到的小状态，然后在下一次Update时，在上一次Update数据基础之上执行当前小状态逻辑。</p>
+<p>协程不是多线程，不是异步技术。协程是在主线程中执行的。协程内的逻辑可以在任何一个阶段被暂停挂起，然后在指定的一个时间继续执行暂停挂起的协程。</p>
+<h2 id="协程能解决的问题"><a href="#协程能解决的问题" class="headerlink" title="协程能解决的问题"></a>协程能解决的问题</h2><p>有些逻辑我们希望它运行于每一帧中，并且每一帧都是在上一帧的数据基础上执行，若是单一的逻辑，我们可以直接写在Update中，但如果是负杂一些的逻辑，写在Update就没那么好管理。<br>如下，每一帧输出一个。直到 step &gt;= 5</p>
+<pre><code>int step = 0;
+void Update(){
+    if(step&lt;5){
+        step++;
+        Debug.Log(&quot;Say Hello &quot;+step);
+    }
+}</code></pre><p>使用协程</p>
+<pre><code>IEnumerator Countdown()
+{
+    for(int step = 0; step &lt; 5; step++){
+        Debug.Log(&quot;Say Hello &quot;+step);
+        Yield return 0;
+    }
+}</code></pre><p>还有一些情况是，避免一个功能逻辑在一帧之内执行完，这给了这一帧极大的运行压力。而协程就可以避免这种状况。</p>
+<h2 id="协程的原理"><a href="#协程的原理" class="headerlink" title="协程的原理"></a>协程的原理</h2><p>来看看 IEnumerator 的结构</p>
+<pre><code>public interface IEnumerator{
+    bool MoveNext();
+    void Reset();
+    Object Current{get;}
+}</code></pre><p>协程是分步执行的，上文中有提到 yield return XXX，它的执行会使得协程被挂起。</p>
+<ul>
+<li>yield return null; → 等待下一帧中的 Update 函数执行完之后再继续执行;</li>
+<li>yield return new WaitForSeconds(10); → 延迟 10 秒后再继续执行;</li>
+<li>yield return new WaitForFixedUpdate(); → 等待所有脚本中的 FixedUpdate 函数结束之后再继续执行;</li>
+<li>yield return new WaitForEndOfFrame(); → 等待该帧中所有 Camera 和 GUI 对象渲染完毕, 在帧被显示到屏幕之前恢复执行前面的代码;</li>
+<li>yield return new WWW(url); → 等待 url 下载完后再继续执行;</li>
+<li>yield return StartCoroutine(MyFunc()); → 等待协程结束后再执行;</li>
+</ul>
+<h2 id="协程不同于线程"><a href="#协程不同于线程" class="headerlink" title="协程不同于线程"></a>协程不同于线程</h2><p><a href="https://www.iteye.com/blog/dsqiu-2029701" target="_blank" rel="noopener">https://www.iteye.com/blog/dsqiu-2029701</a></p>
+<p>Unity中协程的内部实现是状态机，MoveNext要执行下一个状态</p>
+<p><a href="https://www.cnblogs.com/neverdie/p/3792766.html" target="_blank" rel="noopener">https://www.cnblogs.com/neverdie/p/3792766.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/" data-id="ckc94qeug00179slu486ke8fw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-05.游戏编程/游戏开发技巧/技能系统设计" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/07/10/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
@@ -522,50 +632,6 @@ V=0.615R-0.515G-0.1B</code></pre><p>上文图中展示的FDCT、IDCT表示的是
 
 
   
-    <article id="post-05.游戏编程/Unity3D/深入理解协程" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/07/05/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/" class="article-date">
-  <time datetime="2020-07-05T04:09:41.000Z" itemprop="datePublished">2020-07-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/05/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们知道Unity是单线程的，所以我们需要一种机制来实现多线程，而这种机制就是协程。</p>
-<hr>
-<h1 id="协程可以解决的问题"><a href="#协程可以解决的问题" class="headerlink" title="协程可以解决的问题"></a>协程可以解决的问题</h1><p>有些逻辑我们希望它运行于每一帧中，并且每一帧都是在上一帧的数据基础上执行，若是单一的逻辑，我们可以直接写在Update中，但如果是负杂一些的逻辑，写在Update就没那么好管理。<br>如下，每一帧输出一个。直到step&gt;=5<br>    int step = 0;<br>    void Update(){<br>        if(step&lt;5){<br>            step++;<br>            Debug.Log(“Say Hello “+step);<br>        }<br>    }<br>使用协程<br>    IEnumerator Countdown()<br>    {<br>        for(int step = 0; step &lt; 5; step++){<br>            Debug.Log(“Say Hello “+step);<br>            Yield return 0;<br>        }<br>    }</p>
-<p>还有一些情况是，避免一个功能逻辑在一帧之内执行完，这给了这一帧极大的运行压力。而协程就可以避免这种状况。</p>
-<h1 id="协程是什么"><a href="#协程是什么" class="headerlink" title="协程是什么"></a>协程是什么</h1><h1 id="协程怎么使用"><a href="#协程怎么使用" class="headerlink" title="协程怎么使用"></a>协程怎么使用</h1><h1 id="协程的工作原理"><a href="#协程的工作原理" class="headerlink" title="协程的工作原理"></a>协程的工作原理</h1><p>Unity中协程的内部实现是状态机，MoveNext要执行下一个状态</p>
-<p><a href="https://www.cnblogs.com/neverdie/p/3792766.html" target="_blank" rel="noopener">https://www.cnblogs.com/neverdie/p/3792766.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/07/05/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/" data-id="ckc94qeug00179slu486ke8fw" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-05.游戏编程/游戏开发技巧/游戏中的AI运用" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/07/05/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%B8%B8%E6%88%8F%E4%B8%AD%E7%9A%84AI%E8%BF%90%E7%94%A8/" class="article-date">
@@ -638,115 +704,6 @@ V=0.615R-0.515G-0.1B</code></pre><p>上文图中展示的FDCT、IDCT表示的是
 
 
   
-    <article id="post-01.计算机科学/数据结构/链表/链表" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/" class="article-date">
-  <time datetime="2020-06-22T09:48:41.000Z" itemprop="datePublished">2020-06-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/">链表</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="查找链表的中间节点"><a href="#查找链表的中间节点" class="headerlink" title="查找链表的中间节点"></a>查找链表的中间节点</h2><p>使用双指针，一快一慢。快的指针每次移动两步，慢的指针每次移动一步。这样当快指针达到尾部的时候，慢指针就到达了中间节点的位置</p>
-<pre><code>private ListNode findMidNode(ListNode head){
-    if(head == null || head.next == null)return head;
-    ListNode f = head;
-    ListNode l = head;
-    while(f!=null){
-        f = f.next;
-        if(f!=null)f = f.next;
-        l = l.next;
-    }
-    return l;
-}</code></pre><h2 id="查找链表的倒数第K个节点"><a href="#查找链表的倒数第K个节点" class="headerlink" title="查找链表的倒数第K个节点"></a>查找链表的倒数第K个节点</h2><p>也是双指针，第一个指针先移动K步，然后第二个指针再和第一个指针同时移动，当第一个指针达到尾部后，那么第二个指针就是倒数第K个节点</p>
-<pre><code>private ListNode findKNode(ListNode head,int k){
-    if(head == null)return head;
-    ListNode f = head;
-    ListNode l = head;
-    while(k&gt;0){
-        if(f!=null){
-            f = f.next;
-        }else{
-            break;
-        }
-    }
-    if(k &lt;= 0){
-        return null;
-    }else{
-        while(f!=null){
-            f = f.next;
-            l = l.next;
-        }
-        return l;
-    }
-}</code></pre><h2 id="判断两个链表是否相交"><a href="#判断两个链表是否相交" class="headerlink" title="判断两个链表是否相交"></a>判断两个链表是否相交</h2><p>若两个链表相交，那么链表相交的起点开始，所有的节点都会相等，因为是单链表，从相交节点开始往后，每个节点的地址都是一样的，所以往后的节点都会相等，所以如果两个链表有节点相等，那么两个链表就会相交。所以把一个链表的最后一个节点提取出来，与另一个链表进行比较，只要有相等，那么就有相交</p>
-<pre><code>private bool checkListNode(ListNode l1,ListNode l2){
-    if(l1 == null||l2 == null)return false;
-    ListNode f = l1;
-    while(f.next!=null){
-        f = f.next;
-    }
-
-    ListNode s = l2;
-    while(s.next!=null){
-        s = s.next;
-    }
-    return f == s;
-}</code></pre><h2 id="判断链表是否有环"><a href="#判断链表是否有环" class="headerlink" title="判断链表是否有环"></a>判断链表是否有环</h2><p>快慢指针法，快指针每次走两步，慢指针每次走一步，如果链表是有环的，那么快慢指针总会在某次移动时指向同一个节点。</p>
-<pre><code>private bool hasCircle(ListNode head){
-    ListNode f = head;
-    ListNode l = head;
-
-    while(f!=null &amp;&amp; f.next!=null){
-        f = f.next.next;
-        l = l.next;
-    }
-
-    return f == l;
-}</code></pre><h2 id="翻转链表"><a href="#翻转链表" class="headerlink" title="翻转链表"></a>翻转链表</h2><h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><h3 id="迭代写法"><a href="#迭代写法" class="headerlink" title="迭代写法"></a>迭代写法</h3><pre><code>private ListNode ReverseList(ListNode head){
-    if(head == null || head.next == null)return head;
-    ListNode newHead = null;
-    ListNode curr = head;
-    while(curr!=null){
-        ListNode temp = curr;
-        curr = curr.next;
-        temp.next = newHead;
-        newHead = temp;
-    }
-    return newHead;
-}</code></pre><h2 id="求相交链表的交点"><a href="#求相交链表的交点" class="headerlink" title="求相交链表的交点"></a>求相交链表的交点</h2><p>可以先判断长度，让长度较长的一个链表的指针先移动，移动的步数是长短链表的差值，然后两个链表上的指针再同时移动，找到两个指针相等的时候就是相交的交点。</p>
-<hr>
-<hr>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://mp.weixin.qq.com/s/rx4fD0fHtG8oIiZ-b05u9A" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/rx4fD0fHtG8oIiZ-b05u9A</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/22/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8/" data-id="ckbovw38m00044stw880y9g42" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -797,6 +754,14 @@ V=0.615R-0.515G-0.1B</code></pre><p>上文图中展示的FDCT、IDCT表示的是
       <ul>
         
           <li>
+            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/">05.游戏编程/游戏开发技巧/人群拟合移动方案</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/10/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">05.游戏编程/游戏开发技巧/技能系统设计</a>
           </li>
         
@@ -806,14 +771,6 @@ V=0.615R-0.515G-0.1B</code></pre><p>上文图中展示的FDCT、IDCT表示的是
         
           <li>
             <a href="/2020/07/10/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB/">冯诺依曼体系结构</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/10/Temporary/%E6%B7%B1%E5%BA%A6%E5%89%96%E6%9E%90%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">细说渲染管线</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/07/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%89%87%E7%9A%84%E6%9E%84%E9%80%A0%E5%8F%8A%E5%85%B6%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86/">常用图片的构造及其压缩原理</a>
           </li>
         
       </ul>

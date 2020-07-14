@@ -64,6 +64,78 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-02.编程语言/JavaScript/other" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/other/" class="article-date">
+  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/other/">JavaScript精要</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h1><ul>
+<li>push() 尾部添加元素</li>
+<li>unshift() 数组头部添加元素</li>
+<li>concat() 合并两个数组</li>
+<li>pop() 删除尾部元素并返回</li>
+<li>shift() 删除头部元素并返回</li>
+</ul>
+<p>值类型用 typeOf 检测类型，引用类型用 instanceOf 检测类型</p>
+<hr>
+<h1 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h1><p>内层函数可以访问外层函数局部变量，外层函数不能访问内层函数局部变量</p>
+<hr>
+<h1 id="回收机制"><a href="#回收机制" class="headerlink" title="回收机制"></a>回收机制</h1><p>标记回收、引用计数</p>
+<hr>
+<h1 id="执行域"><a href="#执行域" class="headerlink" title="执行域"></a>执行域</h1><p>var 局部变量<br>出现变量提升</p>
+<hr>
+<h1 id="function"><a href="#function" class="headerlink" title="function"></a>function</h1><h2 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h2><p>函数的参数以数组形式传递</p>
+<h2 id="call"><a href="#call" class="headerlink" title="call"></a>call</h2><p>函数的参数直接传递</p>
+<h2 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h2><p><a href="https://www.runoob.com/w3cnote/js-call-apply-bind.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/js-call-apply-bind.html</a></p>
+<hr>
+<h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><p>JavaScript 变量可以是局部变量或全局变量。</p>
+<p>私有变量可以用到闭包。</p>
+<p>闭包是一种保护私有变量的机制，在函数执行时形成私有的作用域，保护里面的私有变量不受外界干扰。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function add() &#123;</span><br><span class="line">    var counter &#x3D; 0;</span><br><span class="line">    function plus() &#123;counter +&#x3D; 1;&#125;</span><br><span class="line">    plus();    </span><br><span class="line">    return counter; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果为1<br>counter被修改了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var name &#x3D; &quot;The Window&quot;;</span><br><span class="line">　　var object &#x3D; &#123;</span><br><span class="line">　　　　name : &quot;My Object&quot;,</span><br><span class="line">　　　　getNameFunc : function()&#123;</span><br><span class="line">　　　　　　return function()&#123;</span><br><span class="line">　　　　　　　　return this.name;</span><br><span class="line">　　　　　　&#125;;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;;</span><br><span class="line">　　alert(object.getNameFunc()());</span><br></pre></td></tr></table></figure>
+<p>输出为 The Window<br>name没有被修改</p>
+<p>因为：<br>getNameFunc: function() {//假设函数名为Ａ<br>return function()/<em>假设函数名为Ｂ</em>/ { return this.name; };<br>}<br>在函数里面构建函数的时候，闭包产生。<br>在函数Ｂ内调用函数Ａ的this.name,由于函数Ａ没有name属性，所以就去找全局变量name，找到了，所以返回“The Window”，要是没有找到，则返回“undefined”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var name &#x3D; &quot;The Window&quot;;</span><br><span class="line">　　var object &#x3D; &#123;</span><br><span class="line">　　　　name : &quot;My Object&quot;,</span><br><span class="line">　　　　getNameFunc : function()&#123;</span><br><span class="line">　　　　　　var that &#x3D; this;</span><br><span class="line">　　　　　　return function()&#123;</span><br><span class="line">　　　　　　　　return that.name;</span><br><span class="line">　　　　　　&#125;;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;;</span><br><span class="line">　　alert(object.getNameFunc()());</span><br></pre></td></tr></table></figure>
+<p>var <em>this = this;<br>return function() { return <em>this.name +”</em></em>“+ this.name; };</p>
+<p>父对象的所有变量，对子对象都是可见的，反之则不成立。</p>
+<p><a href="http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html</a></p>
+<p>this的指向是由它所在函数调用的上下文决定的，而不是由它所在函数定义的上下文决定的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var name &#x3D; &quot;The Window&quot;;</span><br><span class="line">var object &#x3D; &#123;</span><br><span class="line">    name: &quot;My Object&quot;,</span><br><span class="line">    getNameFunc: function () &#123;</span><br><span class="line">        return function () &#123;</span><br><span class="line">            return this.name;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">alert(object.getNameFunc()());</span><br></pre></td></tr></table></figure>
+
+<h1 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/02.%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JavaScript/other/" data-id="ckbp3mql0004248tw94ai03zx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-03.软件开发/设计模式/23种设计模式" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/21/03.%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="article-date">
@@ -514,55 +586,6 @@
 
 
   
-    <article id="post-05.游戏编程/Unity3D/关于Unet" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%85%B3%E4%BA%8EUnet/" class="article-date">
-  <time datetime="2020-06-21T09:48:41.000Z" itemprop="datePublished">2020-06-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%85%B3%E4%BA%8EUnet/">关于Unet</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>git<br><a href="https://github.com/BUGyyc/SyncProject" target="_blank" rel="noopener">https://github.com/BUGyyc/SyncProject</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46845753" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46845753</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46852293" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46852293</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46873153" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46873153</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46849341" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46849341</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46850559" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46850559</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46850893" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46850893</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46851033" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46851033</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46851547" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46851547</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46852511" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46852511</a></p>
-<p><a href="https://blog.csdn.net/u010019717/article/details/46872833" target="_blank" rel="noopener">https://blog.csdn.net/u010019717/article/details/46872833</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/06/21/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E5%85%B3%E4%BA%8EUnet/" data-id="ckbp3mql9004p48tw3hz7crfp" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -613,6 +636,14 @@
       <ul>
         
           <li>
+            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/">05.游戏编程/游戏开发技巧/人群拟合移动方案</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/10/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">05.游戏编程/游戏开发技巧/技能系统设计</a>
           </li>
         
@@ -622,14 +653,6 @@
         
           <li>
             <a href="/2020/07/10/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB/">冯诺依曼体系结构</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/10/Temporary/%E6%B7%B1%E5%BA%A6%E5%89%96%E6%9E%90%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95/">细说渲染管线</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/07/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%89%87%E7%9A%84%E6%9E%84%E9%80%A0%E5%8F%8A%E5%85%B6%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86/">常用图片的构造及其压缩原理</a>
           </li>
         
       </ul>
