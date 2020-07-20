@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://bugyyc.com/posts/coder/2020/07/18/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86%E6%A0%88/">
+    <link itemprop="mainEntityOfPage" href="http://bugyyc.com/posts/coder/2020/07/20/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -211,7 +211,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/07/18/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86%E6%A0%88/" class="post-title-link" itemprop="url">堆栈</a>
+            <a href="/2020/07/20/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/" class="post-title-link" itemprop="url">深入理解协程</a>
         </h2>
 
         <div class="post-meta">
@@ -220,105 +220,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-07-18 17:48:41" itemprop="dateCreated datePublished" datetime="2020-07-18T17:48:41+08:00">2020-07-18</time>
+              <time title="Created: 2020-07-20 12:09:41 / Modified: 21:29:02" itemprop="dateCreated datePublished" datetime="2020-07-20T12:09:41+08:00">2020-07-20</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-20 20:43:49" itemprop="dateModified" datetime="2020-07-20T20:43:49+08:00">2020-07-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="队列实现堆栈"><a href="#队列实现堆栈" class="headerlink" title="队列实现堆栈"></a>队列实现堆栈</h2><pre><code>public class Stack{
-
-    private Queue&lt;Integer&gt; q1 = new Queue&lt;Integer&gt;();
-    private Queue&lt;Integer&gt; q2 = new Queue&lt;Integer&gt;();
-
-    private int top;
-
-    public void Push(int x){
-        q1.add(x);
-        top = x;
-    }
-
-    public int Pop(){
-        while(q1.size()&gt;1){
-            top = q1.remove();
-            q2.add(top);
-        }
-
-        q1.remove();
-        Queue&lt;Integer&gt; temp = q1;
-        q1 = q2;
-        q2 = temp;
-    }
-
-}</code></pre><p><a href="https://leetcode-cn.com/problems/implement-stack-using-queues/solution/yong-dui-lie-shi-xian-zhan-by-leetcode/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-stack-using-queues/solution/yong-dui-lie-shi-xian-zhan-by-leetcode/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://bugyyc.com/posts/coder/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Delevin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Delevin Studio">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/" class="post-title-link" itemprop="url">深入理解协程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-07-14 12:09:41" itemprop="dateCreated datePublished" datetime="2020-07-14T12:09:41+08:00">2020-07-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-20 21:13:43" itemprop="dateModified" datetime="2020-07-20T21:13:43+08:00">2020-07-20</time>
-              </span>
 
           
 
@@ -402,7 +307,97 @@ foreach(IEnumerator coroutine in unblockedCoroutines){
     }
     else /* similar stuff for other YieldInstruction subtypes */}
 
-unblockedCoroutines = shouldRunNextFrame;</code></pre><p><a href="https://www.cnblogs.com/neverdie/p/3792766.html" target="_blank" rel="noopener">https://www.cnblogs.com/neverdie/p/3792766.html</a></p>
+unblockedCoroutines = shouldRunNextFrame;</code></pre><hr>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.cnblogs.com/neverdie/p/3792766.html" target="_blank" rel="noopener">https://www.cnblogs.com/neverdie/p/3792766.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://bugyyc.com/posts/coder/2020/07/18/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86%E6%A0%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Delevin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Delevin Studio">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/18/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86%E6%A0%88/" class="post-title-link" itemprop="url">堆栈</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-07-18 17:48:41" itemprop="dateCreated datePublished" datetime="2020-07-18T17:48:41+08:00">2020-07-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-20 20:43:49" itemprop="dateModified" datetime="2020-07-20T20:43:49+08:00">2020-07-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="队列实现堆栈"><a href="#队列实现堆栈" class="headerlink" title="队列实现堆栈"></a>队列实现堆栈</h2><pre><code>public class Stack{
+
+    private Queue&lt;Integer&gt; q1 = new Queue&lt;Integer&gt;();
+    private Queue&lt;Integer&gt; q2 = new Queue&lt;Integer&gt;();
+
+    private int top;
+
+    public void Push(int x){
+        q1.add(x);
+        top = x;
+    }
+
+    public int Pop(){
+        while(q1.size()&gt;1){
+            top = q1.remove();
+            q2.add(top);
+        }
+
+        q1.remove();
+        Queue&lt;Integer&gt; temp = q1;
+        q1 = q2;
+        q2 = temp;
+    }
+
+}</code></pre><p><a href="https://leetcode-cn.com/problems/implement-stack-using-queues/solution/yong-dui-lie-shi-xian-zhan-by-leetcode/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/implement-stack-using-queues/solution/yong-dui-lie-shi-xian-zhan-by-leetcode/</a></p>
 
       
     </div>
