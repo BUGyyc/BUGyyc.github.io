@@ -1,93 +1,252 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
   
-  <title>深入理解协程 | Coder</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bugyyc.com","root":"/","scheme":"Muse","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}}};
+  </script>
+
   <meta name="description" content="我们知道Unity是单线程的，所以我们需要一种机制来实现“多线程”。协程可以不使用异步执行的方案来实现异步的手段，协程不是线程，协程和 Update 一样是主线程中执行的。所以使用协程可以不考虑同步和锁的问题。  什么是协程从程序设计的角度上理解，协程可以被认为是一个有限状态机，将逻辑分散到各个小状态中，然后通过MoveNext()，来确保状态转移下去。这听起来像是 Update 中去执行一个逻辑">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解协程">
 <meta property="og:url" content="http://bugyyc.com/posts/coder/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/index.html">
-<meta property="og:site_name" content="Coder">
+<meta property="og:site_name" content="Delevin Studio">
 <meta property="og:description" content="我们知道Unity是单线程的，所以我们需要一种机制来实现“多线程”。协程可以不使用异步执行的方案来实现异步的手段，协程不是线程，协程和 Update 一样是主线程中执行的。所以使用协程可以不考虑同步和锁的问题。  什么是协程从程序设计的角度上理解，协程可以被认为是一个有限状态机，将逻辑分散到各个小状态中，然后通过MoveNext()，来确保状态转移下去。这听起来像是 Update 中去执行一个逻辑">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-14T04:09:41.000Z">
-<meta property="article:modified_time" content="2020-07-14T14:20:37.932Z">
+<meta property="article:modified_time" content="2020-07-20T13:13:43.481Z">
 <meta property="article:author" content="Delevin">
 <meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Coder" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<link rel="canonical" href="http://bugyyc.com/posts/coder/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Coder</a>
-      </h1>
-      
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>深入理解协程 | Delevin Studio</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://BUGyyc.com/posts/coder"></form>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Delevin Studio</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是协程"><span class="nav-number">1.</span> <span class="nav-text">什么是协程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程能解决的问题"><span class="nav-number">2.</span> <span class="nav-text">协程能解决的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程的原理"><span class="nav-number">3.</span> <span class="nav-text">协程的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程、线程、进程"><span class="nav-number">4.</span> <span class="nav-text">协程、线程、进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity中的协程"><span class="nav-number">5.</span> <span class="nav-text">Unity中的协程</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Delevin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">120</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
       </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
     </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-05.游戏编程/Unity3D/深入理解协程" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/" class="article-date">
-  <time datetime="2020-07-14T04:09:41.000Z" itemprop="datePublished">2020-07-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      深入理解协程
-    </h1>
-  
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
 
       </header>
+
+      
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
     
-    <div class="article-entry" itemprop="articleBody">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://bugyyc.com/posts/coder/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Delevin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Delevin Studio">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深入理解协程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-07-14 12:09:41" itemprop="dateCreated datePublished" datetime="2020-07-14T12:09:41+08:00">2020-07-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-20 21:13:43" itemprop="dateModified" datetime="2020-07-20T21:13:43+08:00">2020-07-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <p>我们知道Unity是单线程的，所以我们需要一种机制来实现“多线程”。协程可以不使用异步执行的方案来实现异步的手段，协程不是线程，协程和 Update 一样是主线程中执行的。所以使用协程可以不考虑同步和锁的问题。</p>
 <hr>
@@ -122,141 +281,172 @@ void Update(){
 <li>yield return new WWW(url); → 等待 url 下载完后再继续执行;</li>
 <li>yield return StartCoroutine(MyFunc()); → 等待协程结束后再执行;</li>
 </ul>
-<h2 id="协程不同于线程"><a href="#协程不同于线程" class="headerlink" title="协程不同于线程"></a>协程不同于线程</h2><p><a href="https://www.iteye.com/blog/dsqiu-2029701" target="_blank" rel="noopener">https://www.iteye.com/blog/dsqiu-2029701</a></p>
-<p>Unity中协程的内部实现是状态机，MoveNext要执行下一个状态</p>
-<p><a href="https://www.cnblogs.com/neverdie/p/3792766.html" target="_blank" rel="noopener">https://www.cnblogs.com/neverdie/p/3792766.html</a></p>
+<h2 id="协程、线程、进程"><a href="#协程、线程、进程" class="headerlink" title="协程、线程、进程"></a>协程、线程、进程</h2><p>进程的概念最大，它可以是一个程序，当然一个程序可以是多个进程组成，进程是资源分配的最小单位，同一时刻执行的进程数不会超过核心数（例如：4核心的CPU，同时执行的进程数最大是4个）。当然单核CPU也可以跑多个进程，只不过不是同时执行，而是来回切换进程运行，这种情况叫作并发。（并行是指多个进程同时执行，并发是指多个进程无法在单核CPU同时执行，但可以来回切换执行）</p>
+<p>线程可以认为是程序中一个小的执行程序，或者认为是一个小的执行任务，线程和线程之间可以访问共同的资源，因此也就有了死锁等现象。</p>
+<ul>
+<li>进程是CPU资源分配的基本单位，线程是独立运行和独立调度的基本单位。</li>
+<li>进程拥有自己的资源空间，一个进程可以包含多个线程，多个线程可以共享一个进程内的资源。</li>
+<li>线程的调度和切换要比进程快。</li>
+</ul>
+<p>协程是一种轻量级的线程。协程有自己的寄存器上下文和栈，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存器上下文和栈。所以协程能保留上一次调用时的状态（即所有局部状态的一个特定组合），每次过程重入时，就相当于进入上一次调用的状态，换种说法：进入上一次离开时所处逻辑流的位置。</p>
+<p>程的本质是个单线程,它不能同时将 单个CPU 的多个核用上。</p>
+<h2 id="Unity中的协程"><a href="#Unity中的协程" class="headerlink" title="Unity中的协程"></a>Unity中的协程</h2><p>Unity中协程的内部实现是状态机，MoveNext要执行下一个状态。</p>
+<pre><code>List&lt;IEnumerator&gt; unblockedCoroutines;
+List&lt;IEnumerator&gt; shouldRunNextFrame;
+List&lt;IEnumerator&gt; shouldRunAtEndOfFrame;
+SortedList&lt;float, IEnumerator&gt; shouldRunAfterTimes;
 
-      
+foreach(IEnumerator coroutine in unblockedCoroutines){
+    if(!coroutine.MoveNext())
+        // This coroutine has finished
+        continue;
+
+    if(!coroutine.Current is YieldInstruction)
+    {
+        // This coroutine yielded null, or some other value we don&apos;t understand; run it next frame.
+        shouldRunNextFrame.Add(coroutine);
+        continue;
+    }
+
+    if(coroutine.Current is WaitForSeconds)
+    {
+        WaitForSeconds wait = (WaitForSeconds)coroutine.Current;
+        shouldRunAfterTimes.Add(Time.time + wait.duration, coroutine);
+    }
+    else if(coroutine.Current is WaitForEndOfFrame)
+    {
+        shouldRunAtEndOfFrame.Add(coroutine);
+    }
+    else /* similar stuff for other YieldInstruction subtypes */}
+
+unblockedCoroutines = shouldRunNextFrame;</code></pre><p><a href="https://www.cnblogs.com/neverdie/p/3792766.html" target="_blank" rel="noopener">https://www.cnblogs.com/neverdie/p/3792766.html</a></p>
+
     </div>
-    <footer class="article-footer">
-      <a data-url="http://bugyyc.com/posts/coder/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/" data-id="ckc94qeug00179slu486ke8fw" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/" rel="prev" title="人群拟合移动方案">
+      <i class="fa fa-chevron-left"></i> 人群拟合移动方案
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/18/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86%E6%A0%88/" rel="next" title="堆栈">
+      堆栈 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Delevin</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-  
-    <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">人群拟合移动方案</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
+<script src="/js/utils.js"></script>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos-Creator/" rel="tag">Cocos Creator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayaBox/" rel="tag">LayaBox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/temp/" rel="tag">temp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F/" rel="tag">图像</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" rel="tag">图形渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" rel="tag">框架设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" rel="tag">游戏开发框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" rel="tag">物理引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" rel="tag">计算机数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" rel="tag">计算机硬件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" rel="tag">计算机科学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" rel="tag">计算机组成原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
-    </div>
-  </div>
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 13.75px;">Android</a> <a href="/tags/C/" style="font-size: 17.5px;">C#</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cocos-Creator/" style="font-size: 11.25px;">Cocos Creator</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/LayaBox/" style="font-size: 10px;">LayaBox</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/Unity/" style="font-size: 15px;">Unity</a> <a href="/tags/temp/" style="font-size: 18.75px;">temp</a> <a href="/tags/%E5%9B%BE%E5%83%8F/" style="font-size: 10px;">图像</a> <a href="/tags/%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93/" style="font-size: 16.25px;">图形渲染</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 12.5px;">数据结构</a> <a href="/tags/%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" style="font-size: 11.25px;">框架设计</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 20px;">游戏开发</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">游戏开发框架</a> <a href="/tags/%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E/" style="font-size: 12.5px;">物理引擎</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.25px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.25px;">网络</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%95%B0%E5%AD%A6/" style="font-size: 11.25px;">计算机数学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/" style="font-size: 10px;">计算机硬件</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" style="font-size: 10px;">计算机科学</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 12.5px;">计算机组成原理</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 13.75px;">软件工程</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 13.75px;">随笔</a>
-    </div>
-  </div>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/Unity3D/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%8D%8F%E7%A8%8B/">深入理解协程</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/14/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E4%BA%BA%E7%BE%A4%E6%8B%9F%E5%90%88%E7%A7%BB%E5%8A%A8%E6%96%B9%E6%A1%88/">人群拟合移动方案</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/10/05.%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/%E6%8A%80%E8%83%BD%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">05.游戏编程/游戏开发技巧/技能系统设计</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/10/07.%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/">细说渲染管线</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/10/01.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB/">冯诺依曼体系结构</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2020 Delevin<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-  </div>
 </body>
 </html>
