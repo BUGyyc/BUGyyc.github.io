@@ -563,7 +563,7 @@ unblockedCoroutines = shouldRunNextFrame;</code></pre><hr>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-14 22:47:09" itemprop="dateModified" datetime="2020-07-14T22:47:09+08:00">2020-07-14</time>
+                <time title="Modified: 2020-08-26 22:00:26" itemprop="dateModified" datetime="2020-08-26T22:00:26+08:00">2020-08-26</time>
               </span>
 
           
@@ -578,6 +578,24 @@ unblockedCoroutines = shouldRunNextFrame;</code></pre><hr>
 
       
           <h1 id="渲染管线的流程"><a href="#渲染管线的流程" class="headerlink" title="渲染管线的流程"></a>渲染管线的流程</h1><h3 id="画家算法"><a href="#画家算法" class="headerlink" title="画家算法"></a>画家算法</h3><h2 id="关于投影"><a href="#关于投影" class="headerlink" title="关于投影"></a>关于投影</h2><h2 id="多边形裁剪算法"><a href="#多边形裁剪算法" class="headerlink" title="多边形裁剪算法"></a>多边形裁剪算法</h2><p><a href="https://zhuanlan.zhihu.com/p/61216531" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/61216531</a></p>
+<h2 id="应用阶段"><a href="#应用阶段" class="headerlink" title="应用阶段"></a>应用阶段</h2><ul>
+<li>CPU从硬盘中加载数据到显存中去:数据从硬盘中加载到内存中，然再被加载到显存中。</li>
+<li>设置渲染状态：设置材质、光源等。</li>
+<li>调用DrawCall：CPU向GPU下达渲染命令。</li>
+</ul>
+<h2 id="几何阶段"><a href="#几何阶段" class="headerlink" title="几何阶段"></a>几何阶段</h2><ul>
+<li>顶点着色器</li>
+<li>曲面细分着色器</li>
+<li>几何着色器</li>
+<li>裁剪</li>
+<li>屏幕映射</li>
+</ul>
+<h1 id="光栅化阶段"><a href="#光栅化阶段" class="headerlink" title="光栅化阶段"></a>光栅化阶段</h1><ul>
+<li>三角形设置</li>
+<li>三角形遍历</li>
+<li>片元着色器</li>
+<li>逐片元操作</li>
+</ul>
 
       
     </div>
